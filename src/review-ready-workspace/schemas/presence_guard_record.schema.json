@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/presence_guard_record.schema.json",
+  "title": "Alibaba minimal presence guard row",
+  "type": "object",
+  "required": ["product_id", "canonical_model", "raw_model", "record_disposition", "presence_dedup_only"],
+  "properties": {
+    "product_id": {"type": "string", "minLength": 1},
+    "canonical_model": {"type": "string"},
+    "raw_model": {"type": "string"},
+    "record_disposition": {"enum": ["HISTORICAL_REFERENCE_ONLY", "UNUSABLE_WASTE_RECORD"]},
+    "presence_dedup_only": {"type": "boolean"}
+  },
+  "allOf": [
+    {"if": {"properties": {"record_disposition": {"const": "UNUSABLE_WASTE_RECORD"}}}, "then": {"properties": {"presence_dedup_only": {"const": true}}}}
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba/record-disposition.schema.json",
+  "title": "Alibaba Local Record Disposition Overlay Row",
+  "description": "A local-only disposition derived from gmt_modified, which is a last-modified proxy and not a creation or first-online date.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_version",
+    "overlay_version",
+    "generated_at",
+    "product_id",
+    "ordinal",
+    "subject",
+    "base_binding",
+    "date_evidence",
+    "record_disposition",
+    "disposition",
+    "disposition_is_final",
+    "allow_rag",
+    "fact_extraction",
+    "asset_reuse",
+    "publish_draft",
+    "auto_listing",
+    "promotion_required_for_publish",
+    "external_write_enabled",
+    "reason_codes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "policy_version": {
+      "const": "record-disposition-1.0.0"
+    },
+    "overlay_version": {
+      "type": "string",
+      "pattern": "^record-disposition-[0-9]{8}T[0-9]{12}Z$"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "product_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "ordinal": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "subject": {
+      "type": "string"
+    },
+    "base_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "catalog_index_sha256",
+        "catalog_index_line",
+        "catalog_row_sha256"
+      ],
+      "properties": {
+        "catalog_index_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "catalog_index_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "catalog_row_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "date_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "value",
+        "semantics",
+        "cutoff",
+        "comparison"
+      ],
+      "properties": {
+        "field": {
+          "const": "gmt_modified"
+        },
+        "value": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "semantics": {
+          "const": "last_modified_proxy_not_creation_date"
+        },
+        "cutoff": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "comparison": {
+          "enum": [
+            "before_cutoff",
+            "on_or_after_cutoff"
+          ]
+        }
+      }
+    },
+    "record_disposition": {
+      "enum": [
+        "HISTORICAL_REFERENCE_ONLY",
+        "UNUSABLE_WASTE_RECORD"
+      ]
+    },
+    "disposition": {
+      "description": "Compatibility alias; must equal record_disposition.",
+      "enum": [
+        "HISTORICAL_REFERENCE_ONLY",
+        "UNUSABLE_WASTE_RECORD"
+      ]
+    },
+    "disposition_is_final": {
+      "const": true
+    },
+    "allow_rag": {
+      "type": "boolean"
+    },
+    "fact_extraction": {
+      "type": "boolean"
+    },
+    "asset_reuse": {
+      "type": "boolean"
+    },
+    "publish_draft": {
+      "const": false
+    },
+    "auto_listing": {
+      "const": false
+    },
+    "promotion_required_for_publish": {
+      "const": "APPROVED_INTERNAL_SOURCE"
+    },
+    "external_write_enabled": {
+      "const": false
+    },
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "record_disposition": {
+            "const": "HISTORICAL_REFERENCE_ONLY"
+          }
+        },
+        "required": [
+          "record_disposition"
+        ]
+      },
+      "then": {
+        "properties": {
+          "disposition": {
+            "const": "HISTORICAL_REFERENCE_ONLY"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "record_disposition": {
+            "const": "UNUSABLE_WASTE_RECORD"
+          }
+        },
+        "required": [
+          "record_disposition"
+        ]
+      },
+      "then": {
+        "properties": {
+          "disposition": {
+            "const": "UNUSABLE_WASTE_RECORD"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition": {
+            "const": "HISTORICAL_REFERENCE_ONLY"
+          }
+        },
+        "required": [
+          "disposition"
+        ]
+      },
+      "then": {
+        "properties": {
+          "allow_rag": {
+            "const": true
+          },
+          "fact_extraction": {
+            "const": true
+          },
+          "asset_reuse": {
+            "const": true
+          },
+          "publish_draft": {
+            "const": false
+          },
+          "auto_listing": {
+            "const": false
+          },
+          "date_evidence": {
+            "properties": {
+              "comparison": {
+                "const": "before_cutoff"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition": {
+            "const": "UNUSABLE_WASTE_RECORD"
+          }
+        },
+        "required": [
+          "disposition"
+        ]
+      },
+      "then": {
+        "properties": {
+          "allow_rag": {
+            "const": false
+          },
+          "fact_extraction": {
+            "const": false
+          },
+          "asset_reuse": {
+            "const": false
+          },
+          "publish_draft": {
+            "const": false
+          },
+          "auto_listing": {
+            "const": false
+          },
+          "date_evidence": {
+            "properties": {
+              "comparison": {
+                "const": "on_or_after_cutoff"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

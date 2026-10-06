@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/run_receipt.schema.json",
+  "title": "Alibaba archive verification receipt",
+  "type": "object",
+  "required": ["schema_version", "run_id", "generated_at", "expected_count", "api_total", "unique_product_ids", "catalog_index_rows", "captured_count", "remaining_count", "missing_artifacts", "asset_failures", "capture_receipt_hash_failures", "asset_reference_failures", "schema_failures", "screenshot_format_failures", "mhtml_format_failures", "checkpoint_consistency_failures", "browser_capture_checkpoint", "request_ledger", "evidence_manifest", "secret_scan", "secret_findings", "status"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "run_id": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "expected_count": {"type": "integer", "minimum": 1},
+    "api_total": {"type": "integer", "minimum": 0},
+    "unique_product_ids": {"type": "integer", "minimum": 0},
+    "catalog_index_rows": {"type": "integer", "minimum": 0},
+    "captured_count": {"type": "integer", "minimum": 0},
+    "remaining_count": {"type": "integer", "minimum": 0},
+    "missing_artifacts": {"type": "array"},
+    "asset_failures": {"type": "integer", "minimum": 0},
+    "capture_receipt_hash_failures": {"type": "array"},
+    "asset_reference_failures": {"type": "array"},
+    "schema_failures": {"type": "array"},
+    "screenshot_format_failures": {"type": "array"},
+    "mhtml_format_failures": {"type": "array"},
+    "checkpoint_consistency_failures": {"type": "array"},
+    "browser_capture_checkpoint": {
+      "type": "object",
+      "required": ["updated_at", "status", "total_products", "captured_count", "remaining_count", "last_attempted_ordinal", "next_zero_based_index", "next_ordinal", "next_product_id", "catalog_product_id_sequence_sha256", "external_writes", "completion_basis", "prior_checkpoint_archived_as"],
+      "properties": {
+        "updated_at": {"type": "string", "format": "date-time"},
+        "status": {"const": "COMPLETE"},
+        "total_products": {"type": "integer", "minimum": 1},
+        "captured_count": {"type": "integer", "minimum": 0},
+        "remaining_count": {"type": "integer", "minimum": 0},
+        "last_attempted_ordinal": {"type": ["integer", "null"], "minimum": 1},
+        "next_zero_based_index": {"type": ["integer", "null"], "minimum": 0},
+        "next_ordinal": {"type": ["integer", "null"], "minimum": 1},
+        "next_product_id": {"type": ["string", "null"]},
+        "catalog_product_id_sequence_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "external_writes": {"const": false},
+        "completion_basis": {"type": ["string", "null"]},
+        "prior_checkpoint_archived_as": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "request_ledger": {
+      "type": "object",
+      "required": ["path", "row_count", "invalid_line_numbers", "methods", "http_statuses", "outcomes", "external_write_rows", "captured_product_id_count", "captured_product_id_set_sha256"],
+      "properties": {
+        "path": {"type": "string"},
+        "row_count": {"type": "integer", "minimum": 0},
+        "invalid_line_numbers": {"type": "array", "items": {"type": "integer", "minimum": 1}},
+        "methods": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "http_statuses": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "outcomes": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "external_write_rows": {"type": "integer", "minimum": 0},
+        "captured_product_id_count": {"type": "integer", "minimum": 0},
+        "captured_product_id_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "evidence_manifest": {"type": "object"},
+    "secret_scan": {
+      "type": "object",
+      "required": ["generated_at", "scanner", "scanner_sha256", "files_scanned", "bytes_scanned", "finding_count", "status"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"},
+        "scanner": {"type": "string"},
+        "scanner_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "files_scanned": {"type": "integer", "minimum": 0},
+        "bytes_scanned": {"type": "integer", "minimum": 0},
+        "finding_count": {"type": "integer", "minimum": 0},
+        "status": {"enum": ["PASS", "FAIL"]}
+      },
+      "additionalProperties": false
+    },
+    "secret_findings": {"type": "array"},
+    "status": {"enum": ["COMPLETE", "PARTIAL"]}
+  },
+  "additionalProperties": false
+}

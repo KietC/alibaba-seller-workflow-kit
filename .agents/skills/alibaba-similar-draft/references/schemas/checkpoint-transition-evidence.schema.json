@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/checkpoint-transition-evidence.schema.json",
+  "title": "Typed Checkpoint Transition Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "evidence_id", "created_at", "run_id", "target_model",
+    "template_product_id", "new_state", "artifacts", "body_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.checkpoint-transition-evidence.v1"},
+    "evidence_id": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\r\\n]+$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "run_id": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\r\\n]+$"},
+    "target_model": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "new_state": {"$ref": "#/$defs/state"},
+    "artifacts": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["role", "path", "bytes", "sha256"],
+        "properties": {
+          "role": {"$ref": "#/$defs/role"},
+          "path": {"type": "string", "minLength": 3, "maxLength": 4096, "pattern": "^(?:[A-Za-z]:[\\\\/]|/)[^\\r\\n]+$"},
+          "bytes": {"type": "integer", "minimum": 2},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "body_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "state": {"enum": ["CANDIDATE_REVIEW_APPROVED", "TEMPLATE_PROBED", "INHERITED_DATA_CLEARED", "FORM_FILLED", "VALIDATED", "SAVE_ATTEMPTED", "DRAFT_SAVED", "FINAL_REVIEW_READY"]},
+    "role": {"enum": [
+      "APPROVAL_COMPILATION_RECEIPT", "PROBE_VERIFICATION_RECEIPT",
+      "INHERITED_CLEAR_PRE_SAVE_RECEIPT", "FORM_FILL_PRE_SAVE_RECEIPT",
+      "PRE_SAVE_CHECKLIST_SOURCE", "PRE_SAVE_CHECKLIST_RECEIPT",
+      "DRAFT_SAVE_ATTEMPT_CLAIM_RECEIPT", "DRAFT_SAVE_ACTIVATION_RECEIPT", "INVENTORY_DELTA_VERIFICATION_RECEIPT",
+      "FILL_VERIFICATION_RECEIPT", "POST_SAVE_CHECKLIST_SOURCE", "POST_SAVE_CHECKLIST_RECEIPT"
+    ]}
+  }
+}

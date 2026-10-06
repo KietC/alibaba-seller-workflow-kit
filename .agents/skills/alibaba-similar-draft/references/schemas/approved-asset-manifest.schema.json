@@ -1,0 +1,500 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/approved-asset-manifest.schema.json",
+  "title": "Alibaba Similar Draft Approved Asset Manifest",
+  "description": "Hash-bound, human-approved asset manifest for one target model. Template product media and historical archive media are not approved by inheritance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_id",
+    "run_id",
+    "target_model",
+    "generated_at",
+    "approval",
+    "bindings",
+    "asset_count",
+    "main_image_count",
+    "main_video_count",
+    "asset_sequence_sha256",
+    "assets",
+    "rules",
+    "write_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "alibaba.approved-asset-manifest.v1"
+    },
+    "manifest_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "target_model": {
+      "$ref": "#/$defs/targetModel"
+    },
+    "generated_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "approval": {
+      "$ref": "#/$defs/approval"
+    },
+    "bindings": {
+      "$ref": "#/$defs/bindings"
+    },
+    "asset_count": {
+      "type": "integer",
+      "minimum": 4,
+      "maximum": 32
+    },
+    "main_image_count": {
+      "type": "integer",
+      "minimum": 4,
+      "maximum": 6
+    },
+    "main_video_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "asset_sequence_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "rules": {
+      "$ref": "#/$defs/rules"
+    },
+    "write_policy": {
+      "$ref": "#/$defs/writePolicy"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "explicit",
+        "scope",
+        "origin",
+        "decision_id",
+        "approved_by",
+        "approved_at",
+        "approval_package_sha256"
+      ],
+      "properties": {
+        "status": {
+          "const": "APPROVED"
+        },
+        "explicit": {
+          "const": true
+        },
+        "scope": {
+          "const": "SIMILAR_DRAFT_ASSET_USE_ONLY"
+        },
+        "origin": {
+          "const": "HUMAN_REVIEWED_CANDIDATE_PACKAGE"
+        },
+        "decision_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "approved_by": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "approved_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approval_package_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_source_manifest_sha256",
+        "candidate_package_sha256",
+        "field_registry_sha256",
+        "schema_bundle_sha256",
+        "target_model_normalized"
+      ],
+      "properties": {
+        "approved_source_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "candidate_package_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "field_registry_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "schema_bundle_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_model_normalized": {
+          "$ref": "#/$defs/targetModel"
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "role",
+        "upload_order",
+        "path",
+        "bytes",
+        "sha256",
+        "media_type",
+        "record_disposition",
+        "source_id",
+        "source_decision_id",
+        "product_identity",
+        "compliance",
+        "upload_approval",
+        "derived_from_template",
+        "derived_from_historical_record"
+      ],
+      "properties": {
+        "asset_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "role": {
+          "enum": [
+            "MAIN_IMAGE",
+            "MAIN_VIDEO",
+            "DETAIL_IMAGE",
+            "DETAIL_VIDEO",
+            "CERTIFICATE_IMAGE"
+          ]
+        },
+        "upload_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483648
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "media_type": {
+          "enum": [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "video/mp4"
+          ]
+        },
+        "record_disposition": {
+          "const": "APPROVED_INTERNAL_SOURCE"
+        },
+        "source_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "source_decision_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "product_identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target_model",
+            "match_status",
+            "match_method",
+            "decision_id"
+          ],
+          "properties": {
+            "target_model": {
+              "$ref": "#/$defs/targetModel"
+            },
+            "match_status": {
+              "const": "MATCHED"
+            },
+            "match_method": {
+              "enum": [
+                "HUMAN_VISUAL_REVIEW",
+                "APPROVED_ASSET_LEDGER",
+                "HASH_BOUND_DERIVATION"
+              ]
+            },
+            "decision_id": {
+              "$ref": "#/$defs/nonEmptyId"
+            }
+          }
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "width",
+            "height"
+          ],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "duration_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "compliance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "format_ok",
+            "size_ok",
+            "dimensions_ok",
+            "duration_ok",
+            "identity_ok",
+            "policy_ok",
+            "upload_ready"
+          ],
+          "properties": {
+            "format_ok": {
+              "const": true
+            },
+            "size_ok": {
+              "const": true
+            },
+            "dimensions_ok": {
+              "const": true
+            },
+            "duration_ok": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "identity_ok": {
+              "const": true
+            },
+            "policy_ok": {
+              "const": true
+            },
+            "upload_ready": {
+              "const": true
+            }
+          }
+        },
+        "upload_approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "approved",
+            "decision_id",
+            "approved_by",
+            "approved_at"
+          ],
+          "properties": {
+            "approved": {
+              "const": true
+            },
+            "decision_id": {
+              "$ref": "#/$defs/nonEmptyId"
+            },
+            "approved_by": {
+              "$ref": "#/$defs/nonEmptyId"
+            },
+            "approved_at": {
+              "$ref": "#/$defs/timestamp"
+            }
+          }
+        },
+        "derived_from_template": {
+          "const": false
+        },
+        "derived_from_historical_record": {
+          "const": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "enum": [
+                  "MAIN_IMAGE",
+                  "DETAIL_IMAGE",
+                  "CERTIFICATE_IMAGE"
+                ]
+              }
+            },
+            "required": [
+              "role"
+            ]
+          },
+          "then": {
+            "properties": {
+              "media_type": {
+                "enum": [
+                  "image/jpeg",
+                  "image/png",
+                  "image/webp"
+                ]
+              },
+              "duration_seconds": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "dimensions"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "enum": [
+                  "MAIN_VIDEO",
+                  "DETAIL_VIDEO"
+                ]
+              }
+            },
+            "required": [
+              "role"
+            ]
+          },
+          "then": {
+            "properties": {
+              "media_type": {
+                "const": "video/mp4"
+              },
+              "duration_seconds": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "required": [
+              "duration_seconds"
+            ]
+          }
+        }
+      ]
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "main_image_minimum_count",
+        "main_image_maximum_count",
+        "main_video_maximum_count",
+        "unique_asset_ids",
+        "unique_upload_orders",
+        "hash_recheck_before_upload",
+        "template_media_may_be_inherited",
+        "runtime_count_verification_required"
+      ],
+      "properties": {
+        "main_image_minimum_count": {
+          "const": 4
+        },
+        "main_image_maximum_count": {
+          "const": 6
+        },
+        "main_video_maximum_count": {
+          "const": 1
+        },
+        "unique_asset_ids": {
+          "const": true
+        },
+        "unique_upload_orders": {
+          "const": true
+        },
+        "hash_recheck_before_upload": {
+          "const": true
+        },
+        "template_media_may_be_inherited": {
+          "const": false
+        },
+        "runtime_count_verification_required": {
+          "const": true
+        }
+      }
+    },
+    "writePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_external_write_enabled",
+        "upload_requires_current_probe_receipt",
+        "draft_save_requires_separate_approval",
+        "final_write_enabled"
+      ],
+      "properties": {
+        "candidate_external_write_enabled": {
+          "const": false
+        },
+        "upload_requires_current_probe_receipt": {
+          "const": true
+        },
+        "draft_save_requires_separate_approval": {
+          "const": true
+        },
+        "final_write_enabled": {
+          "const": false
+        }
+      }
+    }
+  }
+}

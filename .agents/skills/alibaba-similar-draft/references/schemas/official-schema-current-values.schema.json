@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/official-schema-current-values.schema.json",
+  "title": "Current Values Ledger for Official Alibaba Schema Validation",
+  "description": "Read-only current-form values deterministically derived from one hash-bound browser observation capture and bound to one normalized official schema and browser session.",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "ledger_id", "run_id", "target_model", "template_product_id",
+    "captured_at", "browser_session_sha256", "bindings", "source", "fields",
+    "field_paths_sha256", "ledger_body_sha256", "write_authority", "final_write_enabled"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba-official-schema-current-values.v2"},
+    "ledger_id": {"$ref": "#/$defs/nonEmpty"}, "run_id": {"$ref": "#/$defs/nonEmpty"},
+    "target_model": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "normalized_schema_sha256", "raw_schema_sha256", "schema_capture_id",
+        "schema_field_paths_sha256", "schema_rule_graph_sha256",
+        "observation_capture_id", "observation_capture_sha256",
+        "observation_capture_body_sha256", "observation_ids_sha256"
+      ],
+      "properties": {
+        "normalized_schema_sha256": {"$ref": "#/$defs/sha256"}, "raw_schema_sha256": {"$ref": "#/$defs/sha256"},
+        "schema_capture_id": {"$ref": "#/$defs/nonEmpty"}, "schema_field_paths_sha256": {"$ref": "#/$defs/sha256"},
+        "schema_rule_graph_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_capture_id": {"$ref": "#/$defs/nonEmpty"},
+        "observation_capture_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_capture_body_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_ids_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "capture_source_kind", "trust_status", "read_only", "login_active", "captcha_present", "credential_values_recorded"],
+      "properties": {
+        "kind": {"const": "CAPTURE_DERIVED_VISIBLE_FORM_READBACK"},
+        "capture_source_kind": {"enum": ["SYNTHETIC_TEST", "CODEX_IN_APP_BROWSER_TOOL_RESULT"]},
+        "trust_status": {"const": "LOCAL_CONTRACT"},
+        "read_only": {"const": true},
+        "login_active": {"const": true}, "captcha_present": {"const": false},
+        "credential_values_recorded": {"const": false}
+      }
+    },
+    "fields": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/currentField"}},
+    "field_paths_sha256": {"$ref": "#/$defs/sha256"}, "ledger_body_sha256": {"$ref": "#/$defs/sha256"},
+    "write_authority": {"const": "NONE_READ_ONLY_EVIDENCE"}, "final_write_enabled": {"const": false}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonEmpty": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "[^\\s]"},
+    "value": {"oneOf": [
+      {"type": "null"}, {"type": "string", "maxLength": 65535},
+      {"type": "array", "items": {"type": "string", "maxLength": 65535}}
+    ]},
+    "currentField": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "path", "id", "value", "value_sha256", "value_present", "observed_disabled",
+        "write_targeted", "observation_id", "observation_sha256"
+      ],
+      "properties": {
+        "path": {"$ref": "#/$defs/nonEmpty"}, "id": {"$ref": "#/$defs/nonEmpty"}, "value": {"$ref": "#/$defs/value"},
+        "value_sha256": {"$ref": "#/$defs/sha256"}, "value_present": {"type": "boolean"},
+        "observed_disabled": {"type": "boolean"}, "write_targeted": {"type": "boolean"},
+        "observation_id": {"$ref": "#/$defs/nonEmpty"},
+        "observation_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

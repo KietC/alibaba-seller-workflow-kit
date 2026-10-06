@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba/product-master.schema.json",
+  "title": "SellerKit Alibaba Product Master",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model", "facts", "claims", "commercial", "sources"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "model": {"type": "string", "minLength": 1},
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requested_name": {"type": ["string", "null"]},
+        "category_id": {"type": ["string", "null"]},
+        "verification_status": {"enum": ["verified", "needs_review", "blocked"]}
+      },
+      "required": ["requested_name", "category_id", "verification_status"]
+    },
+    "facts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evidencedValue"}
+    },
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evidencedValue"}
+    },
+    "commercial": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/evidencedValue"}
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "path", "kind"],
+        "properties": {
+          "source_id": {"type": "string"},
+          "path": {"type": "string"},
+          "kind": {"type": "string"},
+          "page": {"type": ["integer", "null"], "minimum": 1},
+          "note": {"type": ["string", "null"]}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "evidencedValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "value", "status", "source_ids"],
+      "properties": {
+        "field": {"type": "string"},
+        "value": {},
+        "unit": {"type": ["string", "null"]},
+        "status": {"enum": ["verified", "needs_review", "blocked", "not_applicable"]},
+        "source_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "note": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
+

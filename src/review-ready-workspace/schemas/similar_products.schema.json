@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/similar_products.schema.json",
+  "title": "Eligible historical similar products",
+  "type": "object",
+  "required": ["schema_version", "model", "selection_policy", "candidates"],
+  "properties": {
+    "schema_version": {"const": "sellerkit.similar_products.v1"},
+    "model": {"type": "string", "minLength": 1},
+    "selection_policy": {"const": "eligible historical records only; unusable waste excluded"},
+    "candidates": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["product_id", "record_disposition", "historical_observation_only", "approved_fact", "allow_rag", "publish_draft", "auto_listing", "external_write_enabled", "safe_snapshot"],
+        "properties": {
+          "product_id": {"type": "string", "minLength": 1},
+          "record_disposition": {"const": "HISTORICAL_REFERENCE_ONLY"},
+          "historical_observation_only": {"const": true},
+          "approved_fact": {"const": false},
+          "allow_rag": {"const": true},
+          "publish_draft": {"const": false},
+          "auto_listing": {"const": false},
+          "external_write_enabled": {"const": false},
+          "safe_snapshot": {"type": "object"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/browser-observation-capture.schema.json",
+  "title": "Browser Observation Capture for Official Schema Current Values",
+  "description": "A read-only, locally hash-bound set of raw field observations. This artifact supports deterministic derivation only; neither a local file nor a Codex self-report is a trusted browser attestation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "capture_id", "run_id", "target_model", "template_product_id",
+    "captured_at", "browser_session_sha256", "page_fingerprint_sha256", "source",
+    "observations", "observation_ids_sha256", "capture_body_sha256",
+    "write_authority", "final_write_enabled"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba-browser-observation-capture.v1"},
+    "capture_id": {"$ref": "#/$defs/nonEmpty"},
+    "run_id": {"$ref": "#/$defs/nonEmpty"},
+    "target_model": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+    "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind", "trust_basis", "read_only", "login_active", "captcha_present",
+        "credential_values_recorded", "raw_secret_values_recorded"
+      ],
+      "properties": {
+        "kind": {"enum": ["SYNTHETIC_TEST", "CODEX_IN_APP_BROWSER_TOOL_RESULT"]},
+        "trust_basis": {"const": "UNAUTHENTICATED_LOCAL_CAPTURE"},
+        "read_only": {"const": true},
+        "login_active": {"const": true},
+        "captcha_present": {"const": false},
+        "credential_values_recorded": {"const": false},
+        "raw_secret_values_recorded": {"const": false}
+      }
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/observation"}
+    },
+    "observation_ids_sha256": {"$ref": "#/$defs/sha256"},
+    "capture_body_sha256": {"$ref": "#/$defs/sha256"},
+    "write_authority": {"const": "NONE_READ_ONLY_EVIDENCE"},
+    "final_write_enabled": {"const": false}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonEmpty": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "[^\\s]"},
+    "value": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string", "maxLength": 65535},
+        {"type": "array", "items": {"type": "string", "maxLength": 65535}}
+      ]
+    },
+    "observation": {
+      "oneOf": [
+        {"$ref": "#/$defs/officialFieldObservation"},
+        {"$ref": "#/$defs/localizedCounterObservation"}
+      ]
+    },
+    "officialFieldObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_type", "observation_id", "path", "id", "value", "observed_disabled",
+        "write_targeted", "observation_sha256"
+      ],
+      "properties": {
+        "observation_type": {"const": "OFFICIAL_FIELD_VALUE"},
+        "observation_id": {"$ref": "#/$defs/nonEmpty"},
+        "path": {"$ref": "#/$defs/nonEmpty"},
+        "id": {"$ref": "#/$defs/nonEmpty"},
+        "value": {"$ref": "#/$defs/value"},
+        "observed_disabled": {"type": "boolean"},
+        "write_targeted": {"type": "boolean"},
+        "observation_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "localizedCounterObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_type", "observation_id", "locale", "language_label", "direction",
+        "value", "raw_counter_text", "observed_count", "maximum", "unit",
+        "render_sha256", "control_sha256", "page_fingerprint_sha256",
+        "browser_session_sha256", "observation_sha256"
+      ],
+      "properties": {
+        "observation_type": {"const": "LOCALIZED_COUNTER"},
+        "observation_id": {"$ref": "#/$defs/nonEmpty"},
+        "locale": {"type": "string", "minLength": 2, "maxLength": 35, "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"},
+        "language_label": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "[^\\s]"},
+        "direction": {"enum": ["LTR", "RTL"]},
+        "value": {"type": "string", "maxLength": 65535},
+        "raw_counter_text": {"type": "string", "minLength": 1, "maxLength": 1000, "pattern": "[^\\s]"},
+        "observed_count": {"type": "integer", "minimum": 0},
+        "maximum": {"type": "integer", "minimum": 1},
+        "unit": {"enum": ["CHARACTER", "UTF8_BYTE", "PLATFORM_REPORTED"]},
+        "render_sha256": {"$ref": "#/$defs/sha256"},
+        "control_sha256": {"$ref": "#/$defs/sha256"},
+        "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+        "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

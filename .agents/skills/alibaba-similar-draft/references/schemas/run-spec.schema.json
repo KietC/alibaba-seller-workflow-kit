@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/run-spec.schema.json",
+  "title": "Alibaba Similar Draft Run Spec",
+  "description": "Review-blocked local run intent. This document never grants browser or network write authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "run_id",
+    "status",
+    "run_kind",
+    "target_model",
+    "template_product_id",
+    "mode",
+    "approval_observed",
+    "external_write_enabled",
+    "final_write_enabled",
+    "direct_endpoint_write_enabled",
+    "max_draft_save_count",
+    "template_scope",
+    "inherited_content_must_be_cleared",
+    "required_preflight_status",
+    "required_probe_status",
+    "stop_state_before_final_submit",
+    "endpoint_policy",
+    "workspace_profile"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.similar_draft_run_spec.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "status": {
+      "const": "BLOCKED_REVIEW_REQUIRED"
+    },
+    "run_kind": {
+      "const": "CREATE_SIMILAR_DRAFT"
+    },
+    "target_model": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "template_product_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "mode": {
+      "const": "save_draft"
+    },
+    "approval_observed": {
+      "const": false
+    },
+    "external_write_enabled": {
+      "const": false
+    },
+    "final_write_enabled": {
+      "const": false
+    },
+    "direct_endpoint_write_enabled": {
+      "const": false
+    },
+    "max_draft_save_count": {
+      "const": 1
+    },
+    "template_scope": {
+      "const": "FORM_STRUCTURE_ONLY"
+    },
+    "inherited_content_must_be_cleared": {
+      "const": true
+    },
+    "required_preflight_status": {
+      "const": "PASS"
+    },
+    "required_probe_status": {
+      "const": "PASS_ZERO_WRITE"
+    },
+    "stop_state_before_final_submit": {
+      "const": "DRAFT_SAVED_FINAL_REVIEW_READY"
+    },
+    "endpoint_policy": {
+      "$ref": "#/$defs/boundFile"
+    },
+    "workspace_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "boundFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "policy_mode"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "policy_mode": {
+          "const": "FAIL_CLOSED_AUDIT_ONLY"
+        }
+      }
+    }
+  }
+}

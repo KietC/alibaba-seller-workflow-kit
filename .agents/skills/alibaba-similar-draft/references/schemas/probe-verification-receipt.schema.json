@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/probe-verification-receipt.schema.json",
+  "title": "Zero-write Browser Probe Verification Receipt",
+  "description": "The compact receipt emitted by draft_core.verify_probe after checking a current-session probe. Zero-write confirmation is deliberately separate from authorization to continue controlled execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "probe_captured_at",
+    "input_probe_sha256",
+    "target_model",
+    "template_product_id",
+    "browser_session_sha256",
+    "page_fingerprint",
+    "bindings",
+    "request_classifications",
+    "errors",
+    "zero_write_confirmed",
+    "authorization_errors",
+    "execution_authorized",
+    "adapter_production_execution_ready",
+    "production_authorization_errors",
+    "production_execution_authorized",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.browser_probe_receipt.v3"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "probe_captured_at": {
+      "type": ["string", "null"]
+    },
+    "input_probe_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "target_model": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "template_product_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "browser_session_sha256": {
+      "$ref": "#/$defs/nullableSha256"
+    },
+    "page_fingerprint": {
+      "$ref": "#/$defs/nullableSha256"
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_spec_sha256",
+        "action_plan_sha256",
+        "action_plan_id",
+        "endpoint_policy_sha256",
+        "adapter_sha256",
+        "probe_read_activation_request_sha256"
+      ],
+      "properties": {
+        "run_spec_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "action_plan_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "action_plan_id": {"type": ["string", "null"]},
+        "endpoint_policy_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "adapter_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "probe_read_activation_request_sha256": {"$ref": "#/$defs/nullableSha256"}
+      }
+    },
+    "request_classifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["classification", "decision"],
+        "properties": {
+          "classification": {"type": ["string", "null"]},
+          "decision": {
+            "enum": ["ALLOW", "ALLOW_UI_ONLY", "DENY", "HARD_DENY", "UNKNOWN"]
+          }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "zero_write_confirmed": {
+      "type": "boolean",
+      "description": "True only when the probe proved no write and all structural, session, binding, freshness and evidence checks passed."
+    },
+    "authorization_errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "execution_authorized": {
+      "type": "boolean",
+      "description": "True only when zero_write_confirmed is true and every captured request classification decision is exactly ALLOW. This is the exact READ-network gate, not production readiness."
+    },
+    "adapter_production_execution_ready": {
+      "type": "boolean",
+      "description": "Effective production readiness after independent host-attestation verification; a caller-controlled adapter readiness flag alone can never make this true."
+    },
+    "production_authorization_errors": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "production_execution_authorized": {
+      "type": "boolean",
+      "description": "True only when exact READ authorization, reviewed adapter capabilities, and an independently verified non-forgeable browser-host attestation all pass."
+    },
+    "status": {
+      "enum": [
+        "PASS_ZERO_WRITE",
+        "BLOCKED_PROBE"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "PASS_ZERO_WRITE"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "zero_write_confirmed": {"const": true},
+          "errors": {"maxItems": 0}
+        }
+      },
+      "else": {
+        "properties": {
+          "zero_write_confirmed": {"const": false},
+          "execution_authorized": {"const": false},
+          "errors": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"execution_authorized": {"const": true}},
+        "required": ["execution_authorized"]
+      },
+      "then": {
+        "properties": {
+          "status": {"const": "PASS_ZERO_WRITE"},
+          "zero_write_confirmed": {"const": true},
+          "authorization_errors": {"maxItems": 0},
+          "request_classifications": {
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["decision"],
+              "properties": {"decision": {"const": "ALLOW"}}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "authorization_errors": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"production_execution_authorized": {"const": true}},
+        "required": ["production_execution_authorized"]
+      },
+      "then": {
+        "properties": {
+          "execution_authorized": {"const": true},
+          "adapter_production_execution_ready": {"const": true},
+          "production_authorization_errors": {"maxItems": 0}
+        }
+      },
+      "else": {
+        "properties": {"production_authorization_errors": {"minItems": 1}}
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "nullableSha256": {
+      "anyOf": [
+        {"$ref": "#/$defs/sha256"},
+        {"type": "null"}
+      ]
+    }
+  }
+}

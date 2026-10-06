@@ -1,0 +1,221 @@
+{
+  "allowed_domains": [
+    "post.alibaba.com",
+    "s.alicdn.com",
+    "template.alibaba.com"
+  ],
+  "bundle_body_frozen": false,
+  "credential_source_policy": "DENY_COOKIE_STORAGE_AND_CAPTURED_TOKEN_REUSE",
+  "default_decision": "DENY",
+  "default_read_classification": "READ_UNVERIFIED",
+  "default_write_classification": "UNKNOWN_WRITE",
+  "evidence_basis": [],
+  "final_write_enabled": false,
+  "http_method_evidence": "UNKNOWN",
+  "observed_validation_opt_types": [
+    "asyncQueryMoqLimit",
+    "certificateRiskCheckNewAsyncOpt",
+    "getAuthProperty",
+    "industryTemplateAsyncQuery",
+    "inventoryAuditStatusAsyncOpt",
+    "logisticsDeliveryMethodsAsyncQuery",
+    "moqPriceDetectionAsyncOpt",
+    "productSalePropRecommendQueryAsyncOpt",
+    "queryEnPropNameOpt",
+    "queryRuleRestrictionsAsyncOpt",
+    "titleCheckAsyncOpt"
+  ],
+  "origin_scope_note": "allowed_domains is only an exact-origin classification scope; it does not authorize a request.",
+  "policy_mode": "FAIL_CLOSED_AUDIT_ONLY",
+  "public_copy_note": "Historical captures are excluded. Rules remain diagnostic/deny-only until a fresh local probe.",
+  "redirect_policy": "DENY",
+  "rules": [
+    {
+      "classification": "FINAL_WRITE",
+      "evidence_state": "HARD_DENY",
+      "id": "final-ui-submit-hard-deny",
+      "method_evidence": "NOT_REQUIRED_FOR_HARD_DENY",
+      "methods": [
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "UNKNOWN"
+      ],
+      "url_regex": "(?i)(?:/product/submit\\.htm(?:$|\\?)|/product/submitFinal(?:\\.json|\\.htm)?(?:$|\\?))"
+    },
+    {
+      "classification": "FINAL_WRITE",
+      "evidence_state": "HARD_DENY",
+      "id": "final-publish-route-mutation-hard-deny",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "url_regex": "(?i)/product/publish\\.htm(?:$|\\?)"
+    },
+    {
+      "classification": "FINAL_WRITE",
+      "evidence_state": "UNVERIFIED_DENY_ONLY",
+      "id": "final-openapi-deny-only-seed",
+      "method_evidence": "NOT_REQUIRED_FOR_HARD_DENY",
+      "methods": [
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "UNKNOWN"
+      ],
+      "url_regex": "(?i)(?:/alibaba/icbu/product/listing/v2(?:$|[/?])|(?:^|[?&])method=alibaba\\.icbu\\.product\\.(?:schema\\.add|add)(?:$|[&#]))"
+    },
+    {
+      "classification": "REVERSIBLE_DRAFT_WRITE",
+      "direct_call_allowed": false,
+      "evidence_id_required": true,
+      "evidence_state": "UNVERIFIED_DENY_ONLY",
+      "id": "ui-save-draft-unverified-seed",
+      "method_evidence": "UNKNOWN",
+      "methods": [
+        "UNKNOWN"
+      ],
+      "ui_only": true,
+      "url_regex": "(?i)(?:/product/submitDraft\\.json(?:$|\\?)|/icbu/product/schema/add/draft(?:$|\\?)|(?:^|[?&])method=alibaba\\.icbu\\.product\\.add\\.draft(?:$|[&#]))"
+    },
+    {
+      "classification": "REVERSIBLE_DRAFT_WRITE",
+      "direct_call_allowed": false,
+      "evidence_id_required": true,
+      "evidence_state": "UNVERIFIED_DENY_ONLY",
+      "id": "ui-step-validation-unverified-seed",
+      "method_evidence": "UNKNOWN",
+      "methods": [
+        "UNKNOWN"
+      ],
+      "ui_only": true,
+      "url_regex": "(?i)/product/submit\\.json\\?[^#]*\\bstep=step[0-9]+(?:&|$)"
+    },
+    {
+      "classification": "READ",
+      "evidence_id_required": true,
+      "evidence_state": "OBSERVED_ROUTE_METHOD_UNKNOWN",
+      "id": "observed-page-init-route-only",
+      "method_evidence": "UNKNOWN",
+      "methods": [
+        "UNKNOWN"
+      ],
+      "query_allowlist": [
+        "behavior",
+        "itemId",
+        "pubType",
+        "spm"
+      ],
+      "query_values": {
+        "behavior": [
+          "copyNew"
+        ],
+        "pubType": [
+          "similarPost"
+        ]
+      },
+      "url_regex": "(?i)/product/publish\\.htm(?:$|\\?)"
+    },
+    {
+      "classification": "READ",
+      "evidence_id_required": true,
+      "evidence_state": "OBSERVED_ROUTE_METHOD_UNKNOWN",
+      "id": "observed-async-init-route-only",
+      "method_evidence": "UNKNOWN",
+      "methods": [
+        "UNKNOWN"
+      ],
+      "query_allowlist": [
+        "behavior",
+        "itemId",
+        "pubType",
+        "spm"
+      ],
+      "query_values": {
+        "behavior": [
+          "copyNew"
+        ],
+        "pubType": [
+          "similarPost"
+        ]
+      },
+      "url_regex": "(?i)/product/asyRender\\.json(?:$|\\?)"
+    },
+    {
+      "classification": "READ",
+      "evidence_id_required": true,
+      "evidence_state": "OBSERVED_ROUTE_METHOD_UNKNOWN",
+      "id": "observed-async-validation-route-only",
+      "method_evidence": "UNKNOWN",
+      "methods": [
+        "UNKNOWN"
+      ],
+      "query_allowlist": [
+        "catId",
+        "categoryId",
+        "icbuEdit",
+        "optType",
+        "page",
+        "pageSize",
+        "prod_id",
+        "productId",
+        "productName",
+        "templateType"
+      ],
+      "query_values": {
+        "optType": [
+          "asyncQueryMoqLimit",
+          "certificateRiskCheckNewAsyncOpt",
+          "getAuthProperty",
+          "industryTemplateAsyncQuery",
+          "inventoryAuditStatusAsyncOpt",
+          "logisticsDeliveryMethodsAsyncQuery",
+          "moqPriceDetectionAsyncOpt",
+          "productSalePropRecommendQueryAsyncOpt",
+          "queryEnPropNameOpt",
+          "queryRuleRestrictionsAsyncOpt",
+          "titleCheckAsyncOpt"
+        ]
+      },
+      "url_regex": "(?i)/product/asyncOpt\\.htm(?:$|\\?)"
+    },
+    {
+      "classification": "READ",
+      "evidence_id_required": true,
+      "evidence_state": "OBSERVED_ROUTE_METHOD_UNKNOWN",
+      "id": "observed-related-check-route-only",
+      "method_evidence": "UNKNOWN",
+      "methods": [
+        "UNKNOWN"
+      ],
+      "query_allowlist": [],
+      "url_regex": "(?i)/luyou/packing/relatedCheckSimplifiedReason\\.json(?:$|\\?)"
+    },
+    {
+      "classification": "READ",
+      "evidence_id_required": true,
+      "evidence_state": "BUNDLE_BODY_NOT_FROZEN_METHOD_UNKNOWN",
+      "id": "observed-bundle-url-only",
+      "method_evidence": "UNKNOWN",
+      "methods": [
+        "UNKNOWN"
+      ],
+      "query_allowlist": [
+        "enable_br"
+      ],
+      "url_regex": "(?i)/@g/posting/(?:cgs-vendor/0\\.0\\.3/publish-vendor\\.js|main-cgs/7\\.1\\.56/publish-splitpacking\\.js)(?:$|\\?)"
+    }
+  ],
+  "schema_version": "alibaba.endpoint-policy.v1"
+}

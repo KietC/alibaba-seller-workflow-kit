@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/inventory-delta-verification-receipt.schema.json",
+  "title": "Alibaba Draft Inventory Delta Verification Receipt",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "generated_at", "status", "result_semantics", "target_model", "template_product_id",
+    "run_id", "saved_draft_id", "bindings", "before_counts", "after_counts", "delta",
+    "draft_save_count", "final_write_count", "trust_status", "errors"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba.inventory-delta-verification.v1"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["PASS_EXACTLY_ONE_DRAFT_SAVED", "BLOCKED_LIVE_ATTESTATION", "BLOCKED_INVENTORY_DELTA"]},
+    "result_semantics": {"enum": ["DRAFT_ONLY_NOT_PUBLISHED", "CONSISTENCY_ONLY_NOT_LIVE_ATTESTED"]},
+    "trust_status": {"enum": ["LIVE_ATTESTED", "CONSISTENCY_ONLY"]},
+    "target_model": {"type": ["string", "null"]}, "template_product_id": {"type": ["string", "null"]},
+    "run_id": {"type": ["string", "null"]}, "saved_draft_id": {"type": ["string", "null"]},
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["action_plan_sha256", "run_spec_sha256", "adapter_sha256", "probe_verification_sha256", "pre_save_verification_sha256", "draft_save_activation_receipt_sha256", "before_inventory_sha256", "after_inventory_sha256", "save_result_evidence_sha256", "post_refresh_receipt_sha256"],
+      "properties": {
+        "action_plan_sha256": {"type": "string"}, "run_spec_sha256": {"type": "string"}, "adapter_sha256": {"type": "string"},
+        "probe_verification_sha256": {"type": "string"}, "pre_save_verification_sha256": {"type": "string"},
+        "draft_save_activation_receipt_sha256": {"type": "string"}, "before_inventory_sha256": {"type": "string"},
+        "after_inventory_sha256": {"type": "string"}, "save_result_evidence_sha256": {"type": "string"},
+        "post_refresh_receipt_sha256": {"type": "string"}
+      }
+    },
+    "before_counts": {"$ref": "#/$defs/counts"}, "after_counts": {"$ref": "#/$defs/counts"},
+    "delta": {
+      "type": "object", "additionalProperties": false,
+      "required": ["online_added", "online_removed", "pending_added", "pending_removed", "draft_added", "draft_removed"],
+      "properties": {
+        "online_added": {"type": "array", "items": {"$ref": "#/$defs/productId"}},
+        "online_removed": {"type": "array", "items": {"$ref": "#/$defs/productId"}},
+        "pending_added": {"type": "array", "items": {"$ref": "#/$defs/productId"}},
+        "pending_removed": {"type": "array", "items": {"$ref": "#/$defs/productId"}},
+        "draft_added": {"type": "array", "items": {"$ref": "#/$defs/productId"}},
+        "draft_removed": {"type": "array", "items": {"$ref": "#/$defs/productId"}}
+      }
+    },
+    "draft_save_count": {"type": ["integer", "null"]}, "final_write_count": {"type": ["integer", "null"]},
+    "errors": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  },
+  "allOf": [{
+    "if": {"properties": {"status": {"const": "PASS_EXACTLY_ONE_DRAFT_SAVED"}}, "required": ["status"]},
+    "then": {"properties": {
+      "target_model": {"type": "string", "minLength": 1}, "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+      "run_id": {"type": "string", "minLength": 1}, "saved_draft_id": {"$ref": "#/$defs/productId"},
+      "draft_save_count": {"const": 1}, "final_write_count": {"const": 0}, "errors": {"maxItems": 0},
+      "trust_status": {"const": "LIVE_ATTESTED"}, "result_semantics": {"const": "DRAFT_ONLY_NOT_PUBLISHED"},
+      "bindings": {"properties": {
+        "action_plan_sha256": {"$ref": "#/$defs/sha256"}, "run_spec_sha256": {"$ref": "#/$defs/sha256"}, "adapter_sha256": {"$ref": "#/$defs/sha256"},
+        "probe_verification_sha256": {"$ref": "#/$defs/sha256"}, "pre_save_verification_sha256": {"$ref": "#/$defs/sha256"},
+        "draft_save_activation_receipt_sha256": {"$ref": "#/$defs/sha256"}, "before_inventory_sha256": {"$ref": "#/$defs/sha256"},
+        "after_inventory_sha256": {"$ref": "#/$defs/sha256"}, "save_result_evidence_sha256": {"$ref": "#/$defs/sha256"},
+        "post_refresh_receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }},
+      "delta": {"properties": {
+        "online_added": {"maxItems": 0}, "online_removed": {"maxItems": 0}, "pending_added": {"maxItems": 0},
+        "pending_removed": {"maxItems": 0}, "draft_added": {"minItems": 1, "maxItems": 1}, "draft_removed": {"maxItems": 0}
+      }}
+    }},
+    "else": {"properties": {"errors": {"minItems": 1}}}
+  }],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "productId": {"type": "string", "pattern": "^[0-9]+$"},
+    "counts": {"type": "object", "additionalProperties": false, "required": ["online", "pending", "draft"], "properties": {"online": {"type": "integer", "minimum": 0}, "pending": {"type": "integer", "minimum": 0}, "draft": {"type": "integer", "minimum": 0}}}
+  }
+}

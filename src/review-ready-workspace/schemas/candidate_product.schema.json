@@ -1,0 +1,248 @@
+{
+  "$comment": "Release identity is compared exactly to the approved local configuration by the runtime; this schema has no seller-specific identity. / 发布标识由运行时与获批配置精确比对，本结构不含卖家专属身份。",
+  "$id": "https://sellerkit.local/schemas/candidate_product.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approval_status": {
+      "const": "needs_review"
+    },
+    "approved_for_remote_fill": {
+      "const": false
+    },
+    "content": {
+      "additionalProperties": false,
+      "properties": {
+        "description_html": {
+          "type": "string"
+        },
+        "description_text": {
+          "type": "string"
+        },
+        "details_html": {
+          "type": "string"
+        },
+        "details_text": {
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "short_description_html": {
+          "type": "string"
+        },
+        "short_description_text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "short_description_html",
+        "short_description_text",
+        "description_html",
+        "description_text",
+        "details_html",
+        "details_text"
+      ],
+      "type": "object"
+    },
+    "identity": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_model": {
+          "pattern": "^[A-Z0-9]+$",
+          "type": "string"
+        },
+        "guid_advisory_only": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "raw_model": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id",
+        "canonical_model",
+        "raw_model",
+        "guid_advisory_only"
+      ],
+      "type": "object"
+    },
+    "relations": {
+      "additionalProperties": false,
+      "properties": {
+        "catalogs": {
+          "type": "array"
+        },
+        "displays": {
+          "type": "array"
+        },
+        "flyers": {
+          "type": "array"
+        },
+        "installation_videos": {
+          "type": "array"
+        },
+        "instructions": {
+          "type": "array"
+        },
+        "series": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "flyers",
+        "catalogs",
+        "series",
+        "instructions",
+        "displays",
+        "installation_videos"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "sellerkit.candidate_product.v1"
+    },
+    "source": {
+      "additionalProperties": true,
+      "properties": {
+        "approval_status": {
+          "const": "needs_review"
+        },
+        "payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "release_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_type": {
+          "const": "official_current"
+        }
+      },
+      "required": [
+        "source_type",
+        "source_path",
+        "source_sha256",
+        "payload_sha256",
+        "release_id",
+        "observed_at_utc",
+        "source_disposition",
+        "approval_status"
+      ],
+      "type": "object"
+    },
+    "specifications": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "raw_value": {
+            "type": "string"
+          },
+          "source_locator": {
+            "pattern": "^/product/proattribute/",
+            "type": "string"
+          },
+          "value_state": {
+            "enum": [
+              "PRESENT",
+              "EMPTY"
+            ]
+          }
+        },
+        "required": [
+          "position",
+          "name",
+          "raw_value",
+          "value_state",
+          "source_locator"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "taxonomy": {
+      "additionalProperties": false,
+      "properties": {
+        "alibaba_category_id": {
+          "type": "null"
+        },
+        "alibaba_schema_hash": {
+          "type": "null"
+        },
+        "category_id": {
+          "type": [
+            "integer",
+            "string",
+            "null"
+          ]
+        },
+        "category_slug": {
+          "type": "string"
+        },
+        "mapping_status": {
+          "const": "BLOCKED_UNMAPPED"
+        },
+        "subcategory_id": {
+          "type": [
+            "integer",
+            "string",
+            "null"
+          ]
+        },
+        "subcategory_slug": {
+          "type": "string"
+        },
+        "website_category": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "website_subcategory": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "website_category",
+        "website_subcategory",
+        "alibaba_category_id",
+        "alibaba_schema_hash",
+        "mapping_status"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "identity",
+    "taxonomy",
+    "content",
+    "specifications",
+    "relations",
+    "source",
+    "approval_status",
+    "approved_for_remote_fill"
+  ],
+  "title": "SellerKit candidate product",
+  "type": "object"
+}

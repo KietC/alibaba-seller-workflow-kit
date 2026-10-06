@@ -1,0 +1,1068 @@
+{
+  "schema_version": "sellerkit.alibaba.source-review-bundle.v1",
+  "status": "PUBLIC_SOURCE_SNAPSHOT",
+  "alibaba_actions": 0,
+  "final_write_enabled": false,
+  "live_execution_status": "BLOCKED_LIVE_ATTESTATION",
+  "known_issues": "docs/TROUBLESHOOTING.md",
+  "synthetic_marker_review": "tools/reviewed-synthetic-markers.json",
+  "files": [
+    {
+      "path": ".agents/skills/alibaba-edm-light/SKILL.md",
+      "bytes": 13102,
+      "sha256": "ebdb556cdd0e400b5006039d94404cc251868841323e42ff6381da28751cc004"
+    },
+    {
+      "path": ".agents/skills/alibaba-edm-light/agents/openai.yaml",
+      "bytes": 278,
+      "sha256": "454ea01345b07cd2b27afe9d9682d6942295741d5d3ada11dac57f6eb7be55b1"
+    },
+    {
+      "path": ".agents/skills/alibaba-edm-light/references/current-ui.md",
+      "bytes": 1120,
+      "sha256": "e99bd079881d6b73905890a791d95ce396719cd647fe7e8cb8b39627ad3a6055"
+    },
+    {
+      "path": ".agents/skills/alibaba-edm-light/scripts/test_validate_campaign.py",
+      "bytes": 75240,
+      "sha256": "6932131896fe02f040963cbb8dc39f4720f3ed5edea27b5e9143cc3ec05c239e"
+    },
+    {
+      "path": ".agents/skills/alibaba-edm-light/scripts/validate_campaign.py",
+      "bytes": 33639,
+      "sha256": "efc902fc2a1be49c0ef0d13aeceb0bc4c6de1b1b46c7801ba44fbaa5573bfe06"
+    },
+    {
+      "path": ".agents/skills/alibaba-rfq-light/SKILL.md",
+      "bytes": 18628,
+      "sha256": "ebe8b9c96ba05d9d16036882970686ebc5947f8d5a8f44e82a2d4396e6332b19"
+    },
+    {
+      "path": ".agents/skills/alibaba-rfq-light/agents/openai.yaml",
+      "bytes": 257,
+      "sha256": "5ecf8c6f53ea8d129747eddca6351b46f6e796bcb2009d4978a4311b8f6133ce"
+    },
+    {
+      "path": ".agents/skills/alibaba-rfq-light/scripts/rfq_match.py",
+      "bytes": 63447,
+      "sha256": "2e824f56124236006c17fe220b43687920222b10b7acda19a9439b789f733f5f"
+    },
+    {
+      "path": ".agents/skills/alibaba-rfq-light/scripts/test_rfq_match.py",
+      "bytes": 178406,
+      "sha256": "8f0a90aedccbddb9d59d987246dbf792e06aba1651429a609c384930f155ead4"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/SKILL.md",
+      "bytes": 26929,
+      "sha256": "e442a288dce41a230af20666fc32cca69642ff831a65452a640e0af962addf3d"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/agents/openai.yaml",
+      "bytes": 470,
+      "sha256": "24d4f98c427c1af99f31d1b1be003f1a0ec03e536840be06a192597afe67ad10"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/profiles/example-profile.v1.json",
+      "bytes": 1229,
+      "sha256": "099cc17412fb806f9d0b13695c4aae37d398e2ac29fd6d937561cf453ecb3dcb"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/adapters/iab-v1.json",
+      "bytes": 4602,
+      "sha256": "37bf7dc6e70e37ab4f530e5caba36dd386e74c6f4ae3be89082f72f36cf3a33b"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/adapters/offline-iab-harness-v1.json",
+      "bytes": 1476,
+      "sha256": "df36f480a6e54a34b24da1a858b22c667449b22502424147218ff5863fb47517"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/browser-capture-attestation-requirements.v1.md",
+      "bytes": 3047,
+      "sha256": "9bcda059e425b8b5321cce72699c648052a0c8e4ff605c73a35b07351d98d33f"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/endpoint-policy.v1.json",
+      "bytes": 6456,
+      "sha256": "f824e05cefa18d1b5a4a8e577218bf496f19a7d2d13d97ff144be4d8cb8f639c"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/next-product-checklist.template.json",
+      "bytes": 6475,
+      "sha256": "caa5cc86b07b667ff54089138959886cbccb1e3782b900463c4a4bea6397bfab"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/next-product-sop.v1.md",
+      "bytes": 23118,
+      "sha256": "cf4bc984b0a5c4359fedc1311f26982b883d8757f028c222317d97eceb98e5e2"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/next-product-sop.v2.md",
+      "bytes": 23140,
+      "sha256": "99e0b924492ed0d004757db54bd83b6d793b77a292f81f0f4505cc42f64f1ed3"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/offline-iab-harness.md",
+      "bytes": 1973,
+      "sha256": "19e9119221446f608ce4495a6d2dbebe7136fb2a77ad53e4d23f4fca9a76c981"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/publish-field-registry.v1.json",
+      "bytes": 38911,
+      "sha256": "89774dfd80abba2419b5399a2bbfd5781ee90ed21cc61f351d2b5049516b4174"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/approval-compile-receipt.schema.json",
+      "bytes": 753,
+      "sha256": "8b6ff85c129f0503231cee1643b3da4e69d6895570248e9457b7d71da27c13af"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/approval-decision.schema.json",
+      "bytes": 10539,
+      "sha256": "1de3856ad82387dc0d194a6c95cd9f7420ae9bb3b0411509c0cfbb73ef708ae1"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/approved-asset-manifest.schema.json",
+      "bytes": 11855,
+      "sha256": "a85f80799e2f7f79c6f28d8305b29580fb0e5228580bbeb5691884ed17b38932"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/approved-commercial-decision.schema.json",
+      "bytes": 2380,
+      "sha256": "e1c077687d9abe0aee52d4d4089fcbdfc7e0d005ea350e7b3556837109da1e4a"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/approved-source-manifest.schema.json",
+      "bytes": 14838,
+      "sha256": "39209f4460702c2f84939e876a5ccc740a559a876578bcbe94215f29340f6ef5"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/browser-action-plan.schema.json",
+      "bytes": 27502,
+      "sha256": "abb73b1e0ddf7b590bbd9e9f67123473ee4dd8494026492c37794689a3b41971"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/browser-capture-material.schema.json",
+      "bytes": 1756,
+      "sha256": "c4b19b4879f7f4e4364b5441e7d8d50f2e3da3d74839aab097061df368bb6915"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/browser-observation-capture.schema.json",
+      "bytes": 5097,
+      "sha256": "e67cd8abc4e140bad528c9094f4fa4ecf6a2dffd45292c0ac952c618e654f6a6"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/checkpoint-transition-evidence.schema.json",
+      "bytes": 2300,
+      "sha256": "cbecbf2d5c28fd77b30dee42cd1bf43d86e89402a4b146f8a8026d36949555ef"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/checkpoint.schema.json",
+      "bytes": 10171,
+      "sha256": "00c784d658117a55db69291b08a99d99f8e29ee364a321588aaba7236112a0e6"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/draft-save-activation-receipt.schema.json",
+      "bytes": 7623,
+      "sha256": "ecb9907b59f9e3cc5c96f677467f0878fdc3d3a7719240fb1a8e7dfc3c5fa427"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/draft-save-activation-request.schema.json",
+      "bytes": 7520,
+      "sha256": "a0317e178a25a4b53492b129107c110aa7e7dfda89f0a9f89c6141159adfc7df"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/draft-save-attempt-claim-receipt.schema.json",
+      "bytes": 2499,
+      "sha256": "f57b84962aa378edd5f2bbcc061e1a4f9c064f2debc84afcefabba2be8151378"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/draft-save-body-semantics.schema.json",
+      "bytes": 3677,
+      "sha256": "9d757a569b6447d94293656ec73636c5e25dd8d16e5a1524d8d787e8c0afa459"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/draft-save-result-evidence.schema.json",
+      "bytes": 5499,
+      "sha256": "bcbcb2f43ebefb024e3c0a48a54c54c74c545b793ee479fc8c89b1d1dbdf0bd0"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/draft-write-approval.schema.json",
+      "bytes": 3170,
+      "sha256": "a5e5e61151384c5833f4b96abd57aeed5edda6430ae18b8a2fc5d1109d8a1794"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/dynamic-publish-schema.schema.json",
+      "bytes": 6291,
+      "sha256": "0626ab7b14d53fce81dccc6619eb79b610d3e5dcd521c61d6756b3db7a553b24"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/field-registry.schema.json",
+      "bytes": 17757,
+      "sha256": "c1d3e4131d1635b92dca1f3507bb89c8b3754ab4661a25621e82590a93467e19"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/fill-execution.schema.json",
+      "bytes": 9537,
+      "sha256": "e5502aafe703aa2f1290a58e3e4d3b31184e677644726a3ce44abdf674131304"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/fill-verification-receipt.schema.json",
+      "bytes": 3725,
+      "sha256": "1e6a113b6d132ecbbdce7200b0ecec8ef0999b9bb165c96948d2b198302f634f"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/inventory-delta-verification-receipt.schema.json",
+      "bytes": 5143,
+      "sha256": "88d08077d24fdf05a5674921b220ac7212668c793db1713db184a503787885c9"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/localized-counter-expectation.schema.json",
+      "bytes": 2690,
+      "sha256": "315926010f0a8d4ec18e42c6022f1a13e96c8999180eb33d152cab5e5d90287d"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/localized-counter-verification-receipt.schema.json",
+      "bytes": 3257,
+      "sha256": "2e72ad0b3a6897ee6b678d453205a2e2a8851100f2095c6f7f574029021c6e08"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/localized-field-target.schema.json",
+      "bytes": 3040,
+      "sha256": "166c0eab5dbd90b92fddffe9e86b40347ca2c29ff0cfb88a3d0350111045982e"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/next-product-checklist-verification-receipt.schema.json",
+      "bytes": 2008,
+      "sha256": "a84c7c1942f2b9a7a76b4944e6de8240121870aab361902b554902a5d611a521"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/next-product-checklist.schema.json",
+      "bytes": 10724,
+      "sha256": "86b02264f3cbf4180ecf533ff4d77ceb4d46404d0f461fbad2a6c403ffb31df1"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/official-schema-current-values.schema.json",
+      "bytes": 4205,
+      "sha256": "a1c1f2b9b0045fb5450777658fddd9235cb1ffe4ab6566a2064a6cdbda48cac6"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/official-schema-values-verification-receipt.schema.json",
+      "bytes": 6135,
+      "sha256": "09297666d4fe8937b0d61bbc0012beafc527688a4e2925004ae6cbfc7dcd7c48"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/official-schema-xml-normalized.schema.json",
+      "bytes": 7774,
+      "sha256": "66c03f5be4ea37518d147aaa003f9c78c5616c243ff162632745958e20ad9935"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/post-refresh-verification.schema.json",
+      "bytes": 9506,
+      "sha256": "002083cdf27ea8f54522c8b2381f6c712e2fc38a49941969c3a1cfb557b870e5"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/pre-save-readback.schema.json",
+      "bytes": 10520,
+      "sha256": "c99d9e7716e10c10e40ececcd90e432534d47d9fe867c899e2b9f0c9b24ef2be"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/pre-save-verification-receipt.schema.json",
+      "bytes": 3870,
+      "sha256": "07ca15206c89ecfa45610e024356199143ad58af698bfc7fa152fde3b5654a95"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/probe-read-activation-receipt.schema.json",
+      "bytes": 2895,
+      "sha256": "ea10306fec7b58c74c3ea85bd74b8882966153317321f817b50850dc3e35dcb9"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/probe-read-activation-request.schema.json",
+      "bytes": 3118,
+      "sha256": "6ead3a18ead52cefd094fcc4fa42df8a451abeb1d788fe3733035719d18139ee"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/probe-receipt.schema.json",
+      "bytes": 20299,
+      "sha256": "f7f34b55a568188359da8574b408b89667b25f5f699038851e1d7df36aa3c440"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/probe-verification-receipt.schema.json",
+      "bytes": 6210,
+      "sha256": "53e1cb7147771122aeec6c93b520b6cb8b92941d31e90b09c242aa87eb32a565"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/product-inventory-snapshot.schema.json",
+      "bytes": 4801,
+      "sha256": "eaf7e4efbe5052749384f4adf41a378c9375984ccc29da2a0617be94752dacc9"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/run-receipt.schema.json",
+      "bytes": 17122,
+      "sha256": "215effc5af2f6597c74796f453504fd77ddcf91ad5f9f6ba60719d971a0ec146"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/run-spec.schema.json",
+      "bytes": 3375,
+      "sha256": "8fa5ad246e8f531abf5934479a18433ea87fb697563d7275fb3d59227c22c4e5"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/similar-draft.schema.json",
+      "bytes": 21128,
+      "sha256": "0a7cbe96dcb5b262e5ee4fd5d27ddb500c17d98014992f0acb170355cdf4fd5f"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/visible-ui-draft-save-event.schema.json",
+      "bytes": 4798,
+      "sha256": "0a279eae9dced8bf893cf50634aaa2a199a99d97daf1f80da6f273154dcdb938"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/schemas/workspace-profile.schema.json",
+      "bytes": 3743,
+      "sha256": "4317b72eeff843e58fb729170d2ec565be176ce25cf470d7843d2308820c9870"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/references/workflow.md",
+      "bytes": 10021,
+      "sha256": "038e4f8632e140dbf97af122e3ba29b85e837c4c9d0f95f3c8f0c6f1697531fc"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/requirements.lock.txt",
+      "bytes": 158,
+      "sha256": "efc354fdc9a25976ee324430e7657284777cdfa9e0c8d35778dc87c748961e95"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/run_local_acceptance.ps1",
+      "bytes": 4218,
+      "sha256": "18d98c65887347af3b13698ae2afd8d1b9ca12347ef17d3edc6f7d11409f95b9"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/build_candidate_workbook.mjs",
+      "bytes": 24829,
+      "sha256": "5784f6eeba7711a177f345cc1346964376435077b7866da464a483c18cf44d20"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/build_local_contract_snapshot.py",
+      "bytes": 10770,
+      "sha256": "2cb4f82d6a2ce4a28851345f6441c88df8c5de553bfe9ae959bfd287f337409a"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/candidate_workbook_blockers.mjs",
+      "bytes": 4406,
+      "sha256": "319671fc9562df9bd40612fa22a92dc8729873bd034bf119e4a0d904aaa384ba"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/candidate_workbook_cli.mjs",
+      "bytes": 16509,
+      "sha256": "43aa3ff2fbb45f3f6e8db70b43cbd8cde7b170def22b3018e50e52c420e848c5"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/capture_derivation.py",
+      "bytes": 5680,
+      "sha256": "375cebdebb755af72176fc4336173330cbb2139c628b9ae0a379367041057c60"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/compile_approval.py",
+      "bytes": 41046,
+      "sha256": "534c5f56ddbd197a02c86ae25e5363c0556f3a015f88a646219f3a32cb425a2e"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/compile_browser_action_plan.py",
+      "bytes": 45103,
+      "sha256": "0ac1eb561cbee3c2465db9e771db5bf1b89c5bb886c6341ce97a190b459704de"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/draft_core.py",
+      "bytes": 139024,
+      "sha256": "5f206f4bedc4df571fb3c22fb69e5cc990fa7b776c84313f2881c0b9499acc4b"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/draft_guard.py",
+      "bytes": 61102,
+      "sha256": "759c06850f437b7492c0eaf10858da150e609300d42d0ca328c2d487d285e6bd"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/dynamic_schema_gate.py",
+      "bytes": 21255,
+      "sha256": "fd48f83a5bb38c69d30ab28c7c89ac017aff97682810c96801c9018fa99534bd"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/dynamic_schema_test_support.py",
+      "bytes": 3697,
+      "sha256": "42ef97d24544a89397c1d2c6f8ed9051df114866349ed5ab03f43d7669fa63cb"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/local_schema_validation.py",
+      "bytes": 3094,
+      "sha256": "a72e958610de577a6d6560db345179b536b27e0c484d00978b43ba5ff8410a23"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/localized_field_contract.py",
+      "bytes": 8497,
+      "sha256": "2bb7414a0efc1f9ee103a417808c87aa57182708be169ca2636608b9602dc75e"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/normalize_dynamic_publish_schema.py",
+      "bytes": 8596,
+      "sha256": "d0ff56deab45e427985535e942c5e0a6f73cd26938bad5c76db631941d1951ff"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/parse_official_schema_xml.py",
+      "bytes": 17637,
+      "sha256": "3d45183d00dd8bc2d2a7371b8df56e805d10924632268a42686aceaeb3823979"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/resolve_offline_python.ps1",
+      "bytes": 3286,
+      "sha256": "34fa427e432b4d8208bbe910ad93062548db4635bb86ee8779a02e5305d7fbfe"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/runtime_config.py",
+      "bytes": 21691,
+      "sha256": "fdcfaf8fbd03fef6c4fd65108b9af764f0b8bf6808cb1fa3b69a03479776cc8e"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/state_store.py",
+      "bytes": 34684,
+      "sha256": "c94ccf3a37c0865401db5581a0e8bead368a3f87616dbe42f11ff0560e6082c1"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_action_plan.py",
+      "bytes": 23386,
+      "sha256": "2c27f8caed6dad42f7b241390ed20068b665f5c106a9629583eeb494f1887098"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_candidate_workbook_cli.mjs",
+      "bytes": 12803,
+      "sha256": "943c664ea2bbef4ff5effdb0cd594a7a09c20b844ac53dfb73ac4660603c24cc"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_candidate_workbook_cli.py",
+      "bytes": 966,
+      "sha256": "20b5de843bc439c33a1d04074cfef15b552b8f2ba462eb786f3a7652f7761941"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_compile_approval.py",
+      "bytes": 23964,
+      "sha256": "d7abbc501b43bd4671c75fffb7639ba56c06a1f0f82ffdafccdbe0ec52b4ee48"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_contracts.py",
+      "bytes": 24862,
+      "sha256": "2382c2b79f9a24e273135bab8722202648e8032f26b4e3dfc9b9a493798f8810"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_draft_contract_regressions.py",
+      "bytes": 28550,
+      "sha256": "d89e425349178240ce484e427800de7a03c362576f34ee2bf4b168861200d77a"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_draft_guard.py",
+      "bytes": 51472,
+      "sha256": "e94ea9d38e40c2ef22f23c6f2e7078173d62ad1c0bd7670704fb1058af7b68ca"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_draft_public_entrypoints.py",
+      "bytes": 17282,
+      "sha256": "c7208f714c2e1dacd303e30f7bb46b8ee40009ea27310cc9053d4e542d715030"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_draft_save_activation.py",
+      "bytes": 52263,
+      "sha256": "a89469689126280f92f9be73cb1099dc3baff291168f6b5265d17e89898b99df"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_draft_timestamp_offsets.py",
+      "bytes": 6921,
+      "sha256": "4eaa3b57e9fb18ccb800cf26fed04b996be7850928bfa8113d6c3b4629f647b3"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_endpoint_policy.py",
+      "bytes": 10663,
+      "sha256": "4a70c6061c82ae46e3b9f1c415b9ad17abdf0fea7e1c2e77c95e89fbcc8693b9"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_fill_gate.py",
+      "bytes": 42009,
+      "sha256": "88fd9b828dbc98002e95a881ee03f8d48412ccbe9af72c67a3d1c8991323efba"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_generic_candidate_isolation.py",
+      "bytes": 5874,
+      "sha256": "0ae320ce40cbd74163335f37089ed6cf185d94c3d19e29b02df93a00579b5a8d"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_generic_schema_gate.py",
+      "bytes": 11898,
+      "sha256": "339c714c930ca019287b452d780dfc9ef8f9ef45c0c867f054ede916dcb2fecc"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_localized_counter_capture.py",
+      "bytes": 11148,
+      "sha256": "adca054b125400c7db2076523b20aac7259e92bd3eda30c55a3b48b50cdd5e63"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_localized_field_contract.py",
+      "bytes": 12647,
+      "sha256": "79626b301328cb16f1c1dde3b491d345c50834bed5cff8fc2256e887d4e424cb"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_next_product_checklist.py",
+      "bytes": 12535,
+      "sha256": "34088c01a31501b6dace0579ec2127884252a8228870fdca9715525a4ba3efd6"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_official_schema_values.py",
+      "bytes": 24405,
+      "sha256": "cf0e16a1c8362f835deaad652c1936110fcb8596ca978e327257bc30528bc9cb"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_official_schema_xml.py",
+      "bytes": 10011,
+      "sha256": "f47d44a0f583b90a2429fd74dd8764d839a89dd09533b35352b2ddbe6a4132c4"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_plan_write_gate.py",
+      "bytes": 9575,
+      "sha256": "18a10128c95e23c3b075a6ebd5a49394c096b240c35cecd334b13f0adb3a9715"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_portability.py",
+      "bytes": 11897,
+      "sha256": "eebbd39d78409015b449791638bf3e5c007d5309af93d27b871c33023be42128"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_presave_inventory_contract.py",
+      "bytes": 39165,
+      "sha256": "ad810b71250928b5c366a058ac5d7a1274b272263988c364d7765a57d7fff991"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_probe_gate.py",
+      "bytes": 35999,
+      "sha256": "d5d556aecbc9349cdea2f4004d6f0ad8a2e261ff6825601bcbb77f45a24edf9e"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_receipt_cli_fail_closed.py",
+      "bytes": 5445,
+      "sha256": "d66623f6e8adfedf11499d34c2c0ea7cbac0f0e93235c91e3abf4a2d54c72846"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/test_snapshot_packager.py",
+      "bytes": 8338,
+      "sha256": "96a40560ed551478e14b2da25e4c1d6495c55210f6f35bd2ba64c3aa26221d33"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/validate_draft_save_activation.py",
+      "bytes": 57358,
+      "sha256": "9a79bd0c1862282620991d65e5e7294b219299ee6e72027d7104a311b1d57c33"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/validate_localized_counter_capture.py",
+      "bytes": 14267,
+      "sha256": "aae8be160160c9751b42bd7bd72301ca786e4173fad599df504ae2d9fa1f400c"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/validate_next_product_checklist.py",
+      "bytes": 21173,
+      "sha256": "1dee5d632737a70bc416e32847d55666256be898269a003758c22f7ea4bd4643"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/validate_official_schema_values.py",
+      "bytes": 36148,
+      "sha256": "66025c249e4786e9b3d8c62e81a745c5aaa1d16bece3cbb8399dc2eb5c2db324"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/validate_post_save_inventory.py",
+      "bytes": 32390,
+      "sha256": "9401d1738d9525738bf01be1c5c12e2531c2df8910a6db319715f3fc1ddb2f65"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/scripts/validate_pre_save_readback.py",
+      "bytes": 27241,
+      "sha256": "1f45cdf09824e89185a2894b0d0c8a5f329c3c3276b97ef94d624afdc2c8465b"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/fixture-server.mjs",
+      "bytes": 3796,
+      "sha256": "941ccb6c9c3c433ad05dbdd7a0b219de3389a08554139a0c2de133210357b053"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/fixtures/locales.json",
+      "bytes": 4407,
+      "sha256": "580f1f1a8b937436a0582d059f7f0cdae33455ba23a17ddea7eb9e4b3908b919"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/harness.spec.mjs",
+      "bytes": 11459,
+      "sha256": "354e15a24a304ff6331079c803c515e22173dbd9d5bf1c77aa04c814829d778c"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/package.json",
+      "bytes": 287,
+      "sha256": "0e9c2c07045cb042dec42b153c1198a7bca43fcebe558d483e33171f32c74ef7"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/publish-replica.html",
+      "bytes": 4865,
+      "sha256": "e455ccf307d0e9c89b9ce98197366c85fd8f7cc53c237c82314cd4607edd74c3"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/request-guard.mjs",
+      "bytes": 6251,
+      "sha256": "b736cf2db9503ab5c8e58382d8bc94f51f126616fbfdf81e53ce11cbaa80e845"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/run.ps1",
+      "bytes": 3025,
+      "sha256": "5d7aae3748904fa79322beea9f306210b8e0ac5b46a419e18110809012836b0d"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/tests/offline-iab-harness/runtime-adapter.mjs",
+      "bytes": 5217,
+      "sha256": "958506d7bf0477ffbbdd221afbe1f40b26eaa65a52a2c0a7c5b13c9bfb2b9264"
+    },
+    {
+      "path": ".agents/skills/alibaba-similar-draft/verify.ps1",
+      "bytes": 2829,
+      "sha256": "b55034df166168b19b8bc2c52f4b264f050ac936e3b0f9d7636e0881cca2b1d9"
+    },
+    {
+      "path": ".gitattributes",
+      "bytes": 90,
+      "sha256": "c95d7a9a9dfc2795c8490f4ccf35db890f0514b76b8e4244e6211bfc4a17205e"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 647,
+      "sha256": "5ce854f1164ceb651dbbab2a307fdeb1344c5f53d00fbf82a2a02c1f32ca01f5"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 314,
+      "sha256": "ff87606c62e0a234ae3078bd4867d92806f720c3aa5a0c7c469276820c8b3069"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 1719,
+      "sha256": "4663079fbe178efb9a8b63e0f751a3327536efe66610347225a065adcb8ca153"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1073,
+      "sha256": "747ff9a64846cf0400cc1a76e5b92aa7a5c1cdb13c91a51bcd7e125a21d133de"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8986,
+      "sha256": "475903ffb4471f2de1a289888d3f3cde9a9499a97d091c03803c12d34fcd5eec"
+    },
+    {
+      "path": "SECURITY.md",
+      "bytes": 1529,
+      "sha256": "6cb26bc5991170b4bf9a1c6dd02dd75ad7e350ec3c36ef862e9506bedc3734c1"
+    },
+    {
+      "path": "docs/DESIGN_INSPIRATION.md",
+      "bytes": 3250,
+      "sha256": "f99bde9ba18a30b70bbddecd50486b239672568136ada5b2b9735b6cb184dee8"
+    },
+    {
+      "path": "docs/GETTING_STARTED.md",
+      "bytes": 22310,
+      "sha256": "1f063f55f08a13f17757b48fa1006ee96d63d3e66fcc7d6d0ddd3bf98c3297d3"
+    },
+    {
+      "path": "docs/OPTIONAL_TOOLS.md",
+      "bytes": 7086,
+      "sha256": "8efa335b21e8b70807803919c431da8cb30d11a0d14b6c206fa7a812104ee149"
+    },
+    {
+      "path": "docs/PLATFORMS_AND_WORKFLOWS.md",
+      "bytes": 11616,
+      "sha256": "83c8d67e44513a9428c18453116c8f054dc5a7a663c8b17550fad65dee33b231"
+    },
+    {
+      "path": "docs/RELEASE_NOTES.md",
+      "bytes": 3817,
+      "sha256": "ae72a0a1f0d8c0260c9176f70734141734f7d13a5be173b360b09c429bbccef0"
+    },
+    {
+      "path": "docs/TROUBLESHOOTING.md",
+      "bytes": 15753,
+      "sha256": "3f41d5af193ae7fd14726d5a2199e96cc1dea954f6a06d0e2441e0e932b1398b"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 181,
+      "sha256": "b77d966fee13c99c2e4412cafa3f6ed15ee180f5c155b0a37f44404c9e321f19"
+    },
+    {
+      "path": "src/legacy-product-chain/configs/publish_field_registry.json",
+      "bytes": 4265,
+      "sha256": "a3f43c86dc50f7e77857a242bff7825801f2b9d233df3bc4a01a954715ea0aaa"
+    },
+    {
+      "path": "src/legacy-product-chain/schemas/asset_manifest.schema.json",
+      "bytes": 1023,
+      "sha256": "fba02e24762ba452361cfaa28cfae629aaaebb83f83e16d7c14f330f3e0e8c6d"
+    },
+    {
+      "path": "src/legacy-product-chain/schemas/platform_product_snapshot.schema.json",
+      "bytes": 907,
+      "sha256": "8ef66972613f7c0099dd58dc7009a98fbdf8dd5e9b6bda42da53abf75bcd72b1"
+    },
+    {
+      "path": "src/legacy-product-chain/schemas/product_master.schema.json",
+      "bytes": 2112,
+      "sha256": "7848926851c9d22636a4f430f906cadea39e78e8a16b97bb1ff79463d5a3b2b1"
+    },
+    {
+      "path": "src/legacy-product-chain/schemas/publish_draft.schema.json",
+      "bytes": 4455,
+      "sha256": "91853e39808a5583dbb74d0912928fa5939842aa7a2dc0fbfb995dc40e28c8b8"
+    },
+    {
+      "path": "src/legacy-product-chain/schemas/record_disposition.schema.json",
+      "bytes": 6047,
+      "sha256": "51c44603f526a0bd66111c67ed56f399d10af203d46ef51a9ee9c86157f8a5c5"
+    },
+    {
+      "path": "src/legacy-product-chain/schemas/run_receipt.schema.json",
+      "bytes": 4730,
+      "sha256": "edc9b3ec3178f382f6db364a63f6bfc0ee282b7330818ced92597e72ab299004"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/alibaba_asset_resolver.py",
+      "bytes": 21233,
+      "sha256": "ceb26d3d0fe7a8ab98a170069626c2a8a9178c46188fd608710ec00b332b041e"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/alibaba_publish_probe.mjs",
+      "bytes": 4343,
+      "sha256": "286cbfe8b3b8c390f23f5beb064edd8219ea54ec80f87b0d4a000607f99dad24"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/alibaba_rag_preflight.py",
+      "bytes": 9098,
+      "sha256": "8c02be853c6143b1e0b7bc05f370e75c1ef7b9a41b95fa78b587cdb2dde97248"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/browser_capture_resume.mjs",
+      "bytes": 18215,
+      "sha256": "45c685032d8180c3c84c21c1f745d0e2cc91ecb05c9b52b0eaa954c9f2ad65d0"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/build_publish_draft.py",
+      "bytes": 17621,
+      "sha256": "de9f9e68d8748af4652af45df5b47694c0b673227a3d5724a510ff6a95ac1d9d"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/product_archive.py",
+      "bytes": 104899,
+      "sha256": "f4e74599a1f683b8e14331ad9ba879d431f06360261ce557f11613062561a31b"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/record_disposition.py",
+      "bytes": 57451,
+      "sha256": "16ea4a0e82caec0eced34152d7cd2ad046f37ff2b1c93723f37dd2ec91929400"
+    },
+    {
+      "path": "src/legacy-product-chain/scripts/run_product_readonly.ps1",
+      "bytes": 2622,
+      "sha256": "5aaf3722f69a859b10b8df965fa6d772a52935771eb7b8b87346c0ace0c10a1a"
+    },
+    {
+      "path": "src/legacy-product-chain/tests/browser_capture_resume.test.mjs",
+      "bytes": 857,
+      "sha256": "f3433909439a7943ae7ac37a9f6c351e3e1cf93621cfa0e151f16ee095b68f3e"
+    },
+    {
+      "path": "src/legacy-product-chain/tests/test_asset_resolver.py",
+      "bytes": 6214,
+      "sha256": "c527ece6356ed8321680e863236d73e68186fbccb27b46d3410d73e66329b542"
+    },
+    {
+      "path": "src/legacy-product-chain/tests/test_build_publish_draft.py",
+      "bytes": 17125,
+      "sha256": "2c3a87da86b5fc019fd4c030e1a3398fcee2dd637687116b555843c19a029d34"
+    },
+    {
+      "path": "src/legacy-product-chain/tests/test_product_archive.py",
+      "bytes": 12876,
+      "sha256": "ac3020a3eb8c8146affe06c545a29db1199618a4be26b67a11d695c94cc3d6c4"
+    },
+    {
+      "path": "src/legacy-product-chain/tests/test_rag_preflight.py",
+      "bytes": 5431,
+      "sha256": "315b7b7bb811be9dfa93a562da5988a4123d1841a0ab8433d9775f3ff2d78541"
+    },
+    {
+      "path": "src/legacy-product-chain/tests/test_record_disposition.py",
+      "bytes": 15290,
+      "sha256": "2a3abbf2e9a2a4f486b3fe141a1a7de58e1d475b79137110074a0c2fc6da4f26"
+    },
+    {
+      "path": "src/review-ready-plugin/.codex-plugin/plugin.json",
+      "bytes": 1247,
+      "sha256": "6b7572ed9e9deafbad41ad1ffe8be6472ecb453be8e81290da2d1c640f3a9617"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/__init__.py",
+      "bytes": 79,
+      "sha256": "417533b5b5b1e47258a18216d6116217da4ed4ff33b80e21a4e56039db41657c"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/alibaba.py",
+      "bytes": 17511,
+      "sha256": "14a9a6352199c6850c8b332d9824bf88a5623986c6914de2fc28de940103cc5a"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/cli.py",
+      "bytes": 14640,
+      "sha256": "5fb437766a6970cc83c06c020d616a7aabbdd99352a692100a3e32d964313740"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/config.py",
+      "bytes": 11450,
+      "sha256": "cd68bde907fa6121452f0990f8565a348ed12b745af5f7a231c290720fea23a8"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/full_match.py",
+      "bytes": 66836,
+      "sha256": "c225f2858cb8f7aba9f725cf325ac46aa370c4befcd7431cd09088f951a08588"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/images.py",
+      "bytes": 50579,
+      "sha256": "2a834f80e4e50e1c502f8b090db7503b06627a34e0520ac569ebe78d2bad2080"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/package.py",
+      "bytes": 34280,
+      "sha256": "0fbc4a91af1fadd6567a6841aa66af1ea3603cfaf2e9bbee3caba1fb993bb5e1"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/review.py",
+      "bytes": 1578,
+      "sha256": "4b69dd31854e854d1ba4567729d2406ae98fafe5a15ae7687297abd479c61127"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/store.py",
+      "bytes": 34232,
+      "sha256": "fa1d9cb0e17f48b570d6882dab5b52df9a68ebeb4bb891309027a9ceaae0e30b"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/utils.py",
+      "bytes": 10047,
+      "sha256": "b8c3bbe148f4cbb76687c4758bbdea02853e9b030b7728d90890695561ecc284"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/vision.py",
+      "bytes": 58251,
+      "sha256": "60bccd48a2cfe1acb7a680bdd7bca01c5d0f6913d55eed34c3f661f3aecc0f52"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/review_ready/website.py",
+      "bytes": 18753,
+      "sha256": "aca9430cecf31ece834bd6c5e64d69a4ac12f0425566e7e5318ce4c61da78855"
+    },
+    {
+      "path": "src/review-ready-plugin/mcp/server.py",
+      "bytes": 19945,
+      "sha256": "2c0359e5bb8ec72acdef798824629cae80bb881f1a5e8074f4dfeab3c92993c9"
+    },
+    {
+      "path": "src/review-ready-plugin/skills/sellerkit-alibaba-review-pack/SKILL.md",
+      "bytes": 9232,
+      "sha256": "be19b176308050f5fa90eb2c0e9351868d1e52a0d07601d4d6a8c21ab7416ccc"
+    },
+    {
+      "path": "src/review-ready-plugin/skills/sellerkit-alibaba-review-pack/agents/openai.yaml",
+      "bytes": 340,
+      "sha256": "6efdbaa249492575dbb059f2e466c304bc1c652fcddf9fde98dda4e25b567ab5"
+    },
+    {
+      "path": "src/review-ready-plugin/skills/sellerkit-alibaba-review-pack/references/data-contract.md",
+      "bytes": 3218,
+      "sha256": "cc4f15923c2f75efb13ff52c7ac8c92299ba57be20d019cea32cbf385369d7cc"
+    },
+    {
+      "path": "src/review-ready-plugin/skills/sellerkit-alibaba-review-pack/references/local-boundaries.md",
+      "bytes": 1576,
+      "sha256": "2405dd19c8689097d05f440c82b2ae170957b3c3d5f1a275c0fcb822846ff89f"
+    },
+    {
+      "path": "src/review-ready-workspace/examples/review-config.example.json",
+      "bytes": 3098,
+      "sha256": "d44e442109711ca43734743cf4468af9ea8d803d965f56094bb9aa0223654166"
+    },
+    {
+      "path": "src/review-ready-workspace/requirements-test.txt",
+      "bytes": 20,
+      "sha256": "117bb7857e2106917057761be56b51e26df4b9c0e3ebdbcf48a992e94534c6ac"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/candidate_product.schema.json",
+      "bytes": 5652,
+      "sha256": "2225b476cc3b24906008f5b577af9d0ae539a0e5e15cd7974def8f4d42518c75"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/database_build_receipt.schema.json",
+      "bytes": 4541,
+      "sha256": "9553904f53cfd5f9f64a6c56eaf588754916bb2a46ff6c1f313fb8ff0de9ac8d"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/evidence_receipt.schema.json",
+      "bytes": 1824,
+      "sha256": "9c5a465bca99d1e313124f6ebaaf2ff4d753d4cf9812b3c4a7a4ddcc099f1696"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/field_provenance.schema.json",
+      "bytes": 1585,
+      "sha256": "a422ef30bc9d14dcb3765024e2b25378619f1834fe499b1b6b72e4432e4eae4a"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/fill_plan.preview.schema.json",
+      "bytes": 2256,
+      "sha256": "1a3eb80513dc4e8ecbd5c1ddd438ba04c78485a07a82c7199699b7a27e209d14"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/historical_alibaba_record.schema.json",
+      "bytes": 1454,
+      "sha256": "a518895df9d34372325c58f72a6898a46a3a8122a118378c3aab1446a4c95b12"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/match_decision.schema.json",
+      "bytes": 1978,
+      "sha256": "44b105e15c5fa982304d86edba9b9cd375252ead60b64d0677048452d1da29ed"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/official_current_record.schema.json",
+      "bytes": 1804,
+      "sha256": "758f7b69f97d715d712a6c7e59dfa7db0d985296cc01fc9e5807a4ff79b81985"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/presence_guard_record.schema.json",
+      "bytes": 818,
+      "sha256": "f9007256fa583f523ff1f876d143919d0a3cf74e4f3d2e14dca6507393229a70"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/priority_package_index.schema.json",
+      "bytes": 1854,
+      "sha256": "78f44d3299e39f6616b488fc4a8261f52f7efa3ed785c34ae2f881b143ca24ed"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/priority_package_index_receipt.schema.json",
+      "bytes": 1705,
+      "sha256": "07824fbfb7c3931f5ac616c8df7f9c82af7d3e557a1c2a9146fe1cd89c16fc9b"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/review_decision_event.schema.json",
+      "bytes": 1969,
+      "sha256": "b36c8b060ba5d46c35f394c030301b1d9d66bd699b9cb7e7d33fc45bdffb51e8"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/review_package_receipt.schema.json",
+      "bytes": 2783,
+      "sha256": "229e5aa4162ded74b59d9344325e3b9133b3873cdf621fe5830de9c1c63ed1e4"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/review_state.schema.json",
+      "bytes": 1362,
+      "sha256": "34458c804e536fcb9605c486acae2e74b525421aefd482df0f0fb665623c0eda"
+    },
+    {
+      "path": "src/review-ready-workspace/schemas/similar_products.schema.json",
+      "bytes": 1404,
+      "sha256": "f0e0d9d844ffdc6aca6a478f790491e00bbe1a360cb9c110ebb479db92400247"
+    },
+    {
+      "path": "src/review-ready-workspace/scripts/build_visual_benchmark_seed.py",
+      "bytes": 9517,
+      "sha256": "aad3cf8c4742b31cfc14719960cf64305b96c2b3f7b1b7673533bba170639f0d"
+    },
+    {
+      "path": "src/review-ready-workspace/scripts/site_mirror_refresh/build_local_mirror.py",
+      "bytes": 12616,
+      "sha256": "a2151ff042f59b5c13423035fa1f01748f0895ac5da8e287254153c4081b035f"
+    },
+    {
+      "path": "src/review-ready-workspace/scripts/site_mirror_refresh/site_inventory.py",
+      "bytes": 47091,
+      "sha256": "b5ea180e0a524074b12178a95e951af12420456285350e957776deeed4f68172"
+    },
+    {
+      "path": "src/review-ready-workspace/scripts/site_mirror_refresh/verify_asset_hashes.py",
+      "bytes": 12999,
+      "sha256": "4f7be9fea0b835fc58367be670da046521869ea7b252b6278fb15fdd07399580"
+    },
+    {
+      "path": "src/review-ready-workspace/scripts/vision_ocr_worker.py",
+      "bytes": 15954,
+      "sha256": "539b9c69323d9ebda68c91f07d2d07c0fa036dca61dfec2f34d7308204f14cc2"
+    },
+    {
+      "path": "src/review-ready-workspace/scripts/vision_openclip_worker.py",
+      "bytes": 11711,
+      "sha256": "317fd038e0d902169ac0764d701ce6595d7771700bb71fae7ca29dd90441cac9"
+    },
+    {
+      "path": "src/review-ready-workspace/tests/test_v1.py",
+      "bytes": 29440,
+      "sha256": "7b0b4ddef1cff86d8218ba3976955984e7d65f324673cfb7b5267c1e8ed52b9e"
+    },
+    {
+      "path": "tests/reproduce_known_issues.py",
+      "bytes": 6530,
+      "sha256": "04dac572872c8733deca78ae8540f91f80b8009e833cff0c19156654ebf44e44"
+    },
+    {
+      "path": "tests/test_draft_producer_overlay.py",
+      "bytes": 10556,
+      "sha256": "9715ec3f5e11891c325138516f7a0fddf9eff0f3e4d9209dec3c1b892e92ea5e"
+    },
+    {
+      "path": "tests/test_legacy_secret_exemptions.py",
+      "bytes": 24647,
+      "sha256": "288a95602f85b3f3bf59dc2d3b905fc33bff1906fa7ccc4374c108625e0272c4"
+    },
+    {
+      "path": "tests/test_public_tools.py",
+      "bytes": 2335,
+      "sha256": "0625a5d63009c179e17180ab3787133eb47d6af9cf3719657d46e9c7e73eea3f"
+    },
+    {
+      "path": "tests/test_source_bundle.py",
+      "bytes": 2396,
+      "sha256": "5d8733eea70cb2f656c2e809f2e7295ac568fac57e653a2fa5ee3710e47f5fc6"
+    },
+    {
+      "path": "tools/check_public_release.py",
+      "bytes": 5082,
+      "sha256": "47d9a84e9b8b1a0d50a5008d29c9b629b15a7cd1907972efee954d299a7ad809"
+    },
+    {
+      "path": "tools/public_examples.py",
+      "bytes": 4440,
+      "sha256": "03c0facd9ada47e9ac69630fcd71035d99cbffc22277ed0109e1540446b89b53"
+    },
+    {
+      "path": "tools/reviewed-synthetic-markers.json",
+      "bytes": 468,
+      "sha256": "bd594832acc1f05ba22f9edb071064409be0edff1719eae6812edd30bee79d15"
+    },
+    {
+      "path": "tools/source_bundle.py",
+      "bytes": 14798,
+      "sha256": "32fcd34b52dd2eea82d7daf353a0fcfbeb7f18fa981bc0fb8e74d65b26b8c062"
+    },
+    {
+      "path": "tools/verify.py",
+      "bytes": 4325,
+      "sha256": "85f29f4cc720949132e123daada3d95e5a19de92e6bb7bb825288e18d85a77d3"
+    }
+  ],
+  "file_count": 211,
+  "bytes": 3042878
+}

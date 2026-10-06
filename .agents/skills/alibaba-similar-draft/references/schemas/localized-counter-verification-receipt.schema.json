@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/localized-counter-verification-receipt.schema.json",
+  "title": "Localized counter capture verification receipt",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "generated_at", "status", "trust_status", "result_semantics",
+    "run_id", "target_model", "template_product_id", "bindings", "locale_count",
+    "field_results", "errors", "write_authority", "final_write_enabled"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba-localized-counter-verification.v1"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["PASS_LOCAL_CONTRACT", "BLOCKED_COUNTER_CAPTURE"]},
+    "trust_status": {"const": "LOCAL_CONTRACT"},
+    "result_semantics": {"const": "CURRENT_CONTROL_COUNTER_CONSISTENCY_NOT_LIVE_ATTESTATION"},
+    "run_id": {"type": ["string", "null"]}, "target_model": {"type": ["string", "null"]},
+    "template_product_id": {"type": ["string", "null"]},
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["capture_sha256", "capture_body_sha256", "observation_ids_sha256", "expectation_sha256", "field_identities_sha256"],
+      "properties": {
+        "capture_sha256": {"type": "string"}, "capture_body_sha256": {"type": "string"},
+        "observation_ids_sha256": {"type": "string"}, "expectation_sha256": {"type": "string"},
+        "field_identities_sha256": {"type": "string"}
+      }
+    },
+    "locale_count": {"type": "integer", "minimum": 0},
+    "field_results": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["locale", "observation_id", "observed_count", "maximum", "unit", "render_sha256", "control_sha256", "status"],
+      "properties": {
+        "locale": {"type": "string"}, "observation_id": {"type": "string"},
+        "observed_count": {"type": "integer", "minimum": 0}, "maximum": {"type": "integer", "minimum": 1},
+        "unit": {"enum": ["CHARACTER", "UTF8_BYTE", "PLATFORM_REPORTED"]},
+        "render_sha256": {"$ref": "#/$defs/sha256"}, "control_sha256": {"$ref": "#/$defs/sha256"},
+        "status": {"enum": ["PASS", "FAIL"]}
+      }
+    }},
+    "errors": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "write_authority": {"const": "NONE_READ_ONLY_EVIDENCE"}, "final_write_enabled": {"const": false}
+  },
+  "allOf": [{
+    "if": {"properties": {"status": {"const": "PASS_LOCAL_CONTRACT"}}, "required": ["status"]},
+    "then": {"properties": {
+      "run_id": {"type": "string", "minLength": 1}, "target_model": {"type": "string", "minLength": 1},
+      "template_product_id": {"type": "string", "pattern": "^[0-9]+$"}, "errors": {"maxItems": 0},
+      "bindings": {"properties": {
+        "capture_sha256": {"$ref": "#/$defs/sha256"}, "capture_body_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_ids_sha256": {"$ref": "#/$defs/sha256"}, "expectation_sha256": {"$ref": "#/$defs/sha256"},
+        "field_identities_sha256": {"$ref": "#/$defs/sha256"}
+      }}
+    }}
+  }],
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

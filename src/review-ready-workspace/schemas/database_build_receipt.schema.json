@@ -1,0 +1,184 @@
+{
+  "$comment": "Dataset-specific digest and count equality remains mandatory in inspect_sources/validate_database_state against approved local configuration. / 数据集哈希和数量仍必须由运行时与审核配置逐项精确比对。",
+  "$id": "https://sellerkit.local/schemas/database_build_receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "alibaba": {
+      "additionalProperties": true,
+      "properties": {
+        "historical_reference_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "product_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unusable_waste_count": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product_count",
+        "historical_reference_count",
+        "unusable_waste_count"
+      ],
+      "type": "object"
+    },
+    "browser_actions": {
+      "const": 0
+    },
+    "database_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "database_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "engine_version": {
+      "const": "0.4.0"
+    },
+    "external_write_enabled": {
+      "const": false
+    },
+    "local_review_status": {
+      "const": "READY_FOR_LOCAL_HUMAN_REVIEW"
+    },
+    "official": {
+      "additionalProperties": true,
+      "properties": {
+        "attribute_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "empty_attribute_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "product_count": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product_count",
+        "attribute_count",
+        "empty_attribute_count"
+      ],
+      "type": "object"
+    },
+    "publish_requests": {
+      "const": 0
+    },
+    "reconciliation": {
+      "additionalProperties": true,
+      "properties": {
+        "exact_intersection": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "exact_missing_candidates": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "exact_intersection",
+        "exact_missing_candidates"
+      ],
+      "type": "object"
+    },
+    "release_status": {
+      "const": "NOT_RELEASED_V1_LOCAL_ONLY"
+    },
+    "remote_drafts": {
+      "const": 0
+    },
+    "remote_write_status": {
+      "const": "DISABLED_NOT_REQUESTED"
+    },
+    "schema_version": {
+      "const": "sellerkit.database_build_receipt.v2"
+    },
+    "source_report": {
+      "additionalProperties": true,
+      "properties": {
+        "errors": {
+          "maxItems": 0,
+          "type": "array"
+        },
+        "expected": {
+          "type": "object"
+        },
+        "external_write_enabled": {
+          "const": false
+        },
+        "observed": {
+          "additionalProperties": true,
+          "properties": {
+            "alibaba_snapshot_file_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "alibaba_snapshot_tree_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "website_dist_file_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "website_dist_tree_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "website_dist_tree_sha256",
+            "website_dist_file_count",
+            "alibaba_snapshot_tree_sha256",
+            "alibaba_snapshot_file_count"
+          ],
+          "type": "object"
+        },
+        "status": {
+          "const": "PASS_FROZEN_SOURCES_VERIFIED"
+        }
+      },
+      "required": [
+        "status",
+        "observed",
+        "expected",
+        "errors",
+        "external_write_enabled"
+      ],
+      "type": "object"
+    },
+    "status": {
+      "const": "PASS_V1_DATABASE_BUILT_NO_REMOTE_WRITE"
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "engine_version",
+    "database_path",
+    "database_sha256",
+    "source_report",
+    "official",
+    "alibaba",
+    "reconciliation",
+    "external_write_enabled",
+    "browser_actions",
+    "remote_drafts",
+    "publish_requests",
+    "local_review_status",
+    "remote_write_status",
+    "release_status"
+  ],
+  "title": "V2 frozen local database build receipt",
+  "type": "object"
+}

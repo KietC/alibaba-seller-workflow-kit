@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba/publish-draft.schema.json",
+  "title": "Alibaba Publish Draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model", "generated_at", "external_write_enabled", "fields", "assets", "blockers", "approval", "source_registry", "source_gate"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "model": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "external_write_enabled": {"const": false},
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["logical_name", "value", "status", "source_ids"],
+        "properties": {
+          "logical_name": {"type": "string"},
+          "value": {},
+          "status": {"enum": ["ready", "needs_review", "blocked", "omitted"]},
+          "source_ids": {"type": "array", "items": {"type": "string"}},
+          "reason": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "required": ["main_image_candidates", "main_video_candidates"],
+      "properties": {
+        "main_image_candidates": {"type": "array", "items": {"type": "object"}},
+        "main_video_candidates": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": true
+    },
+    "blockers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "approval": {
+      "type": "object",
+      "properties": {
+        "required": {"const": true},
+        "approved": {"const": false}
+      },
+      "required": ["required", "approved"],
+      "additionalProperties": false
+    },
+    "source_registry": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "source_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "manifest_provided", "allowed_dispositions", "referenced_source_ids", "checked_sources", "errors", "ready_field_count"],
+      "properties": {
+        "status": {"enum": ["PASS", "REJECTED"]},
+        "manifest_provided": {"type": "boolean"},
+        "allowed_dispositions": {
+          "type": "array",
+          "items": {"const": "APPROVED_INTERNAL_SOURCE"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "referenced_source_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "checked_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source_id", "record_disposition", "decision", "reason"],
+            "properties": {
+              "source_id": {"type": "string"},
+              "record_disposition": {"type": ["string", "null"]},
+              "decision": {"enum": ["PASS", "REJECTED"]},
+              "reason": {"type": ["string", "null"]}
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "source_id", "field", "detail"],
+            "properties": {
+              "code": {"type": "string"},
+              "source_id": {"type": ["string", "null"]},
+              "field": {"type": ["string", "null"]},
+              "detail": {"type": ["string", "null"]}
+            }
+          }
+        },
+        "ready_field_count": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_gate": {
+            "properties": {"status": {"const": "REJECTED"}},
+            "required": ["status"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "fields": {
+            "items": {
+              "properties": {
+                "status": {"enum": ["needs_review", "blocked", "omitted"]}
+              }
+            }
+          },
+          "assets": {
+            "properties": {
+              "main_image_candidates": {"maxItems": 0},
+              "main_video_candidates": {"maxItems": 0}
+            }
+          },
+          "blockers": {"contains": {"const": "source_gate:REJECTED"}},
+          "source_gate": {
+            "properties": {"ready_field_count": {"const": 0}}
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/draft-save-body-semantics.schema.json",
+  "title": "Redacted Alibaba Draft-save Body Semantics",
+  "description": "A credential-free semantic projection of one intercepted visible-UI draft-save request. It is evidence for a one-shot guard overlay, never a replayable request body.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "operation",
+    "run_id",
+    "target_model",
+    "template_product_id",
+    "action_plan_body_sha256",
+    "form_readback_sha256",
+    "content_type_family",
+    "body_key_names",
+    "body_key_set_sha256",
+    "business_field_digests",
+    "ephemeral_credential_field_names",
+    "volatile_nonsemantic_field_names",
+    "semantic_projection_sha256",
+    "redaction"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.alibaba.draft-save-body-semantics.v1"
+    },
+    "operation": {
+      "const": "SAVE_DRAFT"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "target_model": {
+      "$ref": "#/$defs/targetModel"
+    },
+    "template_product_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "action_plan_body_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "form_readback_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "content_type_family": {
+      "enum": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+      ]
+    },
+    "body_key_names": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/bodyKey"
+      }
+    },
+    "body_key_set_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "business_field_digests": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 2000,
+      "propertyNames": {
+        "$ref": "#/$defs/bodyKey"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "ephemeral_credential_field_names": {
+      "type": "array",
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/bodyKey"
+      }
+    },
+    "volatile_nonsemantic_field_names": {
+      "type": "array",
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/bodyKey"
+      }
+    },
+    "semantic_projection_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "complete",
+        "raw_body_persisted",
+        "credential_values_persisted",
+        "cookie_or_storage_values_read"
+      ],
+      "properties": {
+        "policy": {
+          "const": "BUSINESS_VALUES_SHA256_EPHEMERAL_VALUES_OMITTED"
+        },
+        "complete": {
+          "const": true
+        },
+        "raw_body_persisted": {
+          "const": false
+        },
+        "credential_values_persisted": {
+          "const": false
+        },
+        "cookie_or_storage_values_read": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "bodyKey": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[^\\r\\n\\x00]+$"
+    }
+  }
+}

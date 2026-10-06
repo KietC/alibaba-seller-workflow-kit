@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/priority_package_index.schema.json",
+  "title": "V2 current priority package index",
+  "type": "object",
+  "required": ["schema_version", "status", "build_status", "local_review_status", "remote_write_status", "release_status", "packages", "external_write_enabled", "browser_actions", "remote_drafts", "publish_requests", "receipt_authentication"],
+  "properties": {
+    "schema_version": {"const": "sellerkit.priority_package_index.v2"},
+    "status": {"const": "PASS_PRIORITY_REVIEW_PACKAGES_BUILT_NO_REMOTE_WRITE"},
+    "build_status": {"const": "PASS_PRIORITY_REVIEW_PACKAGES_BUILT_NO_REMOTE_WRITE"},
+    "local_review_status": {"const": "READY_FOR_LOCAL_HUMAN_REVIEW"},
+    "remote_write_status": {"const": "DISABLED_NOT_REQUESTED"},
+    "release_status": {"const": "NOT_RELEASED_V1_LOCAL_ONLY"},
+    "packages": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["model", "package_id", "package_path", "receipt_sha256", "status"],
+        "properties": {
+          "model": {"type": "string", "minLength": 1},
+          "package_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "package_path": {"type": "string", "minLength": 1},
+          "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "status": {"const": "PASS_LOCAL_REVIEW_PACKAGE_READY_NO_REMOTE_WRITE"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "external_write_enabled": {"const": false},
+    "browser_actions": {"const": 0},
+    "remote_drafts": {"const": 0},
+    "publish_requests": {"const": 0},
+    "receipt_authentication": {"const": "UNSIGNED_LOCAL_INTEGRITY_ONLY_NOT_RELEASE_AUTHORIZATION"}
+  },
+  "additionalProperties": false
+}

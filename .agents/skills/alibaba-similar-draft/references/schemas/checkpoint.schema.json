@@ -1,0 +1,424 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/checkpoint.schema.json",
+  "title": "Alibaba Similar Draft Checkpoint v2",
+  "description": "Atomic CAS checkpoint for one model-scoped, save-draft-only run. SAVE_ATTEMPTED is reachable only after an independently validated pre-save checklist; unexpected external drafts require a separate recovery workflow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "revision",
+    "previous_checkpoint_sha256",
+    "state",
+    "run_status",
+    "target_model",
+    "template_product_id",
+    "input_hashes",
+    "draft_id",
+    "save_attempt_count",
+    "draft_save_count",
+    "final_write_count",
+    "submit_triggered",
+    "publish_triggered",
+    "external_publish_status",
+    "validation_status",
+    "created_at",
+    "updated_at",
+    "lock_path",
+    "lock_state",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.similar_draft_checkpoint.v2"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "previous_checkpoint_sha256": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "state": {
+      "$ref": "#/$defs/state"
+    },
+    "run_status": {
+      "enum": [
+        "ACTIVE",
+        "ABORTED_NO_WRITE",
+        "FAILED_DRAFT_PRESERVED",
+        "SAVE_ATTEMPTED_UNCONFIRMED",
+        "DRAFT_SAVED_FINAL_REVIEW_READY"
+      ]
+    },
+    "target_model": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "template_product_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "input_hashes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_.-]{1,80}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "draft_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "draft_save_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "save_attempt_count": {"type": "integer", "minimum": 0, "maximum": 1},
+    "final_write_count": {
+      "const": 0
+    },
+    "submit_triggered": {
+      "const": false
+    },
+    "publish_triggered": {
+      "const": false
+    },
+    "external_publish_status": {
+      "const": "NOT_ATTEMPTED"
+    },
+    "validation_status": {
+      "enum": [
+        "NOT_VALIDATED",
+        "VALIDATED",
+        "REVIEW_REQUIRED"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "aborted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "abort_reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "lock_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "lock_state": {
+      "enum": [
+        "HELD",
+        "HELD_SAVE_ATTEMPT_UNCONFIRMED",
+        "HELD_FAILED_DRAFT_PRESERVED",
+        "RELEASED"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["state", "evidence_id", "bundle_path", "bundle_sha256", "roles", "artifacts"],
+        "properties": {
+          "state": {
+            "$ref": "#/$defs/state"
+          },
+          "evidence_id": {"type": "string", "minLength": 1},
+          "bundle_path": {"type": "string", "minLength": 3},
+          "bundle_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "artifacts": {
+            "type": "array", "minItems": 1,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["role", "path", "bytes", "sha256", "schema_version", "status"],
+              "properties": {
+                "role": {"type": "string", "minLength": 1}, "path": {"type": "string", "minLength": 3},
+                "bytes": {"type": "integer", "minimum": 2}, "sha256": {"$ref": "#/$defs/sha256"},
+                "schema_version": {"type": "string", "minLength": 1}, "status": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "revision": {
+            "const": 0
+          }
+        },
+        "required": [
+          "revision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "previous_checkpoint_sha256": {
+            "type": "null"
+          },
+          "evidence": {
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "previous_checkpoint_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {"properties": {"revision": {"minimum": 1}}, "required": ["revision"]},
+          {"not": {"properties": {"state": {"const": "ABORTED_NO_WRITE"}}, "required": ["state"]}}
+        ]
+      },
+      "then": {"properties": {"evidence": {"minItems": 1}}}
+    },
+    {
+      "if": {
+        "properties": {"state": {"const": "ABORTED_NO_WRITE"}},
+        "required": ["state"]
+      },
+      "then": {
+        "required": ["aborted_at", "abort_reason"],
+        "properties": {
+          "draft_id": {"type": "null"},
+          "save_attempt_count": {"const": 0},
+          "draft_save_count": {"const": 0},
+          "final_write_count": {"const": 0},
+          "submit_triggered": {"const": false},
+          "publish_triggered": {"const": false},
+          "external_publish_status": {"const": "NOT_ATTEMPTED"},
+          "run_status": {"const": "ABORTED_NO_WRITE"},
+          "lock_state": {"const": "RELEASED"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "PRECHECK",
+              "CANDIDATE_REVIEW_APPROVED",
+              "TEMPLATE_PROBED",
+              "INHERITED_DATA_CLEARED",
+              "FORM_FILLED"
+            ]
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "draft_id": {
+            "type": "null"
+          },
+          "draft_save_count": {
+            "const": 0
+          },
+          "save_attempt_count": {"const": 0},
+          "validation_status": {
+            "const": "NOT_VALIDATED"
+          },
+          "run_status": {
+            "const": "ACTIVE"
+          },
+          "lock_state": {
+            "const": "HELD"
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"state": {"const": "SAVE_ATTEMPTED"}}, "required": ["state"]},
+      "then": {"properties": {
+        "draft_id": {"type": "null"}, "save_attempt_count": {"const": 1}, "draft_save_count": {"const": 0},
+        "run_status": {"const": "SAVE_ATTEMPTED_UNCONFIRMED"}, "lock_state": {"const": "HELD_SAVE_ATTEMPT_UNCONFIRMED"}
+      }}
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "VALIDATED"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "draft_id": {
+            "type": "null"
+          },
+          "draft_save_count": {
+            "const": 0
+          },
+          "validation_status": {
+            "const": "VALIDATED"
+          },
+          "run_status": {
+            "const": "ACTIVE"
+          },
+          "lock_state": {
+            "const": "HELD"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "DRAFT_SAVED",
+              "FINAL_REVIEW_READY"
+            ]
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "draft_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "draft_save_count": {
+            "const": 1
+          },
+          "save_attempt_count": {"const": 1}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "run_status": {
+            "const": "FAILED_DRAFT_PRESERVED"
+          }
+        },
+        "required": [
+          "run_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "DRAFT_SAVED"
+          },
+          "validation_status": {
+            "const": "REVIEW_REQUIRED"
+          },
+          "lock_state": {
+            "const": "HELD_FAILED_DRAFT_PRESERVED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "run_status": {
+            "const": "DRAFT_SAVED_FINAL_REVIEW_READY"
+          }
+        },
+        "required": [
+          "run_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "FINAL_REVIEW_READY"
+          },
+          "validation_status": {
+            "const": "VALIDATED"
+          },
+          "lock_state": {
+            "const": "RELEASED"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "state": {
+      "enum": [
+        "PRECHECK",
+        "CANDIDATE_REVIEW_APPROVED",
+        "TEMPLATE_PROBED",
+        "INHERITED_DATA_CLEARED",
+        "FORM_FILLED",
+        "VALIDATED",
+        "SAVE_ATTEMPTED",
+        "DRAFT_SAVED",
+        "FINAL_REVIEW_READY",
+        "ABORTED_NO_WRITE"
+      ]
+    }
+  }
+}

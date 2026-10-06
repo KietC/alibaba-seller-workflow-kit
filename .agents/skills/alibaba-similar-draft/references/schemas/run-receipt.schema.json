@@ -1,0 +1,759 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/run-receipt.schema.json",
+  "title": "Alibaba Similar Draft Run Receipt",
+  "description": "Terminal evidence receipt for a guarded save-draft-only run. It records exact stop outcomes and can never attest final listing completion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "run_id",
+    "target_model",
+    "mode",
+    "started_at",
+    "ended_at",
+    "outcome",
+    "integrity_status",
+    "bindings",
+    "source_gate",
+    "field_counts",
+    "asset_counts",
+    "network",
+    "draft",
+    "verification",
+    "artifacts",
+    "blockers",
+    "errors",
+    "failure_preservation",
+    "external_publish_status",
+    "final_write_count",
+    "submit_triggered",
+    "publish_triggered"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "alibaba.run-receipt.v1"
+    },
+    "receipt_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "target_model": {
+      "$ref": "#/$defs/targetModel"
+    },
+    "mode": {
+      "const": "SAVE_DRAFT_ONLY"
+    },
+    "started_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "ended_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "outcome": {
+      "enum": [
+        "REVIEW_REQUIRED",
+        "BLOCKED_PREFLIGHT",
+        "FAILED_DRAFT_PRESERVED",
+        "DRAFT_SAVED_FINAL_REVIEW_READY"
+      ]
+    },
+    "integrity_status": {
+      "enum": [
+        "PASS",
+        "FAIL"
+      ]
+    },
+    "bindings": {
+      "$ref": "#/$defs/bindings"
+    },
+    "source_gate": {
+      "$ref": "#/$defs/sourceGate"
+    },
+    "field_counts": {
+      "$ref": "#/$defs/fieldCounts"
+    },
+    "asset_counts": {
+      "$ref": "#/$defs/assetCounts"
+    },
+    "network": {
+      "$ref": "#/$defs/network"
+    },
+    "draft": {
+      "$ref": "#/$defs/draft"
+    },
+    "verification": {
+      "$ref": "#/$defs/verification"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/error"
+      }
+    },
+    "failure_preservation": {
+      "$ref": "#/$defs/failurePreservation"
+    },
+    "external_publish_status": {
+      "const": "NOT_ATTEMPTED"
+    },
+    "final_write_count": {
+      "const": 0
+    },
+    "submit_triggered": {
+      "const": false
+    },
+    "publish_triggered": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "DRAFT_SAVED_FINAL_REVIEW_READY"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "integrity_status": {
+            "const": "PASS"
+          },
+          "source_gate": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            }
+          },
+          "draft": {
+            "properties": {
+              "save_count": {
+                "const": 1
+              },
+              "presence": {
+                "const": "VERIFIED_SAVED"
+              },
+              "draft_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "online_count_unchanged": {
+                "const": true
+              },
+              "duplicate_draft_absent": {
+                "const": true
+              }
+            }
+          },
+          "verification": {
+            "properties": {
+              "schema_valid": {
+                "const": true
+              },
+              "hashes_valid": {
+                "const": true
+              },
+              "checkpoint_chain_valid": {
+                "const": true
+              },
+              "field_readbacks_valid": {
+                "const": true
+              },
+              "asset_order_valid": {
+                "const": true
+              },
+              "lock_released": {
+                "const": true
+              },
+              "final_write_absent": {
+                "const": true
+              }
+            }
+          },
+          "blockers": {
+            "maxItems": 0
+          },
+          "errors": {
+            "maxItems": 0
+          },
+          "failure_preservation": {
+            "properties": {
+              "required": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "FAILED_DRAFT_PRESERVED"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "draft": {
+            "properties": {
+              "save_count": {
+                "const": 1
+              },
+              "presence": {
+                "const": "SAVED_PRESERVED"
+              },
+              "draft_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "failure_preservation": {
+            "properties": {
+              "required": {
+                "const": true
+              },
+              "draft_preserved": {
+                "const": true
+              },
+              "evidence_preserved": {
+                "const": true
+              }
+            }
+          },
+          "errors": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "REVIEW_REQUIRED",
+              "BLOCKED_PREFLIGHT"
+            ]
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "draft": {
+            "properties": {
+              "save_count": {
+                "const": 0
+              },
+              "presence": {
+                "const": "NONE"
+              },
+              "draft_id": {
+                "type": "null"
+              }
+            }
+          },
+          "blockers": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "nullableSha256": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_spec_sha256",
+        "approved_source_manifest_sha256",
+        "approved_asset_manifest_sha256",
+        "candidate_package_sha256",
+        "field_registry_sha256",
+        "schema_bundle_sha256",
+        "adapter_sha256",
+        "endpoint_policy_sha256",
+        "probe_receipt_sha256",
+        "final_checkpoint_sha256"
+      ],
+      "properties": {
+        "run_spec_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "approved_source_manifest_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "approved_asset_manifest_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "candidate_package_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "field_registry_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "schema_bundle_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "adapter_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "endpoint_policy_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "probe_receipt_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "final_checkpoint_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "sourceGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "required_disposition",
+        "checked_source_count",
+        "rejected_source_count",
+        "gate_receipt_sha256"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "REJECTED"
+          ]
+        },
+        "required_disposition": {
+          "const": "APPROVED_INTERNAL_SOURCE"
+        },
+        "checked_source_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rejected_source_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gate_receipt_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        }
+      }
+    },
+    "fieldCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planned",
+        "cleared",
+        "written",
+        "readback_verified",
+        "blocked"
+      ],
+      "properties": {
+        "planned": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cleared": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "written": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "readback_verified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "assetCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planned",
+        "hash_rechecked",
+        "uploaded",
+        "thumbnail_verified",
+        "blocked"
+      ],
+      "properties": {
+        "planned": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hash_rechecked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "uploaded": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "thumbnail_verified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "read_request_count",
+        "reversible_draft_write_count",
+        "unknown_write_count",
+        "final_write_count",
+        "redirect_followed_for_write",
+        "credential_values_recorded",
+        "direct_write_endpoint_called",
+        "classified_write_signatures"
+      ],
+      "properties": {
+        "read_request_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reversible_draft_write_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "unknown_write_count": {
+          "const": 0
+        },
+        "final_write_count": {
+          "const": 0
+        },
+        "redirect_followed_for_write": {
+          "const": false
+        },
+        "credential_values_recorded": {
+          "const": false
+        },
+        "direct_write_endpoint_called": {
+          "const": false
+        },
+        "classified_write_signatures": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "classification",
+              "method",
+              "redacted_url_sha256",
+              "body_sha256",
+              "ui_initiated",
+              "current_session_probe_bound"
+            ],
+            "properties": {
+              "classification": {
+                "const": "REVERSIBLE_DRAFT_WRITE"
+              },
+              "method": {
+                "enum": [
+                  "POST",
+                  "PUT",
+                  "PATCH"
+                ]
+              },
+              "redacted_url_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "body_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "ui_initiated": {
+                "const": true
+              },
+              "current_session_probe_bound": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "draft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "save_count",
+        "presence",
+        "draft_id",
+        "draft_evidence_sha256",
+        "online_count_before",
+        "online_count_after",
+        "online_count_unchanged",
+        "draft_count_before",
+        "draft_count_after",
+        "duplicate_draft_absent"
+      ],
+      "properties": {
+        "save_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "presence": {
+          "enum": [
+            "NONE",
+            "SAVED_PRESERVED",
+            "VERIFIED_SAVED"
+          ]
+        },
+        "draft_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "draft_evidence_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "online_count_before": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "online_count_after": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "online_count_unchanged": {
+          "type": "boolean"
+        },
+        "draft_count_before": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "draft_count_after": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "duplicate_draft_absent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_valid",
+        "hashes_valid",
+        "checkpoint_chain_valid",
+        "field_readbacks_valid",
+        "asset_order_valid",
+        "lock_released",
+        "final_write_absent"
+      ],
+      "properties": {
+        "schema_valid": {
+          "type": "boolean"
+        },
+        "hashes_valid": {
+          "type": "boolean"
+        },
+        "checkpoint_chain_valid": {
+          "type": "boolean"
+        },
+        "field_readbacks_valid": {
+          "type": "boolean"
+        },
+        "asset_order_valid": {
+          "type": "boolean"
+        },
+        "lock_released": {
+          "type": "boolean"
+        },
+        "final_write_absent": {
+          "const": true
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "path",
+        "bytes",
+        "sha256",
+        "status"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "INPUT",
+            "CANDIDATE",
+            "PROBE_RECEIPT",
+            "CHECKPOINT",
+            "DRAFT_EVIDENCE",
+            "ERROR_EVIDENCE"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "status": {
+          "enum": [
+            "CURRENT",
+            "PRESERVED_FAILURE"
+          ]
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "stage",
+        "message",
+        "evidence_sha256"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "stage": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "evidence_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        }
+      }
+    },
+    "failurePreservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "draft_preserved",
+        "evidence_preserved",
+        "preservation_manifest_sha256"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "draft_preserved": {
+          "type": "boolean"
+        },
+        "evidence_preserved": {
+          "type": "boolean"
+        },
+        "preservation_manifest_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        }
+      }
+    }
+  }
+}

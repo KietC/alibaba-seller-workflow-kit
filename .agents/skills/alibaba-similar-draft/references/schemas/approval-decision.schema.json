@@ -1,0 +1,401 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/approval-decision.schema.json",
+  "title": "Alibaba Similar Draft Human Approval Decision",
+  "description": "Explicit, fail-closed human decision consumed by compile_approval.py. Absence is never approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "target_model",
+    "template_product_id",
+    "run_id",
+    "approved_by",
+    "user_instruction",
+    "dynamic_schema_binding",
+    "profile",
+    "approved_fields",
+    "selected_asset_orders",
+    "blocked_fields"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.approval-decision.v1"
+    },
+    "target_model": {
+      "$ref": "#/$defs/targetModel"
+    },
+    "template_product_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "approved_by": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "user_instruction": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000,
+      "pattern": "[^\\s]"
+    },
+    "dynamic_schema_binding": {
+      "$ref": "#/$defs/dynamicSchemaBinding"
+    },
+    "profile": {
+      "enum": [
+        "APPROVED_DRAFT",
+        "PARTIAL_DRAFT_FILL_APPROVED_ONLY"
+      ]
+    },
+    "approved_fields": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/fieldName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/fieldDecision"
+      }
+    },
+    "approved_localized_fields": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/localizedFieldDecision"
+      }
+    },
+    "selected_asset_orders": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 7,
+      "items": {
+        "$ref": "#/$defs/assetSelection"
+      }
+    },
+    "blocked_fields": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fieldName"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "APPROVED_DRAFT"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "blocked_fields": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "PARTIAL_DRAFT_FILL_APPROVED_ONLY"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "blocked_fields": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "fieldName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "fieldDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "source_selector",
+        "decision_id"
+      ],
+      "properties": {
+        "value": {},
+        "source_selector": {
+          "$ref": "#/$defs/sourceSelector"
+        },
+        "decision_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "write_target": {
+          "$ref": "#/$defs/writeTarget"
+        }
+      }
+    },
+    "localizedFieldDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "source_selector", "decision_id", "write_target"],
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000,
+          "pattern": "[^\\s]"
+        },
+        "source_selector": {"$ref": "#/$defs/sourceSelector"},
+        "decision_id": {"$ref": "#/$defs/nonEmptyId"},
+        "write_target": {"$ref": "#/$defs/localizedTarget"}
+      }
+    },
+    "writeTarget": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {
+            "kind": {"const": "FIELD_REGISTRY"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "approved_property_name"],
+          "properties": {
+            "kind": {"const": "CATEGORY_PROPERTY"},
+            "approved_property_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "[^\\s]"
+            }
+          }
+        }
+      ]
+    },
+    "localizedTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "logical_name",
+        "locale",
+        "live_language_label",
+        "direction",
+        "expected_sha256",
+        "max_length_rule_hash",
+        "max_length_rule",
+        "identity_sha256"
+      ],
+      "properties": {
+        "kind": {"const": "LOCALIZED_FIELD"},
+        "logical_name": {"$ref": "#/$defs/fieldName"},
+        "locale": {"$ref": "#/$defs/locale"},
+        "live_language_label": {"type": "string", "minLength": 1, "maxLength": 200, "pattern": "[^\\s]"},
+        "direction": {"enum": ["LTR", "RTL"]},
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "max_length_rule_hash": {"$ref": "#/$defs/sha256"},
+        "max_length_rule": {"$ref": "#/$defs/maxLengthRule"},
+        "identity_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-(?:[A-Z]{2}|[0-9]{3}))?$"
+    },
+    "maxLengthRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source", "captured_at", "expires_at", "locale",
+        "live_language_label_sha256", "page_fingerprint_sha256",
+        "live_control_evidence_sha256", "maximum", "unit", "observed_count",
+        "candidate_value_sha256", "current_session_only",
+        "require_post_write_counter_readback", "final_write_enabled"
+      ],
+      "properties": {
+        "source": {"const": "CURRENT_VISIBLE_UI"},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "locale": {"$ref": "#/$defs/locale"},
+        "live_language_label_sha256": {"$ref": "#/$defs/sha256"},
+        "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+        "live_control_evidence_sha256": {"$ref": "#/$defs/sha256"},
+        "maximum": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "unit": {"enum": ["UNICODE_CODE_POINTS", "UTF8_BYTES", "PLATFORM_COUNTER"]},
+        "observed_count": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "candidate_value_sha256": {"$ref": "#/$defs/sha256"},
+        "current_session_only": {"const": true},
+        "require_post_write_counter_readback": {"const": true},
+        "final_write_enabled": {"const": false}
+      }
+    },
+    "dynamicSchemaBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256", "decision_id"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "bytes": {"type": "integer", "minimum": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "decision_id": {"$ref": "#/$defs/nonEmptyId"}
+      }
+    },
+    "sourceSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "candidate_field"
+          ],
+          "properties": {
+            "kind": {
+              "const": "CANDIDATE_FIELD_SOURCE"
+            },
+            "candidate_field": {
+              "$ref": "#/$defs/fieldName"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "path",
+            "bytes",
+            "sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "COMMERCIAL_DECISION"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\r\\n]+$"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "path",
+            "bytes",
+            "sha256",
+            "source_role"
+          ],
+          "properties": {
+            "kind": {
+              "const": "EXPLICIT_SOURCE_FILE"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\r\\n]+$"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "source_role": {
+              "enum": [
+                "PRODUCT_FACT",
+                "COMPANY_POLICY"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "assetSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_order",
+        "upload_order",
+        "decision_id",
+        "identity_decision_id",
+        "upload_decision_id"
+      ],
+      "properties": {
+        "candidate_order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "upload_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "decision_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "identity_decision_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "upload_decision_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        }
+      }
+    }
+  }
+}

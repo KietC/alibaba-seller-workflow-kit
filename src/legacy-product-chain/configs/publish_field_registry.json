@@ -1,0 +1,150 @@
+{
+  "version": "2026-08-03",
+  "page_kind": "icbu_product_publish",
+  "policy": {
+    "probe_before_use": true,
+    "fail_on_non_unique_critical_locator": true,
+    "fail_on_captcha": true,
+    "fail_on_domain_mismatch": true,
+    "external_write_enabled": false,
+    "required_source_gate_status": "PASS",
+    "allowed_source_dispositions": [
+      "APPROVED_INTERNAL_SOURCE"
+    ],
+    "rejected_source_dispositions": [
+      "UNUSABLE_WASTE_RECORD",
+      "BLOCKED_UNCLASSIFIED",
+      "HISTORICAL_REFERENCE_ONLY"
+    ],
+    "reject_missing_or_unknown_source_disposition": true,
+    "allowed_domains": [
+      "post.alibaba.com"
+    ]
+  },
+  "fields": [
+    {
+      "logical_name": "product_title",
+      "api_path": "subject",
+      "ui": {
+        "primary": "input#productTitle",
+        "fallback": {
+          "role": "textbox",
+          "label_contains": "产品标题"
+        },
+        "must_be_visible": true,
+        "expected_count": 1
+      },
+      "source_policy": "verified_product_fact",
+      "risk": "medium"
+    },
+    {
+      "logical_name": "product_group",
+      "api_path": "groupId",
+      "ui": {
+        "strategy": "visible_label_then_descendant_control",
+        "label_contains": "产品分组"
+      },
+      "source_policy": "account_group_id",
+      "risk": "medium"
+    },
+    {
+      "logical_name": "category_properties",
+      "api_path": "icbuCatProp",
+      "ui": {
+        "row_selector": ".sell-catProp-item",
+        "strategy": "row_visible_label_then_descendant_input",
+        "dynamic_names": true,
+        "example_current_names": {
+          "应用场景": "p-234916993",
+          "特性": "p-191284141",
+          "品牌": "p-2",
+          "型号": "p-3",
+          "流速": "p-223285378",
+          "龙头高度": "p-400039025"
+        }
+      },
+      "source_policy": "schema_field_plus_verified_product_fact",
+      "risk": "high",
+      "note": "Example p-* names are category-specific diagnostics and must not be reused globally."
+    },
+    {
+      "logical_name": "minimum_order_quantity",
+      "api_path": "trade.minOrderQuantity",
+      "ui": {
+        "primary": "input#minOrderQuantity",
+        "must_be_visible": true,
+        "expected_count": 1
+      },
+      "source_policy": "approved_sales_policy",
+      "risk": "high"
+    },
+    {
+      "logical_name": "package_weight",
+      "api_path": "logistics.packagingWeight",
+      "ui": {
+        "primary": "input#pkgWeight",
+        "must_be_visible": true,
+        "expected_count": 1
+      },
+      "source_policy": "approved_packaging_data",
+      "risk": "high"
+    },
+    {
+      "logical_name": "main_images",
+      "api_path": "image.images",
+      "ui": {
+        "container": ".posting-field-image-selector .image-upload-list",
+        "slot_selector": "#image-placeholder",
+        "strategy": "scoped_count_then_position",
+        "expected_image_slots": 6,
+        "dynamic_file_input": true,
+        "file_input_strategy": "filechooser_or_new_input"
+      },
+      "source_policy": "approved_asset_manifest_with_hash",
+      "risk": "high"
+    },
+    {
+      "logical_name": "main_video",
+      "api_path": "video",
+      "ui": {
+        "strategy": "scoped_upload_control_by_visible_label",
+        "label_contains": "主图视频",
+        "dynamic_file_input": true
+      },
+      "source_policy": "approved_video_manifest_with_hash",
+      "risk": "high"
+    },
+    {
+      "logical_name": "selling_points",
+      "api_path": "detail.description",
+      "ui": {
+        "strategy": "section_heading_then_textarea",
+        "heading_contains": "产品卖点"
+      },
+      "source_policy": "verified_claims_only",
+      "risk": "high"
+    },
+    {
+      "logical_name": "save_draft",
+      "api_path": null,
+      "ui": {
+        "strategy": "role_button_exact_text",
+        "text": "保存"
+      },
+      "source_policy": "explicit_action_time_approval",
+      "risk": "critical",
+      "enabled": false
+    },
+    {
+      "logical_name": "submit_product",
+      "api_path": "product.schema.add_or_update",
+      "ui": {
+        "strategy": "role_button_exact_text",
+        "text": "提交"
+      },
+      "source_policy": "explicit_action_time_approval",
+      "risk": "critical",
+      "enabled": false
+    }
+  ]
+}

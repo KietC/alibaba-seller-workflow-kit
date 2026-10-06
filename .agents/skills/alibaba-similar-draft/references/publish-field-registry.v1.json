@@ -1,0 +1,1187 @@
+{
+  "actions": [
+    {
+      "can_enable_after_explicit_action_approval": false,
+      "classification": "UNKNOWN_WRITE",
+      "default_enabled": false,
+      "direct_endpoint_call_allowed": false,
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "ROLE_AND_EXACT_TEXT",
+        "text": "预览",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "remote_preview",
+      "network_signature_status": "UNVERIFIED_QUARANTINED",
+      "risk": "CRITICAL",
+      "visible_ui_required": true
+    },
+    {
+      "can_enable_after_explicit_action_approval": false,
+      "classification": "UNKNOWN_WRITE",
+      "default_enabled": false,
+      "direct_endpoint_call_allowed": false,
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "ROLE_AND_EXACT_TEXT",
+        "text": "下一步",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "step_validation",
+      "network_signature_status": "UNVERIFIED_QUARANTINED",
+      "risk": "CRITICAL",
+      "visible_ui_required": true
+    },
+    {
+      "can_enable_after_explicit_action_approval": true,
+      "classification": "REVERSIBLE_DRAFT_WRITE",
+      "default_enabled": false,
+      "direct_endpoint_call_allowed": false,
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "ROLE_AND_EXACT_TEXT",
+        "text": "保存",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "save_draft",
+      "network_signature_status": "UNVERIFIED_QUARANTINED",
+      "risk": "CRITICAL",
+      "visible_ui_required": true
+    },
+    {
+      "can_enable_after_explicit_action_approval": false,
+      "classification": "FINAL_WRITE",
+      "default_enabled": false,
+      "direct_endpoint_call_allowed": false,
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "ROLE_AND_EXACT_TEXT",
+        "text": "提交",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "submit_product",
+      "network_signature_status": "UNVERIFIED_QUARANTINED",
+      "risk": "CRITICAL",
+      "visible_ui_required": true
+    }
+  ],
+  "dynamic_namespaces": [
+    {
+      "collision_is_blocking": true,
+      "diagnostic_ids_usable_for_write": false,
+      "live_row_locator": {
+        "container_selector": ".sell-catProp-list",
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "slot_selector": ".sell-catProp-item",
+        "strategy": "LIVE_CATEGORY_ROWS",
+        "usable_without_current_probe": false
+      },
+      "name_pattern": "^p-[0-9]+$",
+      "namespace": "category_properties",
+      "persist_for_current_run_only": true,
+      "resolution_strategy": "CURRENT_VISIBLE_LABEL_AND_SCHEMA_KEY",
+      "section": "CATEGORY_PROPERTIES",
+      "stale_ids_rejected": true,
+      "write_binding_requires_probe_receipt": true
+    }
+  ],
+  "evidence": {
+    "actions_inventory_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "controls_inventory_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "current_probe_required": true,
+    "observed_at": "2000-01-01T00:00:00Z",
+    "page_function_study_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "probe_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "status": "STALE_DIAGNOSTIC_ONLY",
+    "unverified_candidates_may_be_allowlisted": false,
+    "write_endpoint_evidence": "NONE_VERIFIED"
+  },
+  "fields": [
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "fallback_role": "textbox",
+        "label_contains_any": [
+          "产品标题",
+          "Product Title"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "selector": "input#productTitle",
+        "strategy": "CSS_PRIMARY_THEN_SEMANTIC_FALLBACK",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "product_title",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "TRIM_AND_NORMALIZE_NEWLINES",
+        "strategy": "CONTROL_VALUE"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REQUIRED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "BASIC_INFO",
+      "source_policy": "VERIFIED_PRODUCT_FACT",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "副标题",
+          "Subtitle"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "product_subtitle",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "TRIM_AND_NORMALIZE_NEWLINES",
+        "strategy": "CONTROL_VALUE"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "MEDIUM",
+      "runtime_binding_required": true,
+      "section": "BASIC_INFO",
+      "source_policy": "VERIFIED_PRODUCT_FACT",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "关键词",
+          "Keywords"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "keywords",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "MEDIUM",
+      "runtime_binding_required": true,
+      "section": "BASIC_INFO",
+      "source_policy": "VERIFIED_PRODUCT_FACT",
+      "template_value_allowed": false,
+      "value_type": "STRING_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "ACCOUNT_SETTING",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "label_contains_any": [
+          "产品分组",
+          "Product Group"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "product_group",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "BASIC_INFO",
+      "source_policy": "APPROVED_ACCOUNT_SETTING",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": false,
+      "dynamic_namespace": null,
+      "field_class": "REVIEW_ONLY",
+      "inheritance_policy": "VERIFY_FIXED_CONTEXT",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "产品类目",
+          "Category"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "CURRENT_PAGE_READBACK_ONLY",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "category_id",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "CATEGORY_PROPERTIES",
+      "source_policy": "HUMAN_REVIEW_ONLY",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": "category_properties",
+      "field_class": "CATEGORY_DYNAMIC",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "container_selector": ".sell-catProp-list",
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "slot_selector": ".sell-catProp-item",
+        "strategy": "LIVE_CATEGORY_ROWS",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "category_properties",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "CURRENT_CATEGORY_ROW_VALUE"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "PLATFORM_CONDITIONAL",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "CATEGORY_PROPERTIES",
+      "source_policy": "CURRENT_CATEGORY_SCHEMA_PLUS_APPROVED_FACT",
+      "template_value_allowed": false,
+      "value_type": "OBJECT"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "ASSET",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "container_selector": ".posting-field-image-selector .image-upload-list",
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "file_input_strategy": "FILE_CHOOSER_OR_NEW_INPUT",
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "slot_selector": "#image-placeholder",
+        "strategy": "SCOPED_UPLOAD_SLOTS",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "main_images",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "ORDERED_SHA256_LIST",
+        "strategy": "THUMBNAIL_ORDER_AND_HASH"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "MEDIA",
+      "source_policy": "APPROVED_ASSET_MANIFEST_WITH_HASH",
+      "template_value_allowed": false,
+      "value_type": "ASSET_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "ASSET",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "file_input_strategy": "FILE_CHOOSER_OR_NEW_INPUT",
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "主图视频",
+          "Main Video"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "main_video",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "ORDERED_SHA256_LIST",
+        "strategy": "THUMBNAIL_ORDER_AND_HASH"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "MEDIA",
+      "source_policy": "APPROVED_ASSET_MANIFEST_WITH_HASH",
+      "template_value_allowed": false,
+      "value_type": "ASSET_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "价格",
+          "Price"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "trade_price",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "DECIMAL_CANONICAL",
+        "strategy": "COUNT_AND_VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "TRADE",
+      "source_policy": "APPROVED_COMMERCIAL_DECISION",
+      "template_value_allowed": false,
+      "value_type": "OBJECT"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "label_contains_any": [
+          "最小起订量",
+          "Minimum Order Quantity"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "selector": "input#minOrderQuantity",
+        "strategy": "CSS_PRIMARY_THEN_SEMANTIC_FALLBACK",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "minimum_order_quantity",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "DECIMAL_CANONICAL",
+        "strategy": "CONTROL_VALUE"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "TRADE",
+      "source_policy": "APPROVED_COMMERCIAL_DECISION",
+      "template_value_allowed": false,
+      "value_type": "DECIMAL_STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "计量单位",
+          "Sale Unit"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "sale_unit",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "TRADE",
+      "source_policy": "APPROVED_COMMERCIAL_DECISION",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "库存",
+          "Inventory"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "inventory",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "DECIMAL_CANONICAL",
+        "strategy": "CONTROL_VALUE"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "TRADE",
+      "source_policy": "APPROVED_COMMERCIAL_DECISION",
+      "template_value_allowed": false,
+      "value_type": "INTEGER"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "发货期",
+          "Lead Time"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "lead_time",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "TRADE",
+      "source_policy": "APPROVED_COMMERCIAL_DECISION",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "label_contains_any": [
+          "包装重量",
+          "Package Weight"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "selector": "input#pkgWeight",
+        "strategy": "CSS_PRIMARY_THEN_SEMANTIC_FALLBACK",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "package_weight",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "DECIMAL_CANONICAL",
+        "strategy": "CONTROL_VALUE"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "LOGISTICS",
+      "source_policy": "VERIFIED_PRODUCT_FACT",
+      "template_value_allowed": false,
+      "value_type": "DECIMAL_STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "包装尺寸",
+          "Package Dimensions"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "package_dimensions",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "DECIMAL_CANONICAL",
+        "strategy": "COUNT_AND_VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "LOGISTICS",
+      "source_policy": "VERIFIED_PRODUCT_FACT",
+      "template_value_allowed": false,
+      "value_type": "OBJECT"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "ACCOUNT_SETTING",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "运费模板",
+          "Freight Template"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "freight_template",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "LOGISTICS",
+      "source_policy": "APPROVED_ACCOUNT_SETTING",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "STALE_DIAGNOSTIC_ONLY",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "产品卖点",
+          "Selling Points"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "selling_points",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "TRIM_AND_NORMALIZE_NEWLINES",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "DETAIL",
+      "source_policy": "VERIFIED_PRODUCT_FACT",
+      "template_value_allowed": false,
+      "value_type": "STRING_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "详情描述",
+          "Product Description"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "structured_detail",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "TRIM_AND_NORMALIZE_NEWLINES",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "REVIEW_REQUIRED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "DETAIL",
+      "source_policy": "VERIFIED_PRODUCT_FACT",
+      "template_value_allowed": false,
+      "value_type": "OBJECT"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "ASSET",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "file_input_strategy": "FILE_CHOOSER_OR_NEW_INPUT",
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "详情图片",
+          "Detail Images"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "detail_images",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "ORDERED_SHA256_LIST",
+        "strategy": "THUMBNAIL_ORDER_AND_HASH"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "DETAIL",
+      "source_policy": "APPROVED_ASSET_MANIFEST_WITH_HASH",
+      "template_value_allowed": false,
+      "value_type": "ASSET_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "ASSET",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "file_input_strategy": "FILE_CHOOSER_OR_NEW_INPUT",
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "详情视频",
+          "Detail Video"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "detail_video",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "ORDERED_SHA256_LIST",
+        "strategy": "THUMBNAIL_ORDER_AND_HASH"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "DETAIL",
+      "source_policy": "APPROVED_ASSET_MANIFEST_WITH_HASH",
+      "template_value_allowed": false,
+      "value_type": "ASSET_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "定制服务",
+          "Customization"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "customization_services",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "SERVICES",
+      "source_policy": "APPROVED_COMPANY_POLICY",
+      "template_value_allowed": false,
+      "value_type": "STRING_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "样品政策",
+          "Sample Policy"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "sample_policy",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "TRIM_AND_NORMALIZE_NEWLINES",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "SERVICES",
+      "source_policy": "APPROVED_COMPANY_POLICY",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "label_contains_any": [
+          "售后服务",
+          "After-sales Service"
+        ],
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "strategy": "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "after_sales_policy",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "TRIM_AND_NORMALIZE_NEWLINES",
+        "strategy": "VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "SERVICES",
+      "source_policy": "APPROVED_COMPANY_POLICY",
+      "template_value_allowed": false,
+      "value_type": "STRING"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "ASSET",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "file_input_strategy": "FILE_CHOOSER_OR_NEW_INPUT",
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "产品认证",
+          "Certificates"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "certificates",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "ORDERED_SHA256_LIST",
+        "strategy": "THUMBNAIL_ORDER_AND_HASH"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "CRITICAL",
+      "runtime_binding_required": true,
+      "section": "CERTIFICATES",
+      "source_policy": "APPROVED_ASSET_MANIFEST_WITH_HASH",
+      "template_value_allowed": false,
+      "value_type": "ASSET_LIST"
+    },
+    {
+      "allowed_source_dispositions": [
+        "APPROVED_INTERNAL_SOURCE"
+      ],
+      "clear_before_fill": true,
+      "dynamic_namespace": null,
+      "field_class": "DATA",
+      "inheritance_policy": "CLEAR_AND_REPLACE",
+      "locator": {
+        "coordinate_fallback_allowed": false,
+        "evidence_status": "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+        "expected_count": 1,
+        "must_be_visible": true,
+        "runtime_resolution_required": true,
+        "section_heading_contains_any": [
+          "出口信息",
+          "Export Information"
+        ],
+        "strategy": "SECTION_HEADING_THEN_CONTROL",
+        "usable_without_current_probe": false
+      },
+      "logical_name": "export_information",
+      "readback": {
+        "hash_compare_required": true,
+        "normalization": "VISIBLE_TEXT_CANONICAL",
+        "strategy": "COUNT_AND_VISIBLE_TEXT"
+      },
+      "rejected_source_dispositions": [
+        "UNUSABLE_WASTE_RECORD",
+        "BLOCKED_UNCLASSIFIED",
+        "HISTORICAL_REFERENCE_ONLY"
+      ],
+      "required_policy": "OPTIONAL_IF_APPROVED",
+      "risk": "HIGH",
+      "runtime_binding_required": true,
+      "section": "EXPORT_INFO",
+      "source_policy": "APPROVED_COMPANY_POLICY",
+      "template_value_allowed": false,
+      "value_type": "OBJECT"
+    }
+  ],
+  "generated_at": "2000-01-01T00:00:00Z",
+  "mode": "SIMILAR_DRAFT_SAVE_ONLY",
+  "page_kind": "icbu_product_publish_similar",
+  "policy": {
+    "allowed_origin": "https://post.alibaba.com",
+    "allowed_path": "/product/publish.htm",
+    "allowed_source_dispositions": [
+      "APPROVED_INTERNAL_SOURCE"
+    ],
+    "candidate_external_write_enabled": false,
+    "default_network_action": "DENY",
+    "draft_save_requires_explicit_action_approval": true,
+    "fail_on_captcha": true,
+    "fail_on_domain_mismatch": true,
+    "fail_on_fingerprint_drift": true,
+    "fail_on_login": true,
+    "fail_on_non_unique_critical_locator": true,
+    "fail_on_route_mismatch": true,
+    "fail_on_unknown_write": true,
+    "final_write_count_limit": 0,
+    "final_write_enabled": false,
+    "pass_a_allowed_methods": [
+      "GET",
+      "HEAD",
+      "OPTIONS"
+    ],
+    "pass_a_blocked_methods": [
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+    ],
+    "probe_before_use": true,
+    "reject_missing_or_unknown_source_disposition": true,
+    "reject_stale_dynamic_ids": true,
+    "rejected_source_dispositions": [
+      "UNUSABLE_WASTE_RECORD",
+      "BLOCKED_UNCLASSIFIED",
+      "HISTORICAL_REFERENCE_ONLY"
+    ],
+    "require_current_probe_receipt": true,
+    "required_query": {
+      "behavior": "copyNew",
+      "itemId_source": "RUN_SPEC_TEMPLATE_PRODUCT_ID",
+      "pubType": "similarPost"
+    }
+  },
+  "registry_id": "alibaba-similar-draft-field-registry-v1",
+  "registry_version": "1.0.0",
+  "schema_version": "alibaba.field-registry.v1",
+  "sections": [
+    "BASIC_INFO",
+    "CATEGORY_PROPERTIES",
+    "TRADE",
+    "LOGISTICS",
+    "MEDIA",
+    "DETAIL",
+    "SERVICES",
+    "CERTIFICATES",
+    "EXPORT_INFO"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "entries": [
+    {
+      "file_sha256": "7b0b4ddef1cff86d8218ba3976955984e7d65f324673cfb7b5267c1e8ed52b9e",
+      "line": 373,
+      "path": "src/review-ready-workspace/tests/test_v1.py",
+      "reason": "Manually inspected test_08_secret_scanner_and_outputs: header-only synthetic scanner probe, no key body. Bound to this exact source file hash.",
+      "rule": "private_key"
+    }
+  ],
+  "schema_version": "sellerkit.source-bundle.synthetic-marker-review.v1"
+}

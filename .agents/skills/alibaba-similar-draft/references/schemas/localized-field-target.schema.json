@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/localized-field-target.schema.json",
+  "title": "Hash-bound localized Alibaba field target",
+  "description": "Canonical per-locale field identity bound to the current visible language control and its live length rule. This document is plan-only and never authorizes a final write.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "logical_name",
+    "locale",
+    "live_language_label",
+    "direction",
+    "expected_sha256",
+    "max_length_rule_hash",
+    "max_length_rule",
+    "identity_sha256"
+  ],
+  "properties": {
+    "kind": {"const": "LOCALIZED_FIELD"},
+    "logical_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "locale": {"$ref": "#/$defs/locale"},
+    "live_language_label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "[^\\s]"
+    },
+    "direction": {"enum": ["LTR", "RTL"]},
+    "expected_sha256": {"$ref": "#/$defs/sha256"},
+    "max_length_rule_hash": {"$ref": "#/$defs/sha256"},
+    "max_length_rule": {"$ref": "#/$defs/maxLengthRule"},
+    "identity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-(?:[A-Z]{2}|[0-9]{3}))?$"
+    },
+    "maxLengthRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "captured_at",
+        "expires_at",
+        "locale",
+        "live_language_label_sha256",
+        "page_fingerprint_sha256",
+        "live_control_evidence_sha256",
+        "maximum",
+        "unit",
+        "observed_count",
+        "candidate_value_sha256",
+        "current_session_only",
+        "require_post_write_counter_readback",
+        "final_write_enabled"
+      ],
+      "properties": {
+        "source": {"const": "CURRENT_VISIBLE_UI"},
+        "captured_at": {"$ref": "#/$defs/timestamp"},
+        "expires_at": {"$ref": "#/$defs/timestamp"},
+        "locale": {"$ref": "#/$defs/locale"},
+        "live_language_label_sha256": {"$ref": "#/$defs/sha256"},
+        "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+        "live_control_evidence_sha256": {"$ref": "#/$defs/sha256"},
+        "maximum": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "unit": {
+          "enum": ["UNICODE_CODE_POINTS", "UTF8_BYTES", "PLATFORM_COUNTER"]
+        },
+        "observed_count": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "candidate_value_sha256": {"$ref": "#/$defs/sha256"},
+        "current_session_only": {"const": true},
+        "require_post_write_counter_readback": {"const": true},
+        "final_write_enabled": {"const": false}
+      }
+    }
+  }
+}

@@ -1,0 +1,725 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/field-registry.schema.json",
+  "title": "Alibaba Similar Draft Field Registry",
+  "description": "Static fail-closed registry. Static locators are never authority to write; a current read-only probe must resolve and bind every runtime locator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_version",
+    "registry_id",
+    "page_kind",
+    "mode",
+    "generated_at",
+    "evidence",
+    "policy",
+    "sections",
+    "fields",
+    "dynamic_namespaces",
+    "actions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "alibaba.field-registry.v1"
+    },
+    "registry_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "registry_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "page_kind": {
+      "const": "icbu_product_publish_similar"
+    },
+    "mode": {
+      "const": "SIMILAR_DRAFT_SAVE_ONLY"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "policy": {
+      "$ref": "#/$defs/policy"
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/section"
+      }
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/field"
+      }
+    },
+    "dynamic_namespaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/dynamicNamespace"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "$ref": "#/$defs/action"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "section": {
+      "enum": [
+        "BASIC_INFO",
+        "CATEGORY_PROPERTIES",
+        "TRADE",
+        "LOGISTICS",
+        "MEDIA",
+        "DETAIL",
+        "SERVICES",
+        "CERTIFICATES",
+        "EXPORT_INFO"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "observed_at",
+        "probe_sha256",
+        "page_function_study_sha256",
+        "controls_inventory_sha256",
+        "actions_inventory_sha256",
+        "write_endpoint_evidence",
+        "current_probe_required",
+        "unverified_candidates_may_be_allowlisted"
+      ],
+      "properties": {
+        "status": {
+          "const": "STALE_DIAGNOSTIC_ONLY"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "probe_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "page_function_study_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "controls_inventory_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "actions_inventory_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "write_endpoint_evidence": {
+          "const": "NONE_VERIFIED"
+        },
+        "current_probe_required": {
+          "const": true
+        },
+        "unverified_candidates_may_be_allowlisted": {
+          "const": false
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_network_action",
+        "probe_before_use",
+        "require_current_probe_receipt",
+        "fail_on_non_unique_critical_locator",
+        "fail_on_captcha",
+        "fail_on_login",
+        "fail_on_domain_mismatch",
+        "fail_on_route_mismatch",
+        "fail_on_fingerprint_drift",
+        "fail_on_unknown_write",
+        "reject_stale_dynamic_ids",
+        "reject_missing_or_unknown_source_disposition",
+        "allowed_source_dispositions",
+        "rejected_source_dispositions",
+        "allowed_origin",
+        "allowed_path",
+        "required_query",
+        "pass_a_allowed_methods",
+        "pass_a_blocked_methods",
+        "candidate_external_write_enabled",
+        "draft_save_requires_explicit_action_approval",
+        "final_write_enabled",
+        "final_write_count_limit"
+      ],
+      "properties": {
+        "default_network_action": {
+          "const": "DENY"
+        },
+        "probe_before_use": {
+          "const": true
+        },
+        "require_current_probe_receipt": {
+          "const": true
+        },
+        "fail_on_non_unique_critical_locator": {
+          "const": true
+        },
+        "fail_on_captcha": {
+          "const": true
+        },
+        "fail_on_login": {
+          "const": true
+        },
+        "fail_on_domain_mismatch": {
+          "const": true
+        },
+        "fail_on_route_mismatch": {
+          "const": true
+        },
+        "fail_on_fingerprint_drift": {
+          "const": true
+        },
+        "fail_on_unknown_write": {
+          "const": true
+        },
+        "reject_stale_dynamic_ids": {
+          "const": true
+        },
+        "reject_missing_or_unknown_source_disposition": {
+          "const": true
+        },
+        "allowed_source_dispositions": {
+          "const": [
+            "APPROVED_INTERNAL_SOURCE"
+          ]
+        },
+        "rejected_source_dispositions": {
+          "const": [
+            "UNUSABLE_WASTE_RECORD",
+            "BLOCKED_UNCLASSIFIED",
+            "HISTORICAL_REFERENCE_ONLY"
+          ]
+        },
+        "allowed_origin": {
+          "const": "https://post.alibaba.com"
+        },
+        "allowed_path": {
+          "const": "/product/publish.htm"
+        },
+        "required_query": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pubType",
+            "behavior",
+            "itemId_source"
+          ],
+          "properties": {
+            "pubType": {
+              "const": "similarPost"
+            },
+            "behavior": {
+              "const": "copyNew"
+            },
+            "itemId_source": {
+              "const": "RUN_SPEC_TEMPLATE_PRODUCT_ID"
+            }
+          }
+        },
+        "pass_a_allowed_methods": {
+          "const": [
+            "GET",
+            "HEAD",
+            "OPTIONS"
+          ]
+        },
+        "pass_a_blocked_methods": {
+          "const": [
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ]
+        },
+        "candidate_external_write_enabled": {
+          "const": false
+        },
+        "draft_save_requires_explicit_action_approval": {
+          "const": true
+        },
+        "final_write_enabled": {
+          "const": false
+        },
+        "final_write_count_limit": {
+          "const": 0
+        }
+      }
+    },
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "must_be_visible",
+        "expected_count",
+        "runtime_resolution_required",
+        "coordinate_fallback_allowed",
+        "evidence_status",
+        "usable_without_current_probe"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "CSS_PRIMARY_THEN_SEMANTIC_FALLBACK",
+            "VISIBLE_LABEL_THEN_DESCENDANT_CONTROL",
+            "SECTION_HEADING_THEN_CONTROL",
+            "SCOPED_UPLOAD_SLOTS",
+            "ROLE_AND_EXACT_TEXT",
+            "LIVE_CATEGORY_ROWS",
+            "CURRENT_PAGE_READBACK_ONLY"
+          ]
+        },
+        "selector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "^(?!.*p-[0-9]+).+$"
+        },
+        "fallback_role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "label_contains_any": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "section_heading_contains_any": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "container_selector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "^(?!.*p-[0-9]+).+$"
+        },
+        "slot_selector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "^(?!.*p-[0-9]+).+$"
+        },
+        "file_input_strategy": {
+          "enum": [
+            "FILE_CHOOSER_OR_NEW_INPUT",
+            "NONE"
+          ]
+        },
+        "must_be_visible": {
+          "const": true
+        },
+        "expected_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "runtime_resolution_required": {
+          "const": true
+        },
+        "coordinate_fallback_allowed": {
+          "const": false
+        },
+        "evidence_status": {
+          "enum": [
+            "STALE_DIAGNOSTIC_ONLY",
+            "UNVERIFIED_REQUIRES_CURRENT_PROBE",
+            "STATIC_SEMANTIC_CONTRACT"
+          ]
+        },
+        "usable_without_current_probe": {
+          "const": false
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "selector"
+          ]
+        },
+        {
+          "required": [
+            "text"
+          ]
+        },
+        {
+          "required": [
+            "label_contains_any"
+          ]
+        },
+        {
+          "required": [
+            "section_heading_contains_any"
+          ]
+        },
+        {
+          "required": [
+            "container_selector"
+          ]
+        }
+      ]
+    },
+    "readback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "normalization",
+        "hash_compare_required"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "CONTROL_VALUE",
+            "VISIBLE_TEXT",
+            "THUMBNAIL_ORDER_AND_HASH",
+            "CURRENT_CATEGORY_ROW_VALUE",
+            "COUNT_AND_VISIBLE_TEXT"
+          ]
+        },
+        "normalization": {
+          "enum": [
+            "NONE",
+            "TRIM_AND_NORMALIZE_NEWLINES",
+            "DECIMAL_CANONICAL",
+            "ORDERED_SHA256_LIST",
+            "VISIBLE_TEXT_CANONICAL"
+          ]
+        },
+        "hash_compare_required": {
+          "const": true
+        }
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "logical_name",
+        "section",
+        "field_class",
+        "value_type",
+        "required_policy",
+        "source_policy",
+        "allowed_source_dispositions",
+        "rejected_source_dispositions",
+        "inheritance_policy",
+        "risk",
+        "clear_before_fill",
+        "template_value_allowed",
+        "runtime_binding_required",
+        "locator",
+        "readback"
+      ],
+      "properties": {
+        "logical_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$",
+          "maxLength": 200
+        },
+        "section": {
+          "$ref": "#/$defs/section"
+        },
+        "field_class": {
+          "enum": [
+            "DATA",
+            "ASSET",
+            "CATEGORY_DYNAMIC",
+            "ACCOUNT_SETTING",
+            "REVIEW_ONLY"
+          ]
+        },
+        "value_type": {
+          "enum": [
+            "STRING",
+            "DECIMAL_STRING",
+            "INTEGER",
+            "BOOLEAN",
+            "STRING_LIST",
+            "OBJECT",
+            "ASSET_LIST"
+          ]
+        },
+        "required_policy": {
+          "enum": [
+            "REQUIRED",
+            "OPTIONAL_IF_APPROVED",
+            "REVIEW_REQUIRED",
+            "PLATFORM_CONDITIONAL"
+          ]
+        },
+        "source_policy": {
+          "enum": [
+            "VERIFIED_PRODUCT_FACT",
+            "APPROVED_COMMERCIAL_DECISION",
+            "APPROVED_COMPANY_POLICY",
+            "APPROVED_ASSET_MANIFEST_WITH_HASH",
+            "CURRENT_CATEGORY_SCHEMA_PLUS_APPROVED_FACT",
+            "APPROVED_ACCOUNT_SETTING",
+            "HUMAN_REVIEW_ONLY"
+          ]
+        },
+        "allowed_source_dispositions": {
+          "const": [
+            "APPROVED_INTERNAL_SOURCE"
+          ]
+        },
+        "rejected_source_dispositions": {
+          "const": [
+            "UNUSABLE_WASTE_RECORD",
+            "BLOCKED_UNCLASSIFIED",
+            "HISTORICAL_REFERENCE_ONLY"
+          ]
+        },
+        "inheritance_policy": {
+          "enum": [
+            "CLEAR_AND_REPLACE",
+            "CLEAR_ONLY",
+            "KEEP_EMPTY",
+            "VERIFY_FIXED_CONTEXT",
+            "REVIEW_ONLY"
+          ]
+        },
+        "risk": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ]
+        },
+        "clear_before_fill": {
+          "type": "boolean"
+        },
+        "template_value_allowed": {
+          "const": false
+        },
+        "runtime_binding_required": {
+          "const": true
+        },
+        "dynamic_namespace": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z][a-z0-9_.-]*$"
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        },
+        "readback": {
+          "$ref": "#/$defs/readback"
+        }
+      }
+    },
+    "dynamicNamespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "section",
+        "name_pattern",
+        "resolution_strategy",
+        "live_row_locator",
+        "stale_ids_rejected",
+        "diagnostic_ids_usable_for_write",
+        "persist_for_current_run_only",
+        "write_binding_requires_probe_receipt",
+        "collision_is_blocking"
+      ],
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$"
+        },
+        "section": {
+          "const": "CATEGORY_PROPERTIES"
+        },
+        "name_pattern": {
+          "const": "^p-[0-9]+$"
+        },
+        "resolution_strategy": {
+          "const": "CURRENT_VISIBLE_LABEL_AND_SCHEMA_KEY"
+        },
+        "live_row_locator": {
+          "$ref": "#/$defs/locator"
+        },
+        "stale_ids_rejected": {
+          "const": true
+        },
+        "diagnostic_ids_usable_for_write": {
+          "const": false
+        },
+        "persist_for_current_run_only": {
+          "const": true
+        },
+        "write_binding_requires_probe_receipt": {
+          "const": true
+        },
+        "collision_is_blocking": {
+          "const": true
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "logical_name",
+        "classification",
+        "risk",
+        "default_enabled",
+        "can_enable_after_explicit_action_approval",
+        "direct_endpoint_call_allowed",
+        "visible_ui_required",
+        "network_signature_status",
+        "locator"
+      ],
+      "properties": {
+        "logical_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$",
+          "maxLength": 200
+        },
+        "classification": {
+          "enum": [
+            "LOCAL_READ_ONLY",
+            "REVERSIBLE_DRAFT_WRITE",
+            "FINAL_WRITE",
+            "UNKNOWN_WRITE"
+          ]
+        },
+        "risk": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ]
+        },
+        "default_enabled": {
+          "type": "boolean"
+        },
+        "can_enable_after_explicit_action_approval": {
+          "type": "boolean"
+        },
+        "direct_endpoint_call_allowed": {
+          "const": false
+        },
+        "visible_ui_required": {
+          "type": "boolean"
+        },
+        "network_signature_status": {
+          "enum": [
+            "VERIFIED_CURRENT_SESSION_ONLY",
+            "UNVERIFIED_QUARANTINED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "enum": [
+                  "FINAL_WRITE",
+                  "UNKNOWN_WRITE"
+                ]
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "default_enabled": {
+                "const": false
+              },
+              "can_enable_after_explicit_action_approval": {
+                "const": false
+              },
+              "network_signature_status": {
+                "const": "UNVERIFIED_QUARANTINED"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "REVERSIBLE_DRAFT_WRITE"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "default_enabled": {
+                "const": false
+              },
+              "can_enable_after_explicit_action_approval": {
+                "const": true
+              },
+              "visible_ui_required": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

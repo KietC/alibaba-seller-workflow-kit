@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/match_decision.schema.json",
+  "title": "Fail-closed product match decision",
+  "type": "object",
+  "required": ["canonical_model", "raw_model", "status", "exact_product_ids", "alias_product_ids", "similar_products", "missing_is_confirmed", "exact_difference_candidate", "manual_review_required", "conflict_threshold", "conflict_threshold_status", "classification_effect", "status_reason"],
+  "properties": {
+    "canonical_model": {"type": "string", "pattern": "^[A-Z0-9]+$"},
+    "raw_model": {"type": "string", "minLength": 1},
+    "status": {"enum": ["CONFIRMED_PRESENT", "CONFIRMED_PRESENT_UNUSABLE_REFERENCE", "CANDIDATE_MISSING", "AMBIGUOUS_ALIAS", "VARIANT_OR_ACCESSORY", "BLOCKED_INSUFFICIENT_EVIDENCE"]},
+    "exact_product_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "alias_product_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "similar_products": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["product_id", "record_disposition", "score"],
+        "properties": {
+          "product_id": {"type": "string", "minLength": 1},
+          "record_disposition": {"const": "HISTORICAL_REFERENCE_ONLY"},
+          "score": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "additionalProperties": true
+      }
+    },
+    "missing_is_confirmed": {"const": false},
+    "exact_difference_candidate": {"type": "boolean"},
+    "manual_review_required": {"type": "boolean"},
+    "conflict_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+    "conflict_threshold_status": {"const": "UNVALIDATED_HEURISTIC_REVIEW_ONLY"},
+    "classification_effect": {"const": "QUEUE_FOR_HUMAN_REVIEW_ONLY_NEVER_CONFIRM_MISSING_OR_RELEASE"},
+    "status_reason": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true
+}

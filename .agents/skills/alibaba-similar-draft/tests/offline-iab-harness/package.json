@@ -1,0 +1,9 @@
+{
+  "name": "sellerkit-alibaba-offline-iab-harness",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node harness.spec.mjs"
+  },
+  "description": "Loopback-only synthetic conformance harness. A pass is LOCAL_CONTRACT_VERIFIED, never Alibaba/Codex live attestation."
+}

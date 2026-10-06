@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/fill_plan.preview.schema.json",
+  "title": "V2 blocked local fill-plan preview",
+  "type": "object",
+  "required": ["schema_version", "package_id", "model", "match_status", "preview_only", "external_write_enabled", "browser_actions_allowed", "remote_draft_allowed", "publish_allowed", "field_actions", "asset_actions", "commercial_suggestion_count", "all_commercial_suggestions_require_human_confirmation", "blocked_reasons", "build_status", "local_review_status", "remote_write_status", "release_status", "terminal_status", "review_state"],
+  "properties": {
+    "schema_version": {"const": "sellerkit.fill_plan.preview.v2"},
+    "package_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "model": {"type": "string", "minLength": 1},
+    "match_status": {"type": "string", "minLength": 1},
+    "preview_only": {"const": true},
+    "external_write_enabled": {"const": false},
+    "browser_actions_allowed": {"const": false},
+    "remote_draft_allowed": {"const": false},
+    "publish_allowed": {"const": false},
+    "field_actions": {"type": "array", "items": {"type": "object"}},
+    "asset_actions": {"type": "array", "items": {"type": "object"}},
+    "commercial_suggestion_count": {"type": "integer", "minimum": 0},
+    "all_commercial_suggestions_require_human_confirmation": {"const": true},
+    "blocked_reasons": {
+      "type": "array",
+      "uniqueItems": true,
+      "allOf": [
+        {"contains": {"const": "V1_LOCAL_ONLY_NO_REMOTE_WRITE"}},
+        {"contains": {"const": "BLOCKED_ALIBABA_CATEGORY_SCHEMA_UNAVAILABLE"}},
+        {"contains": {"const": "BLOCKED_COMMERCIAL_FACTS_UNAPPROVED"}},
+        {"contains": {"const": "BLOCKED_ASSETS_NOT_PREUPLOADED"}}
+      ]
+    },
+    "build_status": {"const": "PASS_LOCAL_REVIEW_PACKAGE_READY_NO_REMOTE_WRITE"},
+    "local_review_status": {"const": "READY_FOR_LOCAL_HUMAN_REVIEW"},
+    "remote_write_status": {"const": "DISABLED_NOT_REQUESTED"},
+    "release_status": {"const": "NOT_RELEASED_V1_LOCAL_ONLY"},
+    "terminal_status": {"const": "LOCAL_REVIEW_PREVIEW_ONLY_NO_REMOTE_WRITE"},
+    "review_state": {"$ref": "review_state.schema.json"}
+  },
+  "additionalProperties": false
+}

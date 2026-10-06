@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/workspace-profile.schema.json",
+  "title": "SellerKit Alibaba Workspace Profile",
+  "description": "Machine-independent logical paths and content hashes for one private business-data snapshot.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "description",
+    "cutoff",
+    "expected_catalog_count",
+    "data_files",
+    "content_bindings",
+    "blocked_product_ids_by_model",
+    "policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.alibaba-workspace-profile.v1"
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "cutoff": {
+      "type": "string",
+      "format": "date"
+    },
+    "expected_catalog_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "data_files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "official_current",
+        "historical_sanitized",
+        "visual_scores",
+        "full_match_pairs_glob"
+      ],
+      "properties": {
+        "official_current": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "historical_sanitized": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "visual_scores": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "full_match_pairs_glob": {
+          "$ref": "#/$defs/relativeGlob"
+        }
+      }
+    },
+    "content_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full_match_pairs_sha256",
+        "overlay_derived_manifest_sha256",
+        "catalog_index_sha256"
+      ],
+      "properties": {
+        "full_match_pairs_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "overlay_derived_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "catalog_index_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "blocked_product_ids_by_model": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[^\\\\/\\r\\n]{1,160}$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "template_is_form_structure_only",
+        "historical_records_are_review_only",
+        "direct_endpoint_write_enabled",
+        "final_write_enabled",
+        "external_publish_status"
+      ],
+      "properties": {
+        "template_is_form_structure_only": {
+          "const": true
+        },
+        "historical_records_are_review_only": {
+          "const": true
+        },
+        "direct_endpoint_write_enabled": {
+          "const": false
+        },
+        "final_write_enabled": {
+          "const": false
+        },
+        "external_publish_status": {
+          "const": "NOT_ATTEMPTED"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$))[^\\r\\n]+$"
+    },
+    "relativeGlob": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$))[^\\r\\n]+$"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "blocked_product_ids_by_model": {},
+  "content_bindings": {
+    "catalog_index_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "full_match_pairs_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "overlay_derived_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "cutoff": "2000-01-02",
+  "data_files": {
+    "full_match_pairs_glob": "examples/full_match_pairs*.jsonl",
+    "historical_sanitized": "examples/historical_sanitized.jsonl",
+    "official_current": "examples/official_current.jsonl",
+    "visual_scores": "examples/visual_scores.jsonl"
+  },
+  "description": "Synthetic layout only. Replace and hash-bind your own reviewed local inputs before use. / 仅为合成目录示例，使用前绑定自己的已审核本地输入。",
+  "expected_catalog_count": 1,
+  "policy": {
+    "direct_endpoint_write_enabled": false,
+    "external_publish_status": "NOT_ATTEMPTED",
+    "final_write_enabled": false,
+    "historical_records_are_review_only": true,
+    "template_is_form_structure_only": true
+  },
+  "profile_id": "synthetic-example-not-approved",
+  "schema_version": "sellerkit.alibaba-workspace-profile.v1"
+}

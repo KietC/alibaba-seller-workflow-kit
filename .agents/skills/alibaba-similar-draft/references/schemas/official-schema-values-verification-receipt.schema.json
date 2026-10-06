@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/official-schema-values-verification-receipt.schema.json",
+  "title": "Official Alibaba Schema Current-value Verification Receipt",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "generated_at", "status", "trust_status", "live_attestation_verified",
+    "result_semantics", "run_id", "target_model",
+    "template_product_id", "browser_session_sha256", "bindings", "field_count", "evaluated_field_count",
+    "field_results", "manual_review_rules", "unsupported_rules", "errors", "write_authority", "final_write_enabled"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba-official-schema-values-verification.v2"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["PASS_MACHINE_RULES", "REVIEW_REQUIRED", "BLOCKED_VALUE_VALIDATION", "BLOCKED_UNSUPPORTED_SCHEMA"]},
+    "trust_status": {"enum": ["LOCAL_CONTRACT", "LIVE_ATTESTED"]},
+    "live_attestation_verified": {"type": "boolean"},
+    "result_semantics": {"const": "READ_ONLY_VALUE_VALIDATION_NOT_WRITE_AUTHORITY"},
+    "run_id": {"type": ["string", "null"]}, "target_model": {"type": ["string", "null"]},
+    "template_product_id": {"type": ["string", "null"]}, "browser_session_sha256": {"type": ["string", "null"]},
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "normalized_schema_sha256", "raw_schema_sha256", "current_values_ledger_sha256",
+        "current_values_ledger_body_sha256", "observation_capture_id",
+        "observation_capture_sha256", "observation_capture_body_sha256",
+        "observation_ids_sha256", "external_attestation_verifier_receipt_sha256",
+        "field_paths_sha256", "rule_graph_sha256"
+      ],
+      "properties": {
+        "normalized_schema_sha256": {"type": "string"}, "raw_schema_sha256": {"type": "string"},
+        "current_values_ledger_sha256": {"type": "string"}, "current_values_ledger_body_sha256": {"type": "string"},
+        "observation_capture_id": {"type": "string"},
+        "observation_capture_sha256": {"type": "string"},
+        "observation_capture_body_sha256": {"type": "string"},
+        "observation_ids_sha256": {"type": "string"},
+        "external_attestation_verifier_receipt_sha256": {"type": ["string", "null"]},
+        "field_paths_sha256": {"type": "string"}, "rule_graph_sha256": {"type": "string"}
+      }
+    },
+    "field_count": {"type": "integer", "minimum": 0}, "evaluated_field_count": {"type": "integer", "minimum": 0},
+    "field_results": {"type": "array", "items": {"$ref": "#/$defs/fieldResult"}},
+    "manual_review_rules": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "unsupported_rules": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "errors": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "write_authority": {"const": "NONE_READ_ONLY_EVIDENCE"}, "final_write_enabled": {"const": false}
+  },
+  "allOf": [{
+    "if": {"properties": {"status": {"const": "PASS_MACHINE_RULES"}}, "required": ["status"]},
+    "then": {"properties": {
+      "run_id": {"type": "string", "minLength": 1}, "target_model": {"type": "string", "minLength": 1},
+      "template_product_id": {"type": "string", "pattern": "^[0-9]+$"}, "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+      "manual_review_rules": {"maxItems": 0}, "unsupported_rules": {"maxItems": 0}, "errors": {"maxItems": 0},
+      "bindings": {"properties": {
+        "normalized_schema_sha256": {"$ref": "#/$defs/sha256"}, "raw_schema_sha256": {"$ref": "#/$defs/sha256"},
+        "current_values_ledger_sha256": {"$ref": "#/$defs/sha256"}, "current_values_ledger_body_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_capture_id": {"type": "string", "minLength": 1},
+        "observation_capture_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_capture_body_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_ids_sha256": {"$ref": "#/$defs/sha256"},
+        "field_paths_sha256": {"$ref": "#/$defs/sha256"}, "rule_graph_sha256": {"$ref": "#/$defs/sha256"}
+      }}
+    }}
+  }, {
+    "if": {"properties": {"trust_status": {"const": "LOCAL_CONTRACT"}}, "required": ["trust_status"]},
+    "then": {
+      "properties": {
+        "live_attestation_verified": {"const": false},
+        "bindings": {"properties": {"external_attestation_verifier_receipt_sha256": {"type": "null"}}}
+      }
+    }
+  }, {
+    "if": {"properties": {"trust_status": {"const": "LIVE_ATTESTED"}}, "required": ["trust_status"]},
+    "then": {
+      "properties": {
+        "live_attestation_verified": {"const": true},
+        "bindings": {"properties": {"external_attestation_verifier_receipt_sha256": {"$ref": "#/$defs/sha256"}}}
+      }
+    }
+  }],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "fieldResult": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "id", "disabled", "required", "value_present", "input_count", "character_length", "utf8_byte_length", "applied_rule_sha256", "violations", "review_reasons", "status"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1}, "id": {"type": "string", "minLength": 1},
+        "disabled": {"type": "boolean"}, "required": {"type": "boolean"}, "value_present": {"type": "boolean"},
+        "input_count": {"type": "integer", "minimum": 0}, "character_length": {"type": "integer", "minimum": 0},
+        "utf8_byte_length": {"type": "integer", "minimum": 0},
+        "applied_rule_sha256": {"type": "array", "items": {"$ref": "#/$defs/sha256"}, "uniqueItems": true},
+        "violations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "review_reasons": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "status": {"enum": ["PASS", "REVIEW_REQUIRED", "FAIL", "DISABLED_NOT_TARGETED"]}
+      }
+    }
+  }
+}

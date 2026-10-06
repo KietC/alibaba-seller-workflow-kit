@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/probe-read-activation-receipt.schema.json",
+  "title": "Current-session Exact READ Activation Receipt",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "generated_at", "expires_at", "status", "scope", "bindings",
+    "producer", "request_activations", "global_policy_unchanged", "draft_write_enabled",
+    "final_write_enabled", "errors", "body_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba.probe-read-activation.v1"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "status": {"const": "PASS_CURRENT_SESSION_EXACT_READ_ACTIVATION"},
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run_id", "target_model", "template_product_id", "browser_session_sha256", "page_fingerprint_sha256"],
+      "properties": {
+        "run_id": {"type": "string", "minLength": 1}, "target_model": {"type": "string", "minLength": 1},
+        "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+        "browser_session_sha256": {"$ref": "#/$defs/sha256"}, "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["global_endpoint_policy_sha256", "action_plan_sha256", "probe_source_sha256", "probe_verification_sha256"],
+      "properties": {
+        "global_endpoint_policy_sha256": {"$ref": "#/$defs/sha256"}, "action_plan_sha256": {"$ref": "#/$defs/sha256"},
+        "probe_source_sha256": {"$ref": "#/$defs/sha256"}, "probe_verification_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "producer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["validator_id", "validator_sha256"],
+      "properties": {"validator_id": {"const": "draft_core.verify_probe.v3"}, "validator_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "request_activations": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["method", "url", "source_request_sha256", "classification", "decision"],
+        "properties": {
+          "method": {"enum": ["GET", "HEAD", "OPTIONS"]}, "url": {"type": "string", "format": "uri"},
+          "source_request_sha256": {"$ref": "#/$defs/sha256"}, "classification": {"const": "READ"}, "decision": {"const": "ALLOW"}
+        }
+      }
+    },
+    "global_policy_unchanged": {"const": true}, "draft_write_enabled": {"const": false},
+    "final_write_enabled": {"const": false}, "errors": {"type": "array", "maxItems": 0},
+    "body_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

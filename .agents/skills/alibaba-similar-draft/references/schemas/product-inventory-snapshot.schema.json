@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/product-inventory-snapshot.schema.json",
+  "title": "Complete Alibaba Product Inventory Snapshot",
+  "description": "An independent, complete visible-UI inventory of online, pending, and draft product IDs before or after one draft-save attempt.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "snapshot_id", "run_id", "captured_at", "phase", "target_model",
+    "template_product_id", "browser_session_sha256", "bindings", "collection",
+    "page_fingerprint_sha256", "capture_evidence", "online", "pending", "draft", "final_write_count", "final_submit_triggered",
+    "snapshot_body_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba.product-inventory-snapshot.v1"},
+    "snapshot_id": {"$ref": "#/$defs/nonEmptyId"}, "run_id": {"$ref": "#/$defs/nonEmptyId"},
+    "captured_at": {"$ref": "#/$defs/timestamp"},
+    "phase": {"enum": ["BEFORE_DRAFT_SAVE", "AFTER_DRAFT_SAVE"]},
+    "target_model": {"$ref": "#/$defs/targetModel"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+    "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+    "capture_evidence": {"$ref": "#/$defs/captureEvidence"},
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["action_plan_sha256", "action_plan_body_sha256", "run_spec_sha256", "probe_verification_sha256", "pre_save_verification_sha256", "draft_save_activation_receipt_sha256"],
+      "properties": {
+        "action_plan_sha256": {"$ref": "#/$defs/sha256"}, "action_plan_body_sha256": {"$ref": "#/$defs/sha256"},
+        "run_spec_sha256": {"$ref": "#/$defs/sha256"}, "probe_verification_sha256": {"$ref": "#/$defs/sha256"},
+        "pre_save_verification_sha256": {"$ref": "#/$defs/sha256"},
+        "draft_save_activation_receipt_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+      }
+    },
+    "collection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "complete", "pagination_exhausted", "all_pages_read", "duplicate_ids_observed", "credential_values_recorded", "raw_response_bodies_recorded", "evidence_sha256"],
+      "properties": {
+        "source": {"const": "CODEX_IN_APP_BROWSER_VISIBLE_UI"}, "complete": {"const": true},
+        "pagination_exhausted": {"const": true}, "all_pages_read": {"const": true},
+        "duplicate_ids_observed": {"const": 0}, "credential_values_recorded": {"const": false},
+        "raw_response_bodies_recorded": {"const": false}, "evidence_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "online": {"$ref": "#/$defs/idSet"}, "pending": {"$ref": "#/$defs/idSet"}, "draft": {"$ref": "#/$defs/idSet"},
+    "final_write_count": {"const": 0}, "final_submit_triggered": {"const": false},
+    "snapshot_body_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "allOf": [
+    {"if": {"properties": {"phase": {"const": "BEFORE_DRAFT_SAVE"}}, "required": ["phase"]},
+     "then": {"properties": {"bindings": {"properties": {"draft_save_activation_receipt_sha256": {"type": "null"}}}}},
+     "else": {"properties": {"bindings": {"properties": {"draft_save_activation_receipt_sha256": {"$ref": "#/$defs/sha256"}}}}}}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "timestamp": {"type": "string", "format": "date-time"},
+    "nonEmptyId": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\r\\n]+$"},
+    "targetModel": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+    "captureEvidence": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["role", "capture_id", "path", "bytes", "sha256"],
+        "properties": {
+          "role": {"enum": ["INVENTORY_BEFORE_VISIBLE_PAGE", "INVENTORY_BEFORE_NETWORK_RESPONSE", "INVENTORY_AFTER_VISIBLE_PAGE", "INVENTORY_AFTER_NETWORK_RESPONSE"]},
+          "capture_id": {"$ref": "#/$defs/nonEmptyId"},
+          "path": {"type": "string", "minLength": 3, "maxLength": 4096, "pattern": "^(?:[A-Za-z]:[\\\\/]|/)[^\\r\\n]+$"},
+          "bytes": {"type": "integer", "minimum": 2},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "idSet": {
+      "type": "object", "additionalProperties": false, "required": ["count", "ids", "id_set_sha256"],
+      "properties": {
+        "count": {"type": "integer", "minimum": 0},
+        "ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9]+$"}},
+        "id_set_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

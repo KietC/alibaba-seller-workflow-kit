@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/visible-ui-draft-save-event.schema.json",
+  "title": "Visible UI Draft-save Event Evidence",
+  "description": "Evidence that the intercepted request was initiated by the unique visible Save Draft control in the current Codex in-app Browser page, not by direct endpoint replay.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "captured_at",
+    "source",
+    "event_type",
+    "semantic_action",
+    "page",
+    "element",
+    "evidence",
+    "security"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.alibaba.visible-ui-draft-save-event.v1"
+    },
+    "event_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "captured_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "source": {
+      "const": "CODEX_IN_APP_BROWSER_VISIBLE_UI"
+    },
+    "event_type": {
+      "const": "CLICK"
+    },
+    "semantic_action": {
+      "const": "SAVE_DRAFT"
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "path",
+        "query",
+        "fingerprint_sha256",
+        "browser_session_sha256",
+        "login_active",
+        "captcha_present"
+      ],
+      "properties": {
+        "origin": {
+          "const": "https://post.alibaba.com"
+        },
+        "path": {
+          "const": "/product/publish.htm"
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pubType",
+            "behavior",
+            "itemId"
+          ],
+          "properties": {
+            "pubType": {
+              "const": "similarPost"
+            },
+            "behavior": {
+              "const": "copyNew"
+            },
+            "itemId": {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          }
+        },
+        "fingerprint_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "browser_session_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "login_active": {
+          "const": true
+        },
+        "captcha_present": {
+          "const": false
+        }
+      }
+    },
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_name",
+        "aria_role",
+        "accessible_name_sha256",
+        "locator_evidence_sha256",
+        "match_count",
+        "visible_match_count",
+        "enabled",
+        "resolved_from_current_dom",
+        "cached_handle_reused"
+      ],
+      "properties": {
+        "semantic_name": {
+          "const": "action.save_draft_runtime"
+        },
+        "aria_role": {
+          "const": "button"
+        },
+        "accessible_name_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "locator_evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "match_count": {
+          "const": 1
+        },
+        "visible_match_count": {
+          "const": 1
+        },
+        "enabled": {
+          "const": true
+        },
+        "resolved_from_current_dom": {
+          "const": true
+        },
+        "cached_handle_reused": {
+          "const": false
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dom_snapshot_sha256",
+        "aria_snapshot_sha256",
+        "screenshot_sha256",
+        "event_trace_sha256"
+      ],
+      "properties": {
+        "dom_snapshot_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "aria_snapshot_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "screenshot_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "event_trace_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direct_endpoint_call_used",
+        "request_replay_used",
+        "coordinates_used",
+        "cookie_or_storage_values_read"
+      ],
+      "properties": {
+        "direct_endpoint_call_used": {
+          "const": false
+        },
+        "request_replay_used": {
+          "const": false
+        },
+        "coordinates_used": {
+          "const": false
+        },
+        "cookie_or_storage_values_read": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    }
+  }
+}

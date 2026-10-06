@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/asset_manifest.schema.json",
+  "title": "Alibaba product asset manifest row",
+  "type": "object",
+  "required": ["schema_version", "asset_id", "role", "source_origin", "source_path", "source_url_sha256", "download_status"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "asset_id": {"type": "string"},
+    "role": {"enum": ["gallery", "description", "product_media", "video", "document", "recommendation", "page_ui"]},
+    "source_origin": {"type": "string", "pattern": "^https?://"},
+    "source_path": {"type": "string", "pattern": "^/"},
+    "source_url_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "download_status": {"enum": ["pending", "downloaded", "failed", "excluded_non_product"]},
+    "blob_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "bytes": {"type": "integer", "minimum": 0},
+    "local_path": {"type": "string"}
+  },
+  "additionalProperties": true
+}

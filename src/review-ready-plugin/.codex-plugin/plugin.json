@@ -1,0 +1,26 @@
+{
+  "author": {
+    "name": "SellerKit"
+  },
+  "description": "Materialize public SellerKit website images and build exhaustive local Alibaba review matches without Alibaba remote writes.",
+  "interface": {
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Verify your explicitly configured local sources and build a review-only catalog.",
+      "Materialize website images from your approved exact host allowlist.",
+      "Build a local website-to-Alibaba.com review ranking.",
+      "Create a local review package for synthetic model MODEL-001."
+    ],
+    "developerName": "SellerKit",
+    "displayName": "SellerKit Alibaba Review Ready",
+    "longDescription": "Extracts the frozen SellerKit website catalog, materializes public website images into a verified local CAS, sanitizes eligible historical Alibaba records, computes exhaustive local review rankings, and creates evidence-bound review packages. It has no Alibaba browser-write, upload, remote draft, submit, or publish capability.",
+    "shortDescription": "Materialize website images and build local review matches"
+  },
+  "name": "sellerkit-alibaba-review-ready",
+  "skills": "./skills/",
+  "version": "0.4.0"
+}

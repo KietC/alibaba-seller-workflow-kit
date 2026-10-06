@@ -1,0 +1,4 @@
+interface:
+  display_name: "Alibaba RFQ Light"
+  short_description: "Match RFQs and fill quotes to review"
+  default_prompt: "Use $alibaba-rfq-light to select a matching Alibaba RFQ, prepare a grounded quote, fill the visible form, and stop before Submit."

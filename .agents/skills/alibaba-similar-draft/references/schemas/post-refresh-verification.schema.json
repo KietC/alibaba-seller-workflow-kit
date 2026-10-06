@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/post-refresh-verification.schema.json",
+  "title": "Hash-bound Alibaba Post-refresh Verification Ledger",
+  "description": "Independent persistence evidence captured only after refreshing and reopening the same draft. Missing, extra, changed, or repopulated targets fail closed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "verification_id",
+    "run_id",
+    "captured_at",
+    "phase",
+    "target_model",
+    "template_product_id",
+    "draft_id",
+    "bindings",
+    "field_readbacks",
+    "cleared_targets",
+    "non_target_snapshot_before_sha256",
+    "non_target_snapshot_after_sha256",
+    "non_target_field_diffs",
+    "inherited_content_cleared",
+    "template_video_present",
+    "refresh_performed",
+    "same_draft_reopened",
+    "persistence_verified",
+    "draft_save_count",
+    "final_write_count",
+    "final_submit_triggered"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.post-refresh-verification.v1"},
+    "verification_id": {"$ref": "#/$defs/nonEmptyId"},
+    "run_id": {"$ref": "#/$defs/nonEmptyId"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "phase": {"const": "POST_REFRESH_REOPEN"},
+    "target_model": {"$ref": "#/$defs/targetModel"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "draft_id": {"$ref": "#/$defs/nonEmptyId"},
+    "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+    "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+    "bindings": {"$ref": "#/$defs/bindings"},
+    "field_readbacks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/fieldReadback"}
+    },
+    "cleared_targets": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/clearReadback"}
+    },
+    "non_target_snapshot_before_sha256": {"$ref": "#/$defs/sha256"},
+    "non_target_snapshot_after_sha256": {"$ref": "#/$defs/sha256"},
+    "non_target_field_diffs": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {"type": "object"}
+    },
+    "inherited_content_cleared": {"const": true},
+    "template_video_present": {"const": false},
+    "refresh_performed": {"const": true},
+    "same_draft_reopened": {"const": true},
+    "persistence_verified": {"const": true},
+    "draft_save_count": {"const": 1},
+    "final_write_count": {"const": 0},
+    "final_submit_triggered": {"const": false}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_plan_sha256",
+        "action_plan_body_sha256",
+        "run_spec_sha256",
+        "probe_receipt_sha256",
+        "expected_field_set_sha256",
+        "expected_clear_set_sha256",
+        "expected_post_refresh_empty_set_sha256"
+      ],
+      "properties": {
+        "action_plan_sha256": {"$ref": "#/$defs/sha256"},
+        "action_plan_body_sha256": {"$ref": "#/$defs/sha256"},
+        "run_spec_sha256": {"$ref": "#/$defs/sha256"},
+        "probe_receipt_sha256": {"$ref": "#/$defs/sha256"},
+        "expected_field_set_sha256": {"$ref": "#/$defs/sha256"},
+        "expected_clear_set_sha256": {"$ref": "#/$defs/sha256"},
+        "expected_post_refresh_empty_set_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "fieldTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "logical_name", "section", "runtime_key"],
+      "properties": {
+        "kind": {"const": "FIELD_REGISTRY"},
+        "logical_name": {"type": "string", "minLength": 1},
+        "section": {"type": ["string", "null"]},
+        "runtime_key": {"type": "null"}
+      }
+    },
+    "categoryTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "logical_name", "section", "approved_property_name", "runtime_key"],
+      "properties": {
+        "kind": {"const": "CATEGORY_PROPERTY_RUNTIME_KEY"},
+        "logical_name": {"const": "category_properties"},
+        "section": {"const": "CATEGORY_PROPERTIES"},
+        "approved_property_name": {"type": "string", "minLength": 1},
+        "runtime_key": {"type": "null"}
+      }
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-(?:[A-Z]{2}|[0-9]{3}))?$"
+    },
+    "maxLengthRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source", "captured_at", "expires_at", "locale",
+        "live_language_label_sha256", "page_fingerprint_sha256",
+        "live_control_evidence_sha256", "maximum", "unit", "observed_count",
+        "candidate_value_sha256", "current_session_only",
+        "require_post_write_counter_readback", "final_write_enabled"
+      ],
+      "properties": {
+        "source": {"const": "CURRENT_VISIBLE_UI"},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "locale": {"$ref": "#/$defs/locale"},
+        "live_language_label_sha256": {"$ref": "#/$defs/sha256"},
+        "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+        "live_control_evidence_sha256": {"$ref": "#/$defs/sha256"},
+        "maximum": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "unit": {"enum": ["UNICODE_CODE_POINTS", "UTF8_BYTES", "PLATFORM_COUNTER"]},
+        "observed_count": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "candidate_value_sha256": {"$ref": "#/$defs/sha256"},
+        "current_session_only": {"const": true},
+        "require_post_write_counter_readback": {"const": true},
+        "final_write_enabled": {"const": false}
+      }
+    },
+    "localizedTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind", "logical_name", "locale", "live_language_label", "direction",
+        "expected_sha256", "max_length_rule_hash", "max_length_rule", "identity_sha256"
+      ],
+      "properties": {
+        "kind": {"const": "LOCALIZED_FIELD"},
+        "logical_name": {"type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "locale": {"$ref": "#/$defs/locale"},
+        "live_language_label": {"type": "string", "minLength": 1, "maxLength": 200, "pattern": "[^\\s]"},
+        "direction": {"enum": ["LTR", "RTL"]},
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "max_length_rule_hash": {"$ref": "#/$defs/sha256"},
+        "max_length_rule": {"$ref": "#/$defs/maxLengthRule"},
+        "identity_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "target": {
+      "oneOf": [
+        {"$ref": "#/$defs/fieldTarget"},
+        {"$ref": "#/$defs/categoryTarget"},
+        {"$ref": "#/$defs/localizedTarget"}
+      ]
+    },
+    "fieldReadback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "expected_sha256",
+        "observed_sha256",
+        "source_id",
+        "decision_id"
+      ],
+      "properties": {
+        "target": {"$ref": "#/$defs/target"},
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "observed_sha256": {"$ref": "#/$defs/sha256"},
+        "source_id": {"$ref": "#/$defs/nonEmptyId"},
+        "decision_id": {"$ref": "#/$defs/nonEmptyId"},
+        "observed_locale": {"$ref": "#/$defs/locale"},
+        "observed_live_language_label": {"type": "string", "minLength": 1, "maxLength": 200},
+        "observed_direction": {"enum": ["LTR", "RTL"]},
+        "observed_count": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "observed_maximum": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "observed_unit": {"enum": ["UNICODE_CODE_POINTS", "UTF8_BYTES", "PLATFORM_COUNTER"]},
+        "max_length_rule_hash": {"$ref": "#/$defs/sha256"},
+        "current_page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+        "post_write_counter_readback": {"const": true}
+      },
+      "allOf": [{
+        "if": {"properties": {"target": {"properties": {"kind": {"const": "LOCALIZED_FIELD"}}, "required": ["kind"]}}},
+        "then": {"required": [
+          "observed_locale", "observed_live_language_label", "observed_direction",
+          "observed_count", "observed_maximum", "observed_unit", "max_length_rule_hash",
+          "current_page_fingerprint_sha256", "post_write_counter_readback"
+        ]}
+      }]
+    },
+    "clearReadback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "reason",
+        "captured_phase",
+        "expected_state",
+        "observed_state",
+        "expected_sha256",
+        "observed_sha256"
+      ],
+      "properties": {
+        "target": {"$ref": "#/$defs/target"},
+        "reason": {
+          "enum": ["REGISTRY_CLEAR_BEFORE_FILL", "BLOCKED_FIELD_MUST_REMAIN_EMPTY", "LOCALIZED_CLEAR_BEFORE_FILL"]
+        },
+        "captured_phase": {"const": "POST_REFRESH_REOPEN"},
+        "expected_state": {"const": "EMPTY"},
+        "observed_state": {"const": "EMPTY"},
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "observed_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

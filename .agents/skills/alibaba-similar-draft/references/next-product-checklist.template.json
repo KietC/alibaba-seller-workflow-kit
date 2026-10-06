@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "REPLACE-RUN-ID",
+  "run_kind": "CREATE_SIMILAR_DRAFT",
+  "target_model": "REPLACE-MODEL",
+  "template_product_id": "00000000",
+  "mode": "save_draft",
+  "unresolved_p0": [
+    "REPLACE_WITH_CURRENT_BLOCKERS_AND_REMOVE_ONLY_AFTER_VERIFICATION"
+  ],
+  "policy": {
+    "binding": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "target_disposition": "UNRESOLVED",
+    "template_disposition": "UNRESOLVED",
+    "target_publish_draft": false,
+    "target_external_write_enabled": false,
+    "target_allow_rag": false,
+    "template_allowed_as_ui_skeleton": false
+  },
+  "source_freeze": {
+    "manifest": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "all_inputs_hashed": false,
+    "fact_conflicts_resolved": false
+  },
+  "dynamic_schema": {
+    "artifact": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "category_id": "0",
+    "captured_at_utc": "1970-01-01T00:00:00Z",
+    "max_age_minutes": 15,
+    "required_field_ids": ["UNRESOLVED"],
+    "current_for_account_and_category": false
+  },
+  "approvals": {
+    "source": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "assets": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "commercial": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "content": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "write": {
+      "artifact": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+      "status": "APPROVED",
+      "scope": "SAVE_ONE_DRAFT_VISIBLE_UI_ONLY",
+      "max_save_attempts": 1,
+      "expires_at_utc": "1970-01-01T00:00:00Z"
+    }
+  },
+  "action_plan": {
+    "artifact": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "run_id": "REPLACE-RUN-ID",
+    "target_model": "REPLACE-MODEL",
+    "template_product_id": "00000000",
+    "approved_field_ids": ["UNRESOLVED"],
+    "save_draft_operations": 1,
+    "final_write_operations": 0
+  },
+  "probe": {
+    "artifact": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "verification": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "status": "PASS_ZERO_WRITE",
+    "origin": "https://post.alibaba.com",
+    "path": "/product/publish.htm",
+    "template_product_id": "00000000",
+    "request_count": 1,
+    "write_request_count": 0,
+    "final_write_request_count": 0,
+    "login_ok": true,
+    "captcha_absent": true,
+    "page_fingerprint_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "performed_after_guard_install": true
+  },
+  "endpoint_guard": {
+    "policy": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "unknown_writes_default": "BLOCK",
+    "draft_write_mode": "VISIBLE_UI_SINGLE_SAVE_ONLY",
+    "final_write_enabled": false,
+    "final_write_double_blocked": true,
+    "bound_action_plan_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "bound_probe_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "baseline": {
+    "artifact": {"path": "REPLACE", "bytes": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "counts": {
+      "online": 0,
+      "pending": 0,
+      "draft": 0,
+      "ids_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "target_duplicate_count": 0,
+    "captured_after_probe": true
+  },
+  "execution": {
+    "fill_receipt": null,
+    "approved_field_ids": [],
+    "readback_field_ids": [],
+    "template_residue_count": 0,
+    "non_target_diff_count": 0,
+    "all_required_fields_valid": false,
+    "asset_hashes_match": false
+  },
+  "save": {
+    "attempt_count": 0,
+    "ui_receipt": null,
+    "network_receipt": null,
+    "business_success": false,
+    "business_error_count": 0,
+    "draft_id": null,
+    "final_write_request_count": 0
+  },
+  "post_save": {
+    "reopen_receipt": null,
+    "after_artifact": null,
+    "after_counts": null,
+    "persistence_match": false,
+    "new_target_draft_count": 0,
+    "online_id_set_unchanged": false,
+    "pending_id_set_unchanged": false,
+    "stopped_before_final_submit": true
+  },
+  "steps": [
+    {"id": "P00", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P01", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P02", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P03", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P04", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P05", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P06", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P07", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P08", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P09", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P10", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P11", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P12", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P13", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P14", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P15", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P16", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P17", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P18", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P19", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P20", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P21", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P22", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P23", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P24", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P25", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P26", "status": "NOT_STARTED", "evidence": []},
+    {"id": "P27", "status": "NOT_STARTED", "evidence": []}
+  ]
+}

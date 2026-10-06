@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/draft-save-result-evidence.schema.json",
+  "title": "Alibaba Draft-save Business Result and Reopen Evidence",
+  "description": "Binds the single saved draft ID to the successful visible-UI save response and the same-draft reopen URL. It does not prove final publication.",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "evidence_id", "run_id", "captured_at", "target_model", "template_product_id",
+    "saved_draft_id", "browser_session_sha256", "bindings", "capture_evidence", "save_response", "reopen",
+    "draft_save_count", "final_write_count", "final_submit_triggered", "result_body_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba.draft-save-result-evidence.v1"},
+    "evidence_id": {"$ref": "#/$defs/nonEmptyId"}, "run_id": {"$ref": "#/$defs/nonEmptyId"},
+    "captured_at": {"$ref": "#/$defs/timestamp"}, "target_model": {"$ref": "#/$defs/targetModel"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "saved_draft_id": {"$ref": "#/$defs/productId"}, "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+    "capture_evidence": {"$ref": "#/$defs/captureEvidence"},
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["action_plan_sha256", "action_plan_body_sha256", "run_spec_sha256", "probe_verification_sha256", "pre_save_verification_sha256", "draft_save_activation_receipt_sha256", "before_inventory_sha256", "after_inventory_sha256", "post_refresh_receipt_sha256"],
+      "properties": {
+        "action_plan_sha256": {"$ref": "#/$defs/sha256"}, "action_plan_body_sha256": {"$ref": "#/$defs/sha256"},
+        "run_spec_sha256": {"$ref": "#/$defs/sha256"}, "probe_verification_sha256": {"$ref": "#/$defs/sha256"},
+        "pre_save_verification_sha256": {"$ref": "#/$defs/sha256"}, "draft_save_activation_receipt_sha256": {"$ref": "#/$defs/sha256"},
+        "before_inventory_sha256": {"$ref": "#/$defs/sha256"}, "after_inventory_sha256": {"$ref": "#/$defs/sha256"},
+        "post_refresh_receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "save_response": {
+      "type": "object", "additionalProperties": false,
+      "required": ["captured_at", "origin", "path", "method", "http_status", "business_success", "business_status", "response_draft_id", "error_code", "redacted_response_sha256", "raw_response_persisted", "credential_values_persisted"],
+      "properties": {
+        "captured_at": {"$ref": "#/$defs/timestamp"}, "origin": {"const": "https://post.alibaba.com"},
+        "path": {"const": "/product/submitDraft.json"}, "method": {"const": "POST"},
+        "http_status": {"type": "integer", "minimum": 200, "maximum": 299}, "business_success": {"const": true},
+        "business_status": {"const": "SUCCESS"}, "response_draft_id": {"$ref": "#/$defs/productId"},
+        "error_code": {"type": "null"}, "redacted_response_sha256": {"$ref": "#/$defs/sha256"},
+        "raw_response_persisted": {"const": false}, "credential_values_persisted": {"const": false}
+      }
+    },
+    "reopen": {
+      "type": "object", "additionalProperties": false,
+      "required": ["captured_at", "url", "origin", "path", "query", "draft_id_readback", "same_draft_reopened", "login_active", "captcha_present", "page_fingerprint_sha256", "credential_values_recorded"],
+      "properties": {
+        "captured_at": {"$ref": "#/$defs/timestamp"},
+        "url": {"type": "string", "format": "uri", "pattern": "^https://post\\.alibaba\\.com/product/publish\\.htm\\?"},
+        "origin": {"const": "https://post.alibaba.com"}, "path": {"const": "/product/publish.htm"},
+        "query": {
+          "type": "object", "additionalProperties": false, "required": ["itemId", "pubAction"],
+          "properties": {"itemId": {"$ref": "#/$defs/productId"}, "pubAction": {"const": "draft"}}
+        },
+        "draft_id_readback": {"$ref": "#/$defs/productId"}, "same_draft_reopened": {"const": true},
+        "login_active": {"const": true}, "captcha_present": {"const": false},
+        "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"}, "credential_values_recorded": {"const": false}
+      }
+    },
+    "draft_save_count": {"const": 1}, "final_write_count": {"const": 0},
+    "final_submit_triggered": {"const": false}, "result_body_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "timestamp": {"type": "string", "format": "date-time"},
+    "productId": {"type": "string", "pattern": "^[0-9]+$"},
+    "nonEmptyId": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\r\\n]+$"},
+    "targetModel": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+    "captureEvidence": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["role", "capture_id", "path", "bytes", "sha256"],
+        "properties": {
+          "role": {"enum": ["DRAFT_SAVE_NETWORK_RESPONSE", "DRAFT_REOPEN_VISIBLE_PAGE"]},
+          "capture_id": {"$ref": "#/$defs/nonEmptyId"},
+          "path": {"type": "string", "minLength": 3, "maxLength": 4096, "pattern": "^(?:[A-Za-z]:[\\\\/]|/)[^\\r\\n]+$"},
+          "bytes": {"type": "integer", "minimum": 2},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    }
+  }
+}

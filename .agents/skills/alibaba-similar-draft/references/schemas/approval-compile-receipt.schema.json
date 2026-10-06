@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/approval-compile-receipt.schema.json",
+  "title": "Approval Compilation Receipt",
+  "type": "object",
+  "required": ["schema_version", "status", "run_id", "target_model", "template_product_id"],
+  "properties": {
+    "schema_version": {"const": "sellerkit.approval-compile-receipt.v1"},
+    "status": {"const": "PASS"},
+    "run_id": {"type": "string", "minLength": 1},
+    "target_model": {"type": "string", "minLength": 1},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "draft_fill_ready": {"const": true},
+    "publish_ready": {"const": false},
+    "final_write_enabled": {"const": false}
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/review_decision_event.schema.json",
+  "title": "Hash-chained local field-review event",
+  "type": "object",
+  "required": ["schema_version", "canonical_model", "raw_model", "field", "decision", "reviewer_id", "reviewer_role", "rationale", "review_scope", "review_subject_hash", "identity_assurance", "promotion_effective", "promotion_effective_reason", "timestamp_utc", "previous_event_hash", "external_write_enabled", "database_sha256", "database_receipt_sha256", "event_hash", "event_id"],
+  "properties": {
+    "schema_version": {"const": "sellerkit.review_decision.v2"},
+    "canonical_model": {"type": "string", "minLength": 1},
+    "raw_model": {"type": "string", "minLength": 1},
+    "field": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["APPROVE_FIELD", "REJECT_FIELD", "NEEDS_CHANGES"]},
+    "reviewer_id": {"type": "string", "minLength": 1, "maxLength": 500},
+    "reviewer_role": {"type": "string", "minLength": 1, "maxLength": 500},
+    "rationale": {"type": "string", "minLength": 1, "maxLength": 500},
+    "review_scope": {"const": "FIELD"},
+    "review_subject_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identity_assurance": {"const": "SELF_ATTESTED_UNVERIFIED"},
+    "promotion_effective": {"const": false},
+    "promotion_effective_reason": {"const": "V1_HAS_NO_APPROVED_INTERNAL_PROMOTION_WORKFLOW"},
+    "timestamp_utc": {"type": "string", "format": "date-time"},
+    "previous_event_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "external_write_enabled": {"const": false},
+    "database_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "database_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "event_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "event_id": {"type": "string", "pattern": "^[0-9a-f]{24}$"}
+  },
+  "additionalProperties": false
+}

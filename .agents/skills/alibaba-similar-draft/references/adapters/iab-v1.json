@@ -1,0 +1,140 @@
+{
+  "schema_version": "alibaba.iab-logical-adapter.v1",
+  "adapter_id": "codex-in-app-browser-logical-similar-draft",
+  "adapter_version": "1.0.0",
+  "browser_surface": "CODEX_IN_APP_BROWSER",
+  "scope": "LOGICAL_RUNTIME_RESOLUTION_ONLY",
+  "readiness": {
+    "production_execution_ready": false,
+    "localized_runtime_implemented": false,
+    "request_pause_resume_implemented": false,
+    "browser_backend_attestation_available": false,
+    "trust_status": "BLOCKED_LIVE_ATTESTATION",
+    "reason": "The current Codex Browser surface exposes observations but no platform-signed browser-backend capture attestation."
+  },
+  "capabilities": {
+    "localized_fields": {
+      "enabled": false,
+      "current_visible_label_required": true,
+      "rtl_direction_verified": false,
+      "platform_counter_current_render_verified": false
+    },
+    "request_guard": {
+      "implemented": false,
+      "install_before_navigation_verified": false,
+      "pause_resume_exact_request_verified": false,
+      "unknown_write_default": "DENY",
+      "final_write": "HARD_DENY"
+    },
+    "capture_attestation": {
+      "reviewed": false,
+      "live_tool_call_provenance_verified": false,
+      "platform_signature_required": true,
+      "raw_material_hashes_required": true,
+      "session_and_page_binding_required": true,
+      "provenance_verifier_id": null
+    }
+  },
+  "runtime_resolution": {
+    "current_probe_required": true,
+    "probe_origin": "https://post.alibaba.com",
+    "probe_path": "/product/publish.htm",
+    "re_resolve_after_each_page_change": true,
+    "discard_prior_resolutions": true,
+    "resolution_lifetime": "CURRENT_VISIBLE_PAGE_STATE_ONLY",
+    "coordinate_fallback_allowed": false,
+    "stale_dom_binding_allowed": false,
+    "cached_runtime_category_keys_allowed": false,
+    "non_unique_resolution_decision": "STOP",
+    "missing_resolution_decision": "STOP",
+    "captcha_or_login_decision": "STOP"
+  },
+  "logical_locators": [
+    {
+      "locator_id": "page.current_probe",
+      "kind": "PAGE_GUARD",
+      "resolve_using": [
+        "CURRENT_VISIBLE_URL",
+        "CURRENT_ACCESSIBILITY_TREE",
+        "CURRENT_NETWORK_GUARD_RECEIPT"
+      ],
+      "required_cardinality": "EXACTLY_ONE_PAGE",
+      "persist_resolution": false
+    },
+    {
+      "locator_id": "field.registry_runtime",
+      "kind": "FORM_FIELD",
+      "resolve_using": [
+        "CURRENT_FIELD_REGISTRY_LOGICAL_NAME",
+        "CURRENT_VISIBLE_LABEL",
+        "CURRENT_ACCESSIBLE_ROLE",
+        "CURRENT_SECTION_CONTEXT"
+      ],
+      "required_cardinality": "EXACTLY_ONE_VISIBLE_CONTROL",
+      "persist_resolution": false
+    },
+    {
+      "locator_id": "field.category_property_runtime",
+      "kind": "DYNAMIC_CATEGORY_PROPERTY",
+      "resolve_using": [
+        "APPROVED_PROPERTY_NAME",
+        "CURRENT_VISIBLE_CATEGORY_LABEL",
+        "CURRENT_CATEGORY_SCHEMA_RUNTIME_KEY"
+      ],
+      "runtime_key_output": "CURRENT_RUN_ONLY",
+      "reject_preexisting_runtime_key": true,
+      "required_cardinality": "EXACTLY_ONE_VISIBLE_CATEGORY_ROW",
+      "persist_resolution": false
+    },
+    {
+      "locator_id": "asset.upload_runtime",
+      "kind": "FILE_UPLOAD_CONTROL",
+      "resolve_using": [
+        "APPROVED_ASSET_ROLE",
+        "CURRENT_VISIBLE_MEDIA_SECTION",
+        "CURRENT_FILE_CHOOSER"
+      ],
+      "required_cardinality": "EXACTLY_ONE_ACTIVE_UPLOAD_TARGET",
+      "persist_resolution": false
+    },
+    {
+      "locator_id": "action.save_draft_runtime",
+      "kind": "VISIBLE_UI_ACTION",
+      "logical_action": "SAVE_DRAFT",
+      "resolve_using": [
+        "CURRENT_FIELD_REGISTRY_ACTION",
+        "CURRENT_VISIBLE_BUTTON_ROLE",
+        "CURRENT_ACCESSIBLE_ACTION_NAME"
+      ],
+      "required_cardinality": "EXACTLY_ONE_VISIBLE_ENABLED_ACTION",
+      "direct_endpoint_call_allowed": false,
+      "persist_resolution": false
+    },
+    {
+      "locator_id": "guard.final_submit",
+      "kind": "PERMANENT_ACTION_GUARD",
+      "logical_action": "SUBMIT_OR_PUBLISH",
+      "resolve_using": [
+        "CURRENT_VISIBLE_ACTIONS",
+        "CURRENT_ENDPOINT_POLICY"
+      ],
+      "decision": "HARD_DENY",
+      "visible_ui_click_allowed": false,
+      "direct_endpoint_call_allowed": false,
+      "persist_resolution": false
+    }
+  ],
+  "forbidden_persistence": [
+    "SCREEN_COORDINATES",
+    "PRIOR_PAGE_ELEMENT_HANDLES",
+    "PRIOR_ACCESSIBILITY_NODE_IDS",
+    "PRIOR_DYNAMIC_CATEGORY_KEYS",
+    "COOKIE_OR_STORAGE_VALUES",
+    "AUTHORIZATION_TOKENS"
+  ],
+  "side_effects": {
+    "browser_execution": false,
+    "network_execution": false,
+    "credential_access": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/browser-capture-material.schema.json",
+  "title": "Trusted Codex In-app Browser Capture Material",
+  "description": "Hash-bound, redacted material emitted from one visible browser/network observation. Summary receipts cannot substitute for this artifact.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "capture_id", "role", "captured_at", "source",
+    "browser_session_sha256", "page_fingerprint_sha256", "tool_result_id_sha256",
+    "credential_values_recorded", "raw_secret_values_recorded", "payload", "payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba.browser-capture-material.v1"},
+    "capture_id": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\r\\n]+$"},
+    "role": {
+      "enum": [
+        "INVENTORY_BEFORE_VISIBLE_PAGE", "INVENTORY_BEFORE_NETWORK_RESPONSE",
+        "INVENTORY_AFTER_VISIBLE_PAGE", "INVENTORY_AFTER_NETWORK_RESPONSE",
+        "DRAFT_SAVE_NETWORK_RESPONSE", "DRAFT_REOPEN_VISIBLE_PAGE"
+      ]
+    },
+    "captured_at": {"type": "string", "format": "date-time"},
+    "source": {"enum": ["CODEX_IN_APP_BROWSER_TOOL_RESULT", "SYNTHETIC_TEST"]},
+    "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+    "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+    "tool_result_id_sha256": {"$ref": "#/$defs/sha256"},
+    "credential_values_recorded": {"const": false},
+    "raw_secret_values_recorded": {"const": false},
+    "payload": {"type": "object"},
+    "payload_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

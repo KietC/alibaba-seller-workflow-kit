@@ -1,0 +1,64 @@
+{
+  "$comment": "Release identity is compared exactly to the approved local configuration by the runtime; this schema has no seller-specific identity. / 发布标识由运行时与获批配置精确比对，本结构不含卖家专属身份。",
+  "$id": "https://sellerkit.local/schemas/field_provenance.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "ai_assisted_extraction": {
+      "const": true
+    },
+    "approval_status": {
+      "const": "needs_review"
+    },
+    "canonical_model": {
+      "pattern": "^[A-Z0-9]+$",
+      "type": "string"
+    },
+    "field": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "observed_at_utc": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_disposition": {
+      "const": "OFFICIAL_CURRENT_REVIEW_REQUIRED"
+    },
+    "source_locator": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_release": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_type": {
+      "const": "official_current"
+    }
+  },
+  "required": [
+    "canonical_model",
+    "field",
+    "value",
+    "source_type",
+    "source_path",
+    "source_sha256",
+    "source_release",
+    "source_locator",
+    "observed_at_utc",
+    "source_disposition",
+    "approval_status",
+    "ai_assisted_extraction"
+  ],
+  "title": "Official field provenance row",
+  "type": "object"
+}

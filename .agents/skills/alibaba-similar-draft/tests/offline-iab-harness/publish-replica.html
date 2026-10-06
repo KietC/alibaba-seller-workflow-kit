@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>SellerKit Synthetic Alibaba Publish Replica</title></head>
+<body>
+  <main>
+    <h1>Synthetic Similar Product Draft</h1>
+    <p id="trust">SYNTHETIC_TEST / LOCAL_CONTRACT_ONLY</p>
+    <button id="open-locales" type="button">Multilingual settings</button>
+    <section id="locale-modal" hidden aria-label="Multilingual product titles">
+      <nav id="language-list" aria-label="Languages"></nav>
+      <div id="editor-host"></div>
+    </section>
+    <button id="save-draft" type="button">Save Draft</button>
+    <button id="final-submit" type="button">Submit Product</button>
+    <output id="status" aria-live="polite">Ready</output>
+  </main>
+  <script>
+    const state = { locales: [], values: {}, current: null, epoch: 0, draftId: null };
+    const randomId = () => `field-${state.epoch}-${Math.random().toString(16).slice(2)}`;
+    const codePoints = value => Array.from(value).length;
+    // Deliberately model a platform counter that is not necessarily Unicode
+    // code-point length. The adapter must trust the same visible control, not
+    // silently replace the platform rule with a local length guess.
+    const platformCount = (row, value) => codePoints(value) + Number(row.counterBias || 0);
+    function deterministicOrder(rows) {
+      return [...rows].sort((a, b) => ((a.locale.charCodeAt(0) * 17 + state.epoch) % 23) - ((b.locale.charCodeAt(0) * 17 + state.epoch) % 23));
+    }
+    function renderLanguages() {
+      const nav = document.querySelector('#language-list');
+      nav.replaceChildren(...deterministicOrder(state.locales).map(row => {
+        const button = document.createElement('button');
+        button.type = 'button'; button.dataset.locale = row.locale;
+        button.setAttribute('aria-label', `Edit ${row.label}`); button.textContent = row.label;
+        button.addEventListener('click', () => { state.current = row.locale; renderEditor(); });
+        return button;
+      }));
+    }
+    function renderEditor() {
+      const row = state.locales.find(item => item.locale === state.current);
+      if (!row) return;
+      state.epoch += 1; renderLanguages();
+      const id = randomId(); const value = state.values[row.locale] || '';
+      const section = document.createElement('section');
+      section.dataset.renderEpoch = String(state.epoch); section.dataset.locale = row.locale;
+      section.setAttribute('aria-label', `${row.label} title editor`);
+      const label = document.createElement('label'); label.htmlFor = id; label.textContent = `${row.label} product title`;
+      const input = document.createElement('input'); input.id = id; input.value = value;
+      input.dir = row.direction === 'RTL' ? 'rtl' : 'ltr'; input.dataset.locale = row.locale;
+      input.setAttribute('aria-label', `${row.label} product title`);
+      const counter = document.createElement('span'); counter.setAttribute('role', 'status');
+      counter.setAttribute('aria-label', `${row.label} title counter`);
+      counter.textContent = `${platformCount(row, value)} / ${row.maximum}`;
+      input.addEventListener('input', event => {
+        state.values[row.locale] = event.target.value;
+        queueMicrotask(() => renderEditor());
+      });
+      section.append(label, input, counter); document.querySelector('#editor-host').replaceChildren(section);
+    }
+    document.querySelector('#open-locales').addEventListener('click', () => {
+      document.querySelector('#locale-modal').hidden = false;
+      if (!state.current) state.current = state.locales[0].locale;
+      renderEditor();
+    });
+    document.querySelector('#save-draft').addEventListener('click', async () => {
+      const status = document.querySelector('#status'); status.textContent = 'Saving draft';
+      try {
+        const response = await fetch('/product/submitDraft.json', {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({titles:state.values})});
+        const result = await response.json();
+        if (!result.success) throw new Error(result.error || 'business failure');
+        state.draftId = result.draftId; status.textContent = `Draft saved ${result.draftId}`;
+      } catch (error) { status.textContent = `Draft blocked ${error.name}`; }
+    });
+    document.querySelector('#final-submit').addEventListener('click', async () => {
+      try { await fetch('/product/submitFinal.json', {method:'POST'}); }
+      catch (error) { document.querySelector('#status').textContent = 'Final write hard denied'; }
+    });
+    (async () => {
+      const init = await (await fetch('/api/init')).json();
+      state.locales = init.locales; state.values = init.values || {}; state.draftId = init.draftId || null;
+      document.querySelector('#status').textContent = state.draftId ? `Draft reopened ${state.draftId}` : 'Ready';
+    })();
+  </script>
+</body>
+</html>

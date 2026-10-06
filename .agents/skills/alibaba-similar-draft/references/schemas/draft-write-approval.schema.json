@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/draft-write-approval.schema.json",
+  "title": "Independent Alibaba Visible-UI Draft Write Approval",
+  "description": "A short-lived, hash-bound human approval for exactly one visible-UI draft save. Source approval, a run spec, or chat silence is never a substitute.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "approval_id",
+    "decision_id",
+    "status",
+    "explicit",
+    "scope",
+    "approved_by",
+    "approved_at",
+    "expires_at",
+    "target_model",
+    "run_id",
+    "template_product_id",
+    "bindings",
+    "write_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.alibaba.draft-write-approval.v1"
+    },
+    "approval_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "decision_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "status": {
+      "const": "APPROVED"
+    },
+    "explicit": {
+      "const": true
+    },
+    "scope": {
+      "const": "SAVE_ONE_DRAFT_VISIBLE_UI_ONLY"
+    },
+    "approved_by": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "approved_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "target_model": {
+      "$ref": "#/$defs/targetModel"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "template_product_id": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_source_manifest_sha256",
+        "approved_asset_manifest_sha256",
+        "run_spec_sha256",
+        "field_registry_sha256",
+        "endpoint_policy_sha256",
+        "adapter_sha256"
+      ],
+      "properties": {
+        "approved_source_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "approved_asset_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "run_spec_sha256": {"$ref": "#/$defs/sha256"},
+        "field_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "endpoint_policy_sha256": {"$ref": "#/$defs/sha256"},
+        "adapter_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "write_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visible_ui_only",
+        "maximum_draft_save_count",
+        "direct_endpoint_write_enabled",
+        "final_write_enabled"
+      ],
+      "properties": {
+        "visible_ui_only": {"const": true},
+        "maximum_draft_save_count": {"const": 1},
+        "direct_endpoint_write_enabled": {"const": false},
+        "final_write_enabled": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    }
+  }
+}

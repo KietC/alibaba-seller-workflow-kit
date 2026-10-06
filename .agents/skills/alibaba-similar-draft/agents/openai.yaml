@@ -1,0 +1,4 @@
+interface:
+  display_name: "Alibaba Draft Review / 草稿审核"
+  short_description: "Prepare offline draft contracts / 准备离线草稿约束"
+  default_prompt: "Use $alibaba-similar-draft. Run the portable local doctor, bind explicit reviewed local inputs, and compile an evidence-backed approval and offline browser action plan. Report BLOCKED_LIVE_ATTESTATION; do not navigate, fill, upload, save, submit, or publish through an unimplemented production adapter."

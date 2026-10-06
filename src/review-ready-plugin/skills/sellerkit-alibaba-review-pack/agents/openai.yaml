@@ -1,0 +1,6 @@
+interface:
+  display_name: "SellerKit Alibaba Review Pack"
+  short_description: "Verify images and build exhaustive local review matches"
+  default_prompt: "Use $sellerkit-alibaba-review-pack to verify current website images and build an evidence-bound local SellerKit-to-Alibaba review ranking."
+policy:
+  allow_implicit_invocation: false

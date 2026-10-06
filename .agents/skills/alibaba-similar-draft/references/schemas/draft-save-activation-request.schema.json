@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/draft-save-activation-request.schema.json",
+  "title": "Session-scoped One-shot Alibaba Draft-save Activation Request",
+  "description": "A narrow overlay request assembled while the visible-UI draft-save network request is paused. It never changes the fail-closed global endpoint policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "activation_id",
+    "status",
+    "authority",
+    "issued_at",
+    "expires_at",
+    "scope",
+    "bindings",
+    "current_page",
+    "endpoint_request",
+    "attempt_transition",
+    "deny_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.alibaba.draft-save-activation-request.v1"
+    },
+    "activation_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "status": {
+      "const": "PENDING_INTERCEPT_RELEASE"
+    },
+    "authority": {
+      "const": "SINGLE_REQUEST_GUARD_OVERLAY_NOT_GLOBAL_POLICY"
+    },
+    "issued_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_kind",
+        "run_id",
+        "target_model",
+        "template_product_id",
+        "browser_session_sha256"
+      ],
+      "properties": {
+        "run_kind": {
+          "const": "CREATE_SIMILAR_DRAFT"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "target_model": {
+          "$ref": "#/$defs/targetModel"
+        },
+        "template_product_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "browser_session_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_plan_sha256",
+        "action_plan_body_sha256",
+        "verified_probe_receipt_sha256",
+        "probe_source_sha256",
+        "endpoint_policy_sha256",
+        "probe_read_activation_sha256",
+        "redacted_body_semantics_file_sha256",
+        "redacted_body_semantic_sha256",
+        "visible_ui_event_sha256",
+        "run_spec_sha256",
+        "pre_save_readback_sha256",
+        "pre_save_verification_sha256",
+        "checkpoint_sha256"
+      ],
+      "properties": {
+        "action_plan_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "action_plan_body_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "verified_probe_receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "probe_source_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "endpoint_policy_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "probe_read_activation_sha256": {"$ref": "#/$defs/sha256"},
+        "redacted_body_semantics_file_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "redacted_body_semantic_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "visible_ui_event_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "run_spec_sha256": {"$ref": "#/$defs/sha256"},
+        "pre_save_readback_sha256": {"$ref": "#/$defs/sha256"},
+        "pre_save_verification_sha256": {"$ref": "#/$defs/sha256"},
+        "checkpoint_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "current_page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed_at",
+        "origin",
+        "path",
+        "query",
+        "fingerprint_sha256",
+        "login_active",
+        "captcha_present"
+      ],
+      "properties": {
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "origin": {
+          "const": "https://post.alibaba.com"
+        },
+        "path": {
+          "const": "/product/publish.htm"
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pubType",
+            "behavior",
+            "itemId"
+          ],
+          "properties": {
+            "pubType": {
+              "const": "similarPost"
+            },
+            "behavior": {
+              "const": "copyNew"
+            },
+            "itemId": {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          }
+        },
+        "fingerprint_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "login_active": {
+          "const": true
+        },
+        "captcha_present": {
+          "const": false
+        }
+      }
+    },
+    "endpoint_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "path",
+        "method",
+        "query_present",
+        "redirect_allowed",
+        "visible_ui_only",
+        "direct_replay_allowed",
+        "redacted_body_semantic_sha256"
+      ],
+      "properties": {
+        "origin": {
+          "const": "https://post.alibaba.com"
+        },
+        "path": {
+          "const": "/product/submitDraft.json"
+        },
+        "method": {
+          "const": "POST"
+        },
+        "query_present": {
+          "const": false
+        },
+        "redirect_allowed": {
+          "const": false
+        },
+        "visible_ui_only": {
+          "const": true
+        },
+        "direct_replay_allowed": {
+          "const": false
+        },
+        "redacted_body_semantic_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "attempt_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before",
+        "consume_to",
+        "maximum",
+        "compare_and_swap_required",
+        "consume_even_if_request_fails"
+      ],
+      "properties": {
+        "before": {
+          "const": 0
+        },
+        "consume_to": {
+          "const": 1
+        },
+        "maximum": {
+          "const": 1
+        },
+        "compare_and_swap_required": {
+          "const": true
+        },
+        "consume_even_if_request_fails": {
+          "const": true
+        }
+      }
+    },
+    "deny_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "global_endpoint_policy_unchanged",
+        "default_decision",
+        "unknown_request_decision",
+        "final_write_ui_decision",
+        "final_write_network_decision",
+        "activation_cannot_authorize_final_write"
+      ],
+      "properties": {
+        "global_endpoint_policy_unchanged": {
+          "const": true
+        },
+        "default_decision": {
+          "const": "DENY"
+        },
+        "unknown_request_decision": {
+          "const": "DENY"
+        },
+        "final_write_ui_decision": {
+          "const": "HARD_DENY_PERMANENT"
+        },
+        "final_write_network_decision": {
+          "const": "HARD_DENY_PERMANENT"
+        },
+        "activation_cannot_authorize_final_write": {
+          "const": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    }
+  }
+}

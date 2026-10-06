@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/priority_package_index_receipt.schema.json",
+  "title": "V2 current priority index integrity receipt",
+  "type": "object",
+  "required": ["schema_version", "status", "local_review_status", "remote_write_status", "release_status", "index_path", "index_sha256", "current_package_count", "current_package_receipts", "active_directory_count", "unindexed_active_directory_count", "superseded_packages_moved", "plugin_source_tree_sha256", "receipt_authentication", "external_write_enabled"],
+  "properties": {
+    "schema_version": {"const": "sellerkit.priority_package_index_receipt.v2"},
+    "status": {"const": "PASS_PRIORITY_INDEX_BOUND_NO_REMOTE_WRITE"},
+    "local_review_status": {"const": "READY_FOR_LOCAL_HUMAN_REVIEW"},
+    "remote_write_status": {"const": "DISABLED_NOT_REQUESTED"},
+    "release_status": {"const": "NOT_RELEASED_V1_LOCAL_ONLY"},
+    "index_path": {"type": "string", "minLength": 1},
+    "index_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "current_package_count": {"const": 5},
+    "current_package_receipts": {"type": "object", "minProperties": 5, "maxProperties": 5, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "active_directory_count": {"const": 5},
+    "unindexed_active_directory_count": {"const": 0},
+    "superseded_packages_moved": {"type": "array"},
+    "plugin_source_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "receipt_authentication": {"const": "UNSIGNED_LOCAL_INTEGRITY_ONLY_NOT_RELEASE_AUTHORIZATION"},
+    "external_write_enabled": {"const": false}
+  },
+  "additionalProperties": false
+}

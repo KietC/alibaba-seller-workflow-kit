@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/official-schema-xml-normalized.schema.json",
+  "title": "Normalized Alibaba Official Publish Schema XML",
+  "description": "Read-only, hash-bound parse of an alibaba.icbu.product.schema.get XML response. It records the complete field/rule tree and never grants write authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "capture_id",
+    "run_id",
+    "target_model",
+    "template_product_id",
+    "category_id",
+    "product_type",
+    "captured_at",
+    "expires_at",
+    "freshness_eligible",
+    "source",
+    "raw_xml",
+    "parser",
+    "fields",
+    "field_paths_sha256",
+    "rule_graph_sha256",
+    "manual_review_rules",
+    "unsupported_constructs",
+    "status",
+    "write_authority",
+    "final_write_enabled"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba-official-schema-xml.v1"},
+    "capture_id": {"$ref": "#/$defs/nonEmpty"},
+    "run_id": {"$ref": "#/$defs/nonEmpty"},
+    "target_model": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "category_id": {"$ref": "#/$defs/nonEmpty"},
+    "product_type": {"$ref": "#/$defs/nonEmpty"},
+    "captured_at": {"type": ["string", "null"], "format": "date-time"},
+    "expires_at": {"type": ["string", "null"], "format": "date-time"},
+    "freshness_eligible": {"type": "boolean"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["api_method", "read_only"],
+      "properties": {
+        "api_method": {"const": "alibaba.icbu.product.schema.get"},
+        "read_only": {"const": true}
+      }
+    },
+    "raw_xml": {"$ref": "#/$defs/fileBinding"},
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_sha256", "python_xml_parser", "external_entities_allowed"],
+      "properties": {
+        "tool_sha256": {"$ref": "#/$defs/sha256"},
+        "python_xml_parser": {"const": "xml.etree.ElementTree"},
+        "external_entities_allowed": {"const": false}
+      }
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/field"}
+    },
+    "field_paths_sha256": {"$ref": "#/$defs/sha256"},
+    "rule_graph_sha256": {"$ref": "#/$defs/sha256"},
+    "manual_review_rules": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/manualRule"}
+    },
+    "unsupported_constructs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/nonEmpty"}
+    },
+    "status": {
+      "enum": [
+        "PARSED_MACHINE_RULES_COMPLETE",
+        "PARSED_REVIEW_REQUIRED",
+        "REPLAY_REVIEW_ONLY",
+        "BLOCKED_UNSUPPORTED_SCHEMA"
+      ]
+    },
+    "write_authority": {"const": "NONE_READ_ONLY_EVIDENCE"},
+    "final_write_enabled": {"const": false}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "BLOCKED_UNSUPPORTED_SCHEMA"}}},
+      "then": {"properties": {"unsupported_constructs": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "PARSED_MACHINE_RULES_COMPLETE"}}},
+      "then": {
+        "properties": {
+          "manual_review_rules": {"maxItems": 0},
+          "unsupported_constructs": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "REPLAY_REVIEW_ONLY"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "captured_at": {"type": "null"},
+          "expires_at": {"type": "null"},
+          "freshness_eligible": {"const": false}
+        }
+      },
+      "else": {
+        "properties": {
+          "captured_at": {"type": "string", "format": "date-time"},
+          "expires_at": {"type": "string", "format": "date-time"},
+          "freshness_eligible": {"const": true}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "nonEmpty": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "[^\\s]"},
+    "fileBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^[^\\r\\n]+$"},
+        "bytes": {"type": "integer", "minimum": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "dependExpression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_id", "symbol", "value"],
+      "properties": {
+        "field_id": {"$ref": "#/$defs/nonEmpty"},
+        "symbol": {
+          "enum": [
+            "is null", "==", "!=", ">", "<", ">=", "<=", "contains", "not contains",
+            "this field's value in fieldOptions", "this field's value not in fieldOptions"
+          ]
+        },
+        "value": {"type": ["string", "null"], "maxLength": 4096}
+      }
+    },
+    "dependGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operator", "expressions"],
+      "properties": {
+        "operator": {"enum": ["and", "or"]},
+        "expressions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/dependExpression"}}
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value", "attributes", "depend_groups", "machine_enforceable", "rule_sha256"],
+      "properties": {
+        "name": {"$ref": "#/$defs/nonEmpty"},
+        "value": {"type": ["string", "null"], "maxLength": 65535},
+        "attributes": {"type": "object", "additionalProperties": {"type": "string"}},
+        "depend_groups": {"type": "array", "items": {"$ref": "#/$defs/dependGroup"}},
+        "machine_enforceable": {"type": "boolean"},
+        "rule_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name", "value", "attributes"],
+      "properties": {
+        "display_name": {"type": ["string", "null"], "maxLength": 65535},
+        "value": {"type": ["string", "null"], "maxLength": 65535},
+        "attributes": {"type": "object", "additionalProperties": {"type": "string"}}
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path", "ordinal", "id", "name", "type", "rules", "options", "children",
+        "required", "read_only", "default_value", "rule_sha256"
+      ],
+      "properties": {
+        "path": {"$ref": "#/$defs/nonEmpty"},
+        "ordinal": {"type": "integer", "minimum": 0},
+        "id": {"$ref": "#/$defs/nonEmpty"},
+        "name": {"type": ["string", "null"], "maxLength": 4096},
+        "type": {"enum": ["input", "multiInput", "singleCheck", "multiCheck", "complex", "multiComplex", "label"]},
+        "rules": {"type": "array", "items": {"$ref": "#/$defs/rule"}},
+        "options": {"type": "array", "items": {"$ref": "#/$defs/option"}},
+        "children": {"type": "array", "items": {"$ref": "#/$defs/field"}},
+        "required": {"type": "boolean"},
+        "read_only": {"type": "boolean"},
+        "default_value": {"type": ["string", "null"], "maxLength": 65535},
+        "rule_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "manualRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_path", "rule_name", "rule_sha256", "reason"],
+      "properties": {
+        "field_path": {"$ref": "#/$defs/nonEmpty"},
+        "rule_name": {"$ref": "#/$defs/nonEmpty"},
+        "rule_sha256": {"$ref": "#/$defs/sha256"},
+        "reason": {"$ref": "#/$defs/nonEmpty"}
+      }
+    }
+  }
+}

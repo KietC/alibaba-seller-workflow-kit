@@ -1,0 +1,920 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/similar-draft.schema.json",
+  "title": "Alibaba Guarded Similar Draft Candidate",
+  "description": "Local candidate package for a save-draft-only browser run. Validation of this artifact never grants online write authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "draft_id",
+    "run_id",
+    "target_model",
+    "generated_at",
+    "draft_status",
+    "mode",
+    "template",
+    "bindings",
+    "registry_binding",
+    "source_gate",
+    "field_count",
+    "fields",
+    "assets",
+    "blockers",
+    "candidate_review",
+    "action_plan",
+    "external_write_enabled",
+    "final_write_enabled",
+    "final_write_count",
+    "submit_triggered"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "alibaba.similar-draft.v1"
+    },
+    "draft_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "target_model": {
+      "$ref": "#/$defs/targetModel"
+    },
+    "generated_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "draft_status": {
+      "enum": [
+        "REVIEW_REQUIRED",
+        "BLOCKED_PREFLIGHT",
+        "READY_FOR_BROWSER_PREFLIGHT",
+        "FINAL_REVIEW_READY"
+      ]
+    },
+    "mode": {
+      "const": "SAVE_DRAFT_ONLY"
+    },
+    "template": {
+      "$ref": "#/$defs/template"
+    },
+    "bindings": {
+      "$ref": "#/$defs/bindings"
+    },
+    "registry_binding": {
+      "$ref": "#/$defs/registryBinding"
+    },
+    "source_gate": {
+      "$ref": "#/$defs/sourceGate"
+    },
+    "field_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/field"
+      }
+    },
+    "assets": {
+      "$ref": "#/$defs/assets"
+    },
+    "blockers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "candidate_review": {
+      "$ref": "#/$defs/candidateReview"
+    },
+    "action_plan": {
+      "$ref": "#/$defs/actionPlan"
+    },
+    "external_write_enabled": {
+      "const": false
+    },
+    "final_write_enabled": {
+      "const": false
+    },
+    "final_write_count": {
+      "const": 0
+    },
+    "submit_triggered": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_gate": {
+            "properties": {
+              "status": {
+                "const": "REJECTED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "source_gate"
+        ]
+      },
+      "then": {
+        "properties": {
+          "draft_status": {
+            "const": "BLOCKED_PREFLIGHT"
+          },
+          "fields": {
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/field"
+                },
+                {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "NEEDS_REVIEW",
+                        "BLOCKED",
+                        "OMITTED"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "assets": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/assets"
+              },
+              {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "BLOCKED",
+                      "EMPTY"
+                    ]
+                  },
+                  "asset_refs": {
+                    "maxItems": 0
+                  }
+                }
+              }
+            ]
+          },
+          "blockers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "draft_status": {
+            "enum": [
+              "READY_FOR_BROWSER_PREFLIGHT",
+              "FINAL_REVIEW_READY"
+            ]
+          }
+        },
+        "required": [
+          "draft_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source_gate": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            }
+          },
+          "candidate_review": {
+            "properties": {
+              "status": {
+                "const": "APPROVED"
+              }
+            }
+          },
+          "blockers": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    },
+    "nullableSha256": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product_id",
+        "role",
+        "record_disposition",
+        "facts_inherited",
+        "assets_inherited",
+        "claims_inherited",
+        "template_content_authoritative",
+        "clear_required"
+      ],
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "role": {
+          "const": "NAVIGATION_AND_FORM_STRUCTURE_ONLY"
+        },
+        "record_disposition": {
+          "enum": [
+            "HISTORICAL_REFERENCE_ONLY",
+            "APPROVED_INTERNAL_SOURCE"
+          ]
+        },
+        "facts_inherited": {
+          "const": false
+        },
+        "assets_inherited": {
+          "const": false
+        },
+        "claims_inherited": {
+          "const": false
+        },
+        "template_content_authoritative": {
+          "const": false
+        },
+        "clear_required": {
+          "const": true
+        }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_source_manifest_sha256",
+        "approved_asset_manifest_sha256",
+        "candidate_package_sha256",
+        "field_registry_sha256",
+        "schema_bundle_sha256",
+        "builder_tool_sha256"
+      ],
+      "properties": {
+        "approved_source_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "approved_asset_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "candidate_package_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "field_registry_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "schema_bundle_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "builder_tool_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "registryBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registry_id",
+        "registry_version",
+        "registry_sha256",
+        "current_probe_status",
+        "current_probe_receipt_sha256",
+        "all_emitted_fields_mapped_once",
+        "stale_dynamic_ids_present"
+      ],
+      "properties": {
+        "registry_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "registry_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "registry_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "current_probe_status": {
+          "enum": [
+            "NOT_RUN",
+            "READ_ONLY_VERIFIED",
+            "BLOCKED"
+          ]
+        },
+        "current_probe_receipt_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "all_emitted_fields_mapped_once": {
+          "const": true
+        },
+        "stale_dynamic_ids_present": {
+          "const": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "current_probe_status": {
+                "const": "READ_ONLY_VERIFIED"
+              }
+            },
+            "required": [
+              "current_probe_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "current_probe_receipt_sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "current_probe_receipt_sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sourceGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "gate_receipt_sha256",
+        "approved_manifest_sha256",
+        "required_disposition",
+        "checked_source_count",
+        "rejected_source_count",
+        "errors"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "REJECTED"
+          ]
+        },
+        "gate_receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "approved_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "required_disposition": {
+          "const": "APPROVED_INTERNAL_SOURCE"
+        },
+        "checked_source_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rejected_source_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "rejected_source_count": {
+                "const": 0
+              },
+              "errors": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "rejected_source_count": {
+                "minimum": 1
+              },
+              "errors": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "logical_name",
+        "registry_logical_name",
+        "status",
+        "value",
+        "intended_value_sha256",
+        "record_disposition",
+        "source_ids",
+        "source_decision_ids",
+        "source_hashes",
+        "human_review_status",
+        "clear_template_first",
+        "readback_required",
+        "reason"
+      ],
+      "properties": {
+        "logical_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$",
+          "maxLength": 200
+        },
+        "registry_logical_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$",
+          "maxLength": 200
+        },
+        "status": {
+          "enum": [
+            "READY",
+            "NEEDS_REVIEW",
+            "BLOCKED",
+            "OMITTED"
+          ]
+        },
+        "value": {},
+        "intended_value_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "record_disposition": {
+          "anyOf": [
+            {
+              "const": "APPROVED_INTERNAL_SOURCE"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyId"
+          }
+        },
+        "source_decision_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyId"
+          }
+        },
+        "source_hashes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "human_review_status": {
+          "enum": [
+            "NOT_REVIEWED",
+            "APPROVED",
+            "REJECTED"
+          ]
+        },
+        "clear_template_first": {
+          "const": true
+        },
+        "readback_required": {
+          "const": true
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "READY"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "intended_value_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "record_disposition": {
+                "const": "APPROVED_INTERNAL_SOURCE"
+              },
+              "source_ids": {
+                "minItems": 1
+              },
+              "source_decision_ids": {
+                "minItems": 1
+              },
+              "source_hashes": {
+                "minItems": 1
+              },
+              "human_review_status": {
+                "const": "APPROVED"
+              },
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "assetRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "role",
+        "upload_order",
+        "sha256",
+        "status",
+        "source_decision_id"
+      ],
+      "properties": {
+        "asset_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "role": {
+          "enum": [
+            "MAIN_IMAGE",
+            "MAIN_VIDEO",
+            "DETAIL_IMAGE",
+            "DETAIL_VIDEO",
+            "CERTIFICATE_IMAGE"
+          ]
+        },
+        "upload_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "status": {
+          "const": "APPROVED"
+        },
+        "source_decision_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "asset_manifest_sha256",
+        "asset_sequence_sha256",
+        "asset_refs",
+        "template_assets_inherited"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "READY",
+            "NEEDS_REVIEW",
+            "BLOCKED",
+            "EMPTY"
+          ]
+        },
+        "asset_manifest_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "asset_sequence_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "asset_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assetRef"
+          }
+        },
+        "template_assets_inherited": {
+          "const": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "READY"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "asset_manifest_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "asset_sequence_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "asset_refs": {
+                "minItems": 4
+              }
+            }
+          }
+        }
+      ]
+    },
+    "candidateReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "status",
+        "explicit",
+        "decision_id",
+        "reviewed_by",
+        "reviewed_at",
+        "reviewed_candidate_package_sha256"
+      ],
+      "properties": {
+        "required": {
+          "const": true
+        },
+        "status": {
+          "enum": [
+            "NOT_REQUESTED",
+            "PENDING",
+            "APPROVED",
+            "REJECTED"
+          ]
+        },
+        "explicit": {
+          "type": "boolean"
+        },
+        "decision_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "reviewed_by": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_candidate_package_sha256": {
+          "$ref": "#/$defs/nullableSha256"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "APPROVED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "explicit": {
+                "const": true
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reviewed_by": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reviewed_at": {
+                "$ref": "#/$defs/timestamp"
+              },
+              "reviewed_candidate_package_sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "explicit": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "actionPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "browser_prefill_planned",
+        "draft_save",
+        "final_submit"
+      ],
+      "properties": {
+        "browser_prefill_planned": {
+          "type": "boolean"
+        },
+        "draft_save": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "requested",
+            "approved",
+            "approval_decision_id",
+            "approval_package_sha256",
+            "visible_ui_only",
+            "direct_endpoint_call_allowed"
+          ],
+          "properties": {
+            "requested": {
+              "type": "boolean"
+            },
+            "approved": {
+              "type": "boolean"
+            },
+            "approval_decision_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "approval_package_sha256": {
+              "$ref": "#/$defs/nullableSha256"
+            },
+            "visible_ui_only": {
+              "const": true
+            },
+            "direct_endpoint_call_allowed": {
+              "const": false
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "approved": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "approved"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "requested": {
+                    "const": true
+                  },
+                  "approval_decision_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "approval_package_sha256": {
+                    "$ref": "#/$defs/sha256"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "approval_decision_id": {
+                    "type": "null"
+                  },
+                  "approval_package_sha256": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "final_submit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "requested",
+            "approved",
+            "enabled"
+          ],
+          "properties": {
+            "requested": {
+              "const": false
+            },
+            "approved": {
+              "const": false
+            },
+            "enabled": {
+              "const": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

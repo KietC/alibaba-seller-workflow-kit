@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/fill-verification-receipt.schema.json",
+  "title": "Strict Draft Fill Verification Receipt",
+  "description": "Fail-closed result after matching immediate and post-refresh readbacks against the exact hash-bound action plan.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "target_model",
+    "template_product_id",
+    "bindings",
+    "expected_field_count",
+    "expected_clear_count",
+    "expected_post_refresh_empty_count",
+    "fill_readback_count",
+    "post_refresh_readback_count",
+    "draft_save_count",
+    "final_write_count",
+    "errors",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.fill_receipt_verification.v2"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "target_model": {"type": ["string", "null"], "minLength": 1},
+    "template_product_id": {
+      "anyOf": [
+        {"type": "string", "pattern": "^[0-9]+$"},
+        {"type": "null"}
+      ]
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_plan_sha256",
+        "action_plan_body_sha256",
+        "run_spec_sha256",
+        "probe_receipt_sha256",
+        "expected_field_set_sha256",
+        "expected_clear_set_sha256",
+        "expected_post_refresh_empty_set_sha256"
+      ],
+      "properties": {
+        "action_plan_sha256": {"type": "string"},
+        "action_plan_body_sha256": {"type": "string"},
+        "run_spec_sha256": {"type": "string"},
+        "probe_receipt_sha256": {"type": "string"},
+        "expected_field_set_sha256": {"type": "string"},
+        "expected_clear_set_sha256": {"type": "string"},
+        "expected_post_refresh_empty_set_sha256": {"type": "string"}
+      }
+    },
+    "expected_field_count": {"type": "integer", "minimum": 0},
+    "expected_clear_count": {"type": "integer", "minimum": 0},
+    "expected_post_refresh_empty_count": {"type": "integer", "minimum": 0},
+    "fill_readback_count": {"type": "integer", "minimum": 0},
+    "post_refresh_readback_count": {"type": "integer", "minimum": 0},
+    "draft_save_count": {"type": ["integer", "null"], "minimum": 0},
+    "final_write_count": {"type": ["integer", "null"], "minimum": 0},
+    "errors": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "status": {"enum": ["PASS", "FAIL"]}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "PASS"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "bindings": {
+            "properties": {
+              "action_plan_sha256": {"$ref": "#/$defs/sha256"},
+              "action_plan_body_sha256": {"$ref": "#/$defs/sha256"},
+              "run_spec_sha256": {"$ref": "#/$defs/sha256"},
+              "probe_receipt_sha256": {"$ref": "#/$defs/sha256"},
+              "expected_field_set_sha256": {"$ref": "#/$defs/sha256"},
+              "expected_clear_set_sha256": {"$ref": "#/$defs/sha256"},
+              "expected_post_refresh_empty_set_sha256": {"$ref": "#/$defs/sha256"}
+            }
+          },
+          "target_model": {"type": "string", "minLength": 1},
+          "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+          "draft_save_count": {"const": 1},
+          "final_write_count": {"const": 0},
+          "errors": {"maxItems": 0}
+        }
+      },
+      "else": {
+        "properties": {"errors": {"minItems": 1}}
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

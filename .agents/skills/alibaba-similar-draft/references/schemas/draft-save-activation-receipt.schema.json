@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/draft-save-activation-receipt.schema.json",
+  "title": "Consumed One-shot Alibaba Draft-save Activation Receipt",
+  "description": "Fail-closed evidence that one narrowly bound visible-UI draft-save attempt was consumed. This is not evidence that a draft was saved successfully.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "generated_at",
+    "expires_at",
+    "status",
+    "result_semantics",
+    "activation_request_sha256",
+    "scope",
+    "bindings",
+    "endpoint_request",
+    "visible_ui_event",
+    "attempt_transition",
+    "guard_assertions",
+    "ledger_entry_sha256",
+    "checkpoint_transition",
+    "release_authorized"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sellerkit.alibaba.draft-save-activation-receipt.v1"
+    },
+    "receipt_id": {
+      "$ref": "#/$defs/nonEmptyId"
+    },
+    "generated_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "status": {
+      "const": "PASS_ONE_SHOT_DRAFT_SAVE_ACTIVATED"
+    },
+    "result_semantics": {
+      "const": "ATTEMPT_CONSUMED_NOT_DRAFT_SUCCESS"
+    },
+    "activation_request_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "target_model",
+        "template_product_id",
+        "browser_session_sha256"
+      ],
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "target_model": {
+          "$ref": "#/$defs/targetModel"
+        },
+        "template_product_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "browser_session_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_plan_sha256",
+        "action_plan_body_sha256",
+        "verified_probe_receipt_sha256",
+        "probe_source_sha256",
+        "endpoint_policy_sha256",
+        "probe_read_activation_sha256",
+        "current_page_fingerprint_sha256",
+        "redacted_body_semantic_sha256",
+        "visible_ui_event_sha256",
+        "run_spec_sha256",
+        "pre_save_readback_sha256",
+        "pre_save_verification_sha256",
+        "checkpoint_sha256",
+        "checkpoint_revision",
+        "attempt_claim_receipt_sha256"
+      ],
+      "properties": {
+        "action_plan_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "action_plan_body_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "verified_probe_receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "probe_source_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "endpoint_policy_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "probe_read_activation_sha256": {"$ref": "#/$defs/sha256"},
+        "current_page_fingerprint_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "redacted_body_semantic_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "visible_ui_event_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "run_spec_sha256": {"$ref": "#/$defs/sha256"},
+        "pre_save_readback_sha256": {"$ref": "#/$defs/sha256"},
+        "pre_save_verification_sha256": {"$ref": "#/$defs/sha256"},
+        "checkpoint_sha256": {"$ref": "#/$defs/sha256"},
+        "checkpoint_revision": {"type": "integer", "minimum": 0},
+        "attempt_claim_receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "endpoint_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "path",
+        "method",
+        "visible_ui_only",
+        "direct_replay_allowed"
+      ],
+      "properties": {
+        "origin": {
+          "const": "https://post.alibaba.com"
+        },
+        "path": {
+          "const": "/product/submitDraft.json"
+        },
+        "method": {
+          "const": "POST"
+        },
+        "visible_ui_only": {
+          "const": true
+        },
+        "direct_replay_allowed": {
+          "const": false
+        }
+      }
+    },
+    "visible_ui_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "event_at",
+        "event_evidence_sha256"
+      ],
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/nonEmptyId"
+        },
+        "event_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "event_evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "attempt_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before",
+        "after",
+        "maximum",
+        "atomic_ledger_claimed",
+        "retry_allowed"
+      ],
+      "properties": {
+        "before": {
+          "const": 0
+        },
+        "after": {
+          "const": 1
+        },
+        "maximum": {
+          "const": 1
+        },
+        "atomic_ledger_claimed": {
+          "const": true
+        },
+        "retry_allowed": {
+          "const": false
+        }
+      }
+    },
+    "guard_assertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "global_policy_remains_default_deny",
+        "unknown_requests_denied",
+        "draft_route_not_globally_allowed",
+        "direct_replay_denied",
+        "final_write_ui_hard_denied",
+        "final_write_network_hard_denied",
+        "request_guard_must_release_exactly_this_request_once"
+      ],
+      "properties": {
+        "global_policy_remains_default_deny": {
+          "const": true
+        },
+        "unknown_requests_denied": {
+          "const": true
+        },
+        "draft_route_not_globally_allowed": {
+          "const": true
+        },
+        "direct_replay_denied": {
+          "const": true
+        },
+        "final_write_ui_hard_denied": {
+          "const": true
+        },
+        "final_write_network_hard_denied": {
+          "const": true
+        },
+        "request_guard_must_release_exactly_this_request_once": {
+          "const": true
+        }
+      }
+    },
+    "ledger_entry_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "release_authorized": {"const": true},
+    "checkpoint_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "evidence_path", "checkpoint_revision_before", "checkpoint_revision_after", "checkpoint_sha256_after"],
+      "properties": {
+        "state": {"const": "SAVE_ATTEMPTED"},
+        "evidence_path": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 4096,
+          "pattern": "^(?:[A-Za-z]:[\\\\/]|/)[^\\r\\n]+$"
+        },
+        "checkpoint_revision_before": {"type": "integer", "minimum": 0},
+        "checkpoint_revision_after": {"type": "integer", "minimum": 1},
+        "checkpoint_sha256_after": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonEmptyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "targetModel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\\\\/\\r\\n]+$"
+    }
+  }
+}

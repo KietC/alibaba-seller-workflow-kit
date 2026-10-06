@@ -1,0 +1,759 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba/browser-action-plan.schema.json",
+  "title": "Hash-bound Alibaba in-app-browser action plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan_id",
+    "generated_at",
+    "compiler",
+    "target",
+    "source_profile",
+    "quality",
+    "bindings",
+    "runtime_requirements",
+    "invariants",
+    "blocked_fields",
+    "phases",
+    "forbidden_actions",
+    "plan_body_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "alibaba.browser-action-plan.v1"
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 8
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "compiler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "sha256",
+        "browser_or_network_executed",
+        "output_semantics"
+      ],
+      "properties": {
+        "name": {"const": "compile_browser_action_plan.py"},
+        "version": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "browser_or_network_executed": {"const": false},
+        "output_semantics": {"const": "PLAN_ONLY_NO_SIDE_EFFECTS"}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "run_id", "template_product_id", "mode", "maximum_draft_save_count"],
+      "properties": {
+        "model": {"type": "string", "minLength": 1},
+        "run_id": {"type": "string", "minLength": 1},
+        "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+        "mode": {"const": "SAVE_DRAFT_ONLY"},
+        "maximum_draft_save_count": {"const": 1}
+      }
+    },
+    "source_profile": {
+      "enum": ["FULL_DRAFT", "PARTIAL_DRAFT_FILL_APPROVED_ONLY"]
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["terminal_quality", "publish_ready", "incomplete_draft_allowed", "final_write_count_limit"],
+      "properties": {
+        "terminal_quality": {"enum": ["REVIEW_REQUIRED", "FINAL_REVIEW_REQUIRED"]},
+        "publish_ready": {"const": false},
+        "incomplete_draft_allowed": {"type": "boolean"},
+        "final_write_count_limit": {"const": 0}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"incomplete_draft_allowed": {"const": true}},
+            "required": ["incomplete_draft_allowed"]
+          },
+          "then": {
+            "properties": {"terminal_quality": {"const": "REVIEW_REQUIRED"}}
+          }
+        }
+      ]
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["three_party", "write_approval", "field_registry", "endpoint_policy", "adapter"],
+      "properties": {
+        "three_party": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "approved_source_manifest_sha256",
+            "approved_asset_manifest_sha256",
+            "run_spec_sha256",
+            "binding_sha256"
+          ],
+          "properties": {
+            "approved_source_manifest_sha256": {"$ref": "#/$defs/sha256"},
+            "approved_asset_manifest_sha256": {"$ref": "#/$defs/sha256"},
+            "run_spec_sha256": {"$ref": "#/$defs/sha256"},
+            "binding_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
+        "write_approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sha256",
+            "approval_id",
+            "decision_id",
+            "approved_at",
+            "expires_at",
+            "target_model",
+            "run_id",
+            "template_product_id",
+            "execution_binding_sha256"
+          ],
+          "properties": {
+            "sha256": {"$ref": "#/$defs/sha256"},
+            "approval_id": {"type": "string", "minLength": 1},
+            "decision_id": {"type": "string", "minLength": 1},
+            "approved_at": {"type": "string", "format": "date-time"},
+            "expires_at": {"type": "string", "format": "date-time"},
+            "target_model": {"type": "string", "minLength": 1},
+            "run_id": {"type": "string", "minLength": 1},
+            "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+            "execution_binding_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
+        "field_registry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256", "registry_id", "registry_version"],
+          "properties": {
+            "sha256": {"$ref": "#/$defs/sha256"},
+            "registry_id": {"type": ["string", "null"]},
+            "registry_version": {"type": ["string", "null"]}
+          }
+        },
+        "endpoint_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256", "schema_version", "default_decision"],
+          "properties": {
+            "sha256": {"$ref": "#/$defs/sha256"},
+            "schema_version": {"const": "alibaba.endpoint-policy.v1"},
+            "default_decision": {"const": "DENY"}
+          }
+        },
+        "adapter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256", "adapter_id", "adapter_version"],
+          "properties": {
+            "sha256": {"$ref": "#/$defs/sha256"},
+            "adapter_id": {"type": "string", "minLength": 1},
+            "adapter_version": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "runtime_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_probe_required",
+        "current_probe_must_be_newer_than_plan",
+        "reparse_after_every_page_change",
+        "discard_prior_locators",
+        "resolve_dynamic_category_keys_from_current_page_only",
+        "fail_on_non_unique_locator",
+        "fail_on_captcha_or_login",
+        "fail_on_unknown_write_request",
+        "write_approval_must_be_unexpired_at_execution"
+      ],
+      "properties": {
+        "current_probe_required": {"const": true},
+        "current_probe_must_be_newer_than_plan": {"const": true},
+        "reparse_after_every_page_change": {"const": true},
+        "discard_prior_locators": {"const": true},
+        "resolve_dynamic_category_keys_from_current_page_only": {"const": true},
+        "fail_on_non_unique_locator": {"const": true},
+        "fail_on_captcha_or_login": {"const": true},
+        "fail_on_unknown_write_request": {"const": true},
+        "write_approval_must_be_unexpired_at_execution": {"const": true},
+        "localized_fields_require_live_language_label": {"const": true},
+        "localized_fields_require_direction_match": {"const": true},
+        "localized_max_length_rule_must_match_current_page": {"const": true},
+        "localized_locator_requires_adapter_capability": {"const": true}
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "clear_all_inherited_fields_before_any_write",
+        "write_values_only_from_approved_field_values",
+        "blocked_fields_never_written",
+        "asset_path_bytes_sha256_bound",
+        "asset_upload_order_bound",
+        "save_draft_visible_ui_only",
+        "save_draft_requires_valid_write_approval",
+        "direct_endpoint_write_allowed",
+        "submit_or_final_write_decision",
+        "final_write_permanently_disabled"
+      ],
+      "properties": {
+        "clear_all_inherited_fields_before_any_write": {"const": true},
+        "write_values_only_from_approved_field_values": {"const": true},
+        "blocked_fields_never_written": {"const": true},
+        "asset_path_bytes_sha256_bound": {"const": true},
+        "asset_upload_order_bound": {"const": true},
+        "save_draft_visible_ui_only": {"const": true},
+        "save_draft_requires_valid_write_approval": {"const": true},
+        "direct_endpoint_write_allowed": {"const": false},
+        "submit_or_final_write_decision": {"const": "HARD_DENY"},
+        "final_write_permanently_disabled": {"const": true},
+        "localized_field_identity_hash_bound": {"const": true},
+        "localized_field_values_are_per_locale": {"const": true}
+      }
+    },
+    "blocked_fields": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"$ref": "#/$defs/clearPhase"},
+        {"$ref": "#/$defs/writePhase"},
+        {"$ref": "#/$defs/uploadPhase"},
+        {"$ref": "#/$defs/verifyPhase"},
+        {"$ref": "#/$defs/savePhase"},
+        {"$ref": "#/$defs/stopPhase"}
+      ],
+      "items": false
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"$ref": "#/$defs/forbiddenAction"}
+    },
+    "plan_body_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "phases": {
+            "contains": {
+              "type": "object",
+              "required": ["operations"],
+              "properties": {
+                "operations": {
+                  "contains": {
+                    "type": "object",
+                    "required": ["target"],
+                    "properties": {
+                      "target": {
+                        "type": "object",
+                        "required": ["kind"],
+                        "properties": {"kind": {"const": "LOCALIZED_FIELD"}}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": ["phases"]
+      },
+      "then": {
+        "properties": {
+          "runtime_requirements": {
+            "required": [
+              "localized_fields_require_live_language_label",
+              "localized_fields_require_direction_match",
+              "localized_max_length_rule_must_match_current_page",
+              "localized_locator_requires_adapter_capability"
+            ]
+          },
+          "invariants": {
+            "required": [
+              "localized_field_identity_hash_bound",
+              "localized_field_values_are_per_locale"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_ref", "resolve_from_current_probe", "reuse_prior_resolution"],
+      "properties": {
+        "adapter_ref": {"type": "string", "minLength": 1},
+        "resolve_from_current_probe": {"const": true},
+        "reuse_prior_resolution": {"const": false}
+      }
+    },
+    "fieldTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "logical_name", "section", "runtime_key"],
+      "properties": {
+        "kind": {"const": "FIELD_REGISTRY"},
+        "logical_name": {"type": "string", "minLength": 1},
+        "section": {"type": ["string", "null"]},
+        "runtime_key": {"type": "null"}
+      }
+    },
+    "categoryTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "logical_name", "section", "approved_property_name", "runtime_key"],
+      "properties": {
+        "kind": {"const": "CATEGORY_PROPERTY_RUNTIME_KEY"},
+        "logical_name": {"const": "category_properties"},
+        "section": {"const": "CATEGORY_PROPERTIES"},
+        "approved_property_name": {"type": "string", "minLength": 1},
+        "runtime_key": {"type": "null"}
+      }
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-(?:[A-Z]{2}|[0-9]{3}))?$"
+    },
+    "localizedTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind", "logical_name", "locale", "live_language_label", "direction",
+        "expected_sha256", "max_length_rule_hash", "max_length_rule", "identity_sha256"
+      ],
+      "properties": {
+        "kind": {"const": "LOCALIZED_FIELD"},
+        "logical_name": {"type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "locale": {"$ref": "#/$defs/locale"},
+        "live_language_label": {"type": "string", "minLength": 1, "maxLength": 200, "pattern": "[^\\s]"},
+        "direction": {"enum": ["LTR", "RTL"]},
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "max_length_rule_hash": {"$ref": "#/$defs/sha256"},
+        "max_length_rule": {"$ref": "#/$defs/maxLengthRule"},
+        "identity_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "maxLengthRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source", "captured_at", "expires_at", "locale",
+        "live_language_label_sha256", "page_fingerprint_sha256",
+        "live_control_evidence_sha256", "maximum", "unit", "observed_count",
+        "candidate_value_sha256", "current_session_only",
+        "require_post_write_counter_readback", "final_write_enabled"
+      ],
+      "properties": {
+        "source": {"const": "CURRENT_VISIBLE_UI"},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "locale": {"$ref": "#/$defs/locale"},
+        "live_language_label_sha256": {"$ref": "#/$defs/sha256"},
+        "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+        "live_control_evidence_sha256": {"$ref": "#/$defs/sha256"},
+        "maximum": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "unit": {"enum": ["UNICODE_CODE_POINTS", "UTF8_BYTES", "PLATFORM_COUNTER"]},
+        "observed_count": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "candidate_value_sha256": {"$ref": "#/$defs/sha256"},
+        "current_session_only": {"const": true},
+        "require_post_write_counter_readback": {"const": true},
+        "final_write_enabled": {"const": false}
+      }
+    },
+    "assetTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "logical_name", "section", "role", "upload_order"],
+      "properties": {
+        "kind": {"const": "ASSET_SLOT"},
+        "logical_name": {"type": "string", "minLength": 1},
+        "section": {"type": ["string", "null"]},
+        "role": {"type": "string", "minLength": 1},
+        "upload_order": {"type": "integer", "minimum": 1}
+      }
+    },
+    "fieldOrCategoryTarget": {
+      "oneOf": [
+        {"$ref": "#/$defs/fieldTarget"},
+        {"$ref": "#/$defs/categoryTarget"},
+        {"$ref": "#/$defs/localizedTarget"}
+      ]
+    },
+    "clearOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order", "operation", "target", "locator", "reason", "readback"],
+      "properties": {
+        "order": {"type": "integer", "minimum": 1},
+        "operation": {"const": "CLEAR_INHERITED_FIELD"},
+        "target": {"$ref": "#/$defs/fieldOrCategoryTarget"},
+        "locator": {"$ref": "#/$defs/locator"},
+        "reason": {"enum": ["REGISTRY_CLEAR_BEFORE_FILL", "BLOCKED_FIELD_MUST_REMAIN_EMPTY", "LOCALIZED_CLEAR_BEFORE_FILL"]},
+        "readback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required", "expected_state"],
+          "properties": {
+            "required": {"const": true},
+            "expected_state": {"const": "EMPTY"}
+          }
+        }
+      }
+    },
+    "standardFieldReadback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "compare", "expected_sha256"],
+      "properties": {
+        "required": {"const": true},
+        "compare": {"const": "CANONICAL_VALUE_SHA256"},
+        "expected_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "localizedFieldReadback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required", "compare", "expected_sha256", "identity_sha256",
+        "max_length_rule_hash", "expected_direction", "expected_live_language_label",
+        "require_current_counter_within_rule"
+      ],
+      "properties": {
+        "required": {"const": true},
+        "compare": {"const": "LOCALIZED_CANONICAL_IDENTITY_AND_VALUE_SHA256"},
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "identity_sha256": {"$ref": "#/$defs/sha256"},
+        "max_length_rule_hash": {"$ref": "#/$defs/sha256"},
+        "expected_direction": {"enum": ["LTR", "RTL"]},
+        "expected_live_language_label": {"type": "string", "minLength": 1},
+        "require_current_counter_within_rule": {"const": true}
+      }
+    },
+    "localizedLengthValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_hash", "unit", "maximum", "expected_count",
+        "page_fingerprint_sha256", "require_current_counter_readback", "failure_action"
+      ],
+      "properties": {
+        "rule_hash": {"$ref": "#/$defs/sha256"},
+        "unit": {"enum": ["UNICODE_CODE_POINTS", "UTF8_BYTES", "PLATFORM_COUNTER"]},
+        "maximum": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "expected_count": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+        "require_current_counter_readback": {"const": true},
+        "failure_action": {"const": "STOP_PRESERVE_EVIDENCE"}
+      }
+    },
+    "writeOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order", "operation", "target", "locator", "value", "value_sha256", "approval", "readback"],
+      "properties": {
+        "order": {"type": "integer", "minimum": 1},
+        "operation": {"const": "WRITE_APPROVED_FIELD_VALUE"},
+        "target": {"$ref": "#/$defs/fieldOrCategoryTarget"},
+        "locator": {"$ref": "#/$defs/locator"},
+        "value": {},
+        "value_sha256": {"$ref": "#/$defs/sha256"},
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_id", "decision_id"],
+          "properties": {
+            "source_id": {"type": "string", "minLength": 1},
+            "decision_id": {"type": "string", "minLength": 1}
+          }
+        },
+        "readback": {
+          "oneOf": [
+            {"$ref": "#/$defs/standardFieldReadback"},
+            {"$ref": "#/$defs/localizedFieldReadback"}
+          ]
+        },
+        "length_validation": {"$ref": "#/$defs/localizedLengthValidation"}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"target": {"properties": {"kind": {"const": "LOCALIZED_FIELD"}}, "required": ["kind"]}},
+            "required": ["target"]
+          },
+          "then": {
+            "required": ["length_validation"],
+            "properties": {"readback": {"$ref": "#/$defs/localizedFieldReadback"}}
+          },
+          "else": {
+            "properties": {
+              "readback": {"$ref": "#/$defs/standardFieldReadback"},
+              "length_validation": false
+            }
+          }
+        }
+      ]
+    },
+    "uploadOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order", "operation", "target", "locator", "asset", "pre_upload_check", "readback"],
+      "properties": {
+        "order": {"type": "integer", "minimum": 1},
+        "operation": {"const": "UPLOAD_APPROVED_ASSET"},
+        "target": {"$ref": "#/$defs/assetTarget"},
+        "locator": {"$ref": "#/$defs/locator"},
+        "asset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["asset_id", "path", "bytes", "sha256", "media_type"],
+          "properties": {
+            "asset_id": {"type": "string", "minLength": 1},
+            "path": {"type": "string", "minLength": 1},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"$ref": "#/$defs/sha256"},
+            "media_type": {"type": "string", "minLength": 1}
+          }
+        },
+        "pre_upload_check": {"const": "PATH_BYTES_SHA256_EXACT_MATCH"},
+        "readback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required", "compare", "expected_sha256"],
+          "properties": {
+            "required": {"const": true},
+            "compare": {"const": "UPLOAD_ORDER_AND_CONTENT_SHA256"},
+            "expected_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      }
+    },
+    "verifyOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order", "operation", "target", "expected_sha256", "failure_action"],
+      "properties": {
+        "order": {"type": "integer", "minimum": 1},
+        "operation": {"enum": ["VERIFY_FIELD_READBACK", "VERIFY_ASSET_READBACK"]},
+        "target": {
+          "oneOf": [
+            {"$ref": "#/$defs/fieldTarget"},
+            {"$ref": "#/$defs/categoryTarget"},
+            {"$ref": "#/$defs/localizedTarget"},
+            {"$ref": "#/$defs/assetTarget"}
+          ]
+        },
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "localized_identity_sha256": {"$ref": "#/$defs/sha256"},
+        "max_length_rule_hash": {"$ref": "#/$defs/sha256"},
+        "failure_action": {"const": "STOP_PRESERVE_EVIDENCE"}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"target": {"properties": {"kind": {"const": "LOCALIZED_FIELD"}}, "required": ["kind"]}},
+            "required": ["target"]
+          },
+          "then": {"required": ["localized_identity_sha256", "max_length_rule_hash"]},
+          "else": {
+            "properties": {
+              "localized_identity_sha256": false,
+              "max_length_rule_hash": false
+            }
+          }
+        }
+      ]
+    },
+    "saveOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order",
+        "operation",
+        "locator",
+        "visible_ui_required",
+        "direct_endpoint_call_allowed",
+        "maximum_execution_count",
+        "requires_all_prior_phase_readbacks",
+        "approval"
+      ],
+      "properties": {
+        "order": {"const": 1},
+        "operation": {"const": "SAVE_DRAFT"},
+        "locator": {"$ref": "#/$defs/locator"},
+        "visible_ui_required": {"const": true},
+        "direct_endpoint_call_allowed": {"const": false},
+        "maximum_execution_count": {"const": 1},
+        "requires_all_prior_phase_readbacks": {"const": true},
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approval_id", "decision_id", "write_approval_sha256", "expires_at"],
+          "properties": {
+            "approval_id": {"type": "string", "minLength": 1},
+            "decision_id": {"type": "string", "minLength": 1},
+            "write_approval_sha256": {"$ref": "#/$defs/sha256"},
+            "expires_at": {"type": "string", "format": "date-time"}
+          }
+        }
+      }
+    },
+    "stopOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order", "operation", "terminal_quality", "publish_ready"],
+      "properties": {
+        "order": {"const": 1},
+        "operation": {"const": "STOP_AND_PRESERVE_REVIEW_STATE"},
+        "terminal_quality": {"enum": ["REVIEW_REQUIRED", "FINAL_REVIEW_REQUIRED"]},
+        "publish_ready": {"const": false}
+      }
+    },
+    "phaseBase": {
+      "type": "object",
+      "required": ["order", "name", "must_complete_before_next_phase", "operations"],
+      "properties": {
+        "must_complete_before_next_phase": {"const": true}
+      }
+    },
+    "clearPhase": {
+      "allOf": [
+        {"$ref": "#/$defs/phaseBase"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order": {"const": 1},
+            "name": {"const": "CLEAR_INHERITED_FIELDS"},
+            "must_complete_before_next_phase": {"const": true},
+            "operations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/clearOperation"}}
+          }
+        }
+      ]
+    },
+    "writePhase": {
+      "allOf": [
+        {"$ref": "#/$defs/phaseBase"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order": {"const": 2},
+            "name": {"const": "WRITE_APPROVED_FIELD_VALUES"},
+            "must_complete_before_next_phase": {"const": true},
+            "operations": {"type": "array", "items": {"$ref": "#/$defs/writeOperation"}}
+          }
+        }
+      ]
+    },
+    "uploadPhase": {
+      "allOf": [
+        {"$ref": "#/$defs/phaseBase"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order": {"const": 3},
+            "name": {"const": "UPLOAD_APPROVED_ASSETS"},
+            "must_complete_before_next_phase": {"const": true},
+            "operations": {"type": "array", "items": {"$ref": "#/$defs/uploadOperation"}}
+          }
+        }
+      ]
+    },
+    "verifyPhase": {
+      "allOf": [
+        {"$ref": "#/$defs/phaseBase"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order": {"const": 4},
+            "name": {"const": "VERIFY_READBACK"},
+            "must_complete_before_next_phase": {"const": true},
+            "operations": {"type": "array", "items": {"$ref": "#/$defs/verifyOperation"}}
+          }
+        }
+      ]
+    },
+    "savePhase": {
+      "allOf": [
+        {"$ref": "#/$defs/phaseBase"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order": {"const": 5},
+            "name": {"const": "SAVE_DRAFT_VISIBLE_UI"},
+            "must_complete_before_next_phase": {"const": true},
+            "operations": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"$ref": "#/$defs/saveOperation"}}
+          }
+        }
+      ]
+    },
+    "stopPhase": {
+      "allOf": [
+        {"$ref": "#/$defs/phaseBase"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "order": {"const": 6},
+            "name": {"const": "STOP_BEFORE_FINAL_WRITE"},
+            "must_complete_before_next_phase": {"const": true},
+            "operations": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"$ref": "#/$defs/stopOperation"}}
+          }
+        }
+      ]
+    },
+    "forbiddenAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "logical_name",
+        "classification",
+        "decision",
+        "permanent",
+        "visible_ui_click_allowed",
+        "direct_endpoint_call_allowed"
+      ],
+      "properties": {
+        "logical_name": {"type": "string", "minLength": 1},
+        "classification": {"const": "FINAL_WRITE"},
+        "decision": {"const": "HARD_DENY"},
+        "permanent": {"const": true},
+        "visible_ui_click_allowed": {"const": false},
+        "direct_endpoint_call_allowed": {"const": false},
+        "adapter_ref": {"type": "string", "minLength": 1},
+        "endpoint_policy_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

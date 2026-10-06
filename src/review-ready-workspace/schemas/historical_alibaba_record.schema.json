@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/historical_alibaba_record.schema.json",
+  "title": "Sanitized historical Alibaba derivative",
+  "type": "object",
+  "required": ["product_id", "record_disposition", "historical_observation_only", "approved_fact", "allow_rag", "fact_extraction", "publish_draft", "auto_listing", "external_write_enabled", "safe_snapshot"],
+  "properties": {
+    "product_id": {"type": "string", "minLength": 1},
+    "record_disposition": {"const": "HISTORICAL_REFERENCE_ONLY"},
+    "historical_observation_only": {"const": true},
+    "approved_fact": {"const": false},
+    "allow_rag": {"const": true},
+    "fact_extraction": {"const": true},
+    "publish_draft": {"const": false},
+    "auto_listing": {"const": false},
+    "external_write_enabled": {"const": false},
+    "safe_snapshot": {
+      "type": "object",
+      "required": ["source_file_sha256", "record_disposition", "historical_observation_only", "approved_fact", "approval_status"],
+      "properties": {
+        "source_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "record_disposition": {"const": "HISTORICAL_REFERENCE_ONLY"},
+        "historical_observation_only": {"const": true},
+        "approved_fact": {"const": false},
+        "approval_status": {"const": "HUMAN_CONFIRM_REQUIRED"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/draft-save-attempt-claim-receipt.schema.json",
+  "title": "Fail-Closed Draft Save Attempt Claim Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "claim_id", "generated_at", "status", "result_semantics",
+    "run_id", "target_model", "template_product_id", "browser_session_sha256",
+    "page_fingerprint_sha256", "activation_request_sha256", "visible_ui_event_sha256",
+    "pre_save_verification_sha256", "checkpoint_sha256_before",
+    "checkpoint_revision_before", "ledger_entry_sha256", "attempt_transition",
+    "release_authorized", "final_write_enabled"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba.draft-save-attempt-claim-receipt.v1"},
+    "claim_id": {"type": "string", "minLength": 1, "maxLength": 240, "pattern": "^[^\\r\\n]+$"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"const": "ATTEMPT_CLAIMED_CHECKPOINT_COMMIT_PENDING"},
+    "result_semantics": {"const": "ATTEMPT_CONSUMED_NOT_RELEASE_AUTHORIZATION"},
+    "run_id": {"type": "string", "minLength": 1, "maxLength": 300, "pattern": "^[^\\r\\n]+$"},
+    "target_model": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+    "template_product_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "browser_session_sha256": {"$ref": "#/$defs/sha256"},
+    "page_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+    "activation_request_sha256": {"$ref": "#/$defs/sha256"},
+    "visible_ui_event_sha256": {"$ref": "#/$defs/sha256"},
+    "pre_save_verification_sha256": {"$ref": "#/$defs/sha256"},
+    "checkpoint_sha256_before": {"$ref": "#/$defs/sha256"},
+    "checkpoint_revision_before": {"type": "integer", "minimum": 0},
+    "ledger_entry_sha256": {"$ref": "#/$defs/sha256"},
+    "attempt_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["before", "after", "maximum", "atomic_ledger_claimed", "retry_allowed"],
+      "properties": {
+        "before": {"const": 0},
+        "after": {"const": 1},
+        "maximum": {"const": 1},
+        "atomic_ledger_claimed": {"const": true},
+        "retry_allowed": {"const": false}
+      }
+    },
+    "release_authorized": {"const": false},
+    "final_write_enabled": {"const": false}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

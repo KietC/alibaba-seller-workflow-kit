@@ -1,0 +1,45 @@
+{
+  "schema_version": "sellerkit.alibaba.synthetic-iab-adapter.v1",
+  "adapter_id": "sellerkit-loopback-offline-iab-harness",
+  "adapter_version": "1.0.0",
+  "scope": "SYNTHETIC_TEST_LOCAL_CONTRACT_ONLY",
+  "accepted_origins": ["http://127.0.0.1:<EPHEMERAL_PORT>"],
+  "external_http_fetch_allowed": false,
+  "websocket_egress_covered": false,
+  "alibaba_origin_allowed": false,
+  "capabilities": {
+    "localized_runtime": {
+      "implemented": true,
+      "locale_count": 18,
+      "rtl_locales": ["ar", "he"],
+      "reacquire_after_render": true,
+      "stale_handle_rejected": true,
+      "visible_counter_same_control_required": true
+    },
+    "request_guard": {
+      "implemented": true,
+      "install_before_navigation": true,
+      "unknown_default": "DENY",
+      "draft_request": "PAUSE_THEN_EXACT_ONE_RELEASE",
+      "direct_replay": "DENY",
+      "final_write": "HARD_DENY",
+      "external_http_host": "DENY",
+      "websocket_transport": "NOT_COVERED"
+    },
+    "draft_lifecycle": {
+      "ledger_transition": "0_TO_1_ONLY",
+      "checkpoint_before_release": "SAVE_ATTEMPTED",
+      "inventory_delta": "ONE_DRAFT_ONLY",
+      "refresh_reopen_readback": true
+    }
+  },
+  "trust": {
+    "status": "LOCAL_CONTRACT_VERIFIED",
+    "execution_authority": "NONE",
+    "browser_live_attested": false,
+    "alibaba_live_attested": false,
+    "production_write_authority": false,
+    "may_enable_implementation_ready": false,
+    "final_write_enabled": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/review_state.schema.json",
+  "title": "Local field-review state",
+  "type": "object",
+  "required": ["schema_version", "review_contract_version", "review_subject_hash", "review_events", "current_subject_review_events", "event_count", "current_subject_event_count", "stale_or_other_scope_event_count", "identity_assurance", "approved_internal_promotion_supported_in_v1", "record_effect"],
+  "properties": {
+    "schema_version": {"const": "sellerkit.review_state.v1"},
+    "review_contract_version": {"const": "1.0.0"},
+    "review_subject_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "review_events": {"type": "array", "items": {"$ref": "review_decision_event.schema.json"}},
+    "current_subject_review_events": {"type": "array", "items": {"$ref": "review_decision_event.schema.json"}},
+    "event_count": {"type": "integer", "minimum": 0},
+    "current_subject_event_count": {"type": "integer", "minimum": 0},
+    "stale_or_other_scope_event_count": {"type": "integer", "minimum": 0},
+    "identity_assurance": {"const": "SELF_ATTESTED_UNVERIFIED"},
+    "approved_internal_promotion_supported_in_v1": {"const": false},
+    "record_effect": {"const": "LOCAL_AUDIT_ONLY_NO_APPROVED_INTERNAL_PROMOTION"}
+  },
+  "additionalProperties": false
+}

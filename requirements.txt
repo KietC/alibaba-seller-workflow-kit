@@ -1,0 +1,4 @@
+# Offline validators only; optional vision dependencies are not bundled.
+# 仅安装离线校验器依赖；可选识图依赖不打包。
+jsonschema==4.26.0
+beautifulsoup4==4.15.0

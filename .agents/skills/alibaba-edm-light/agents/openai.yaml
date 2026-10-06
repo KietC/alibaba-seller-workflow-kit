@@ -1,0 +1,4 @@
+interface:
+  display_name: "Alibaba EDM Light"
+  short_description: "Prepare one targeted Alibaba EDM campaign and stop before send"
+  default_prompt: "Use $alibaba-edm-light to prepare one small Alibaba EDM campaign in the signed-in in-app browser and stop before final send."

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/approved-commercial-decision.schema.json",
+  "title": "Product Similar Draft Approved Commercial Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "target_model",
+    "status",
+    "approved_by",
+    "approved_at",
+    "price",
+    "minimum_order_quantity",
+    "historical_values_are_quote",
+    "final_write_enabled"
+  ],
+  "properties": {
+    "schema_version": { "const": "sellerkit.approved-commercial-decision.v1" },
+    "decision_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "target_model": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "status": { "const": "APPROVED" },
+    "approved_by": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "approved_at": { "type": "string", "format": "date-time" },
+    "price": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "unit",
+        "trade_term",
+        "pricing_method",
+        "candidate_product_ids",
+        "p25",
+        "p50",
+        "p75",
+        "approved_value"
+      ],
+      "properties": {
+        "currency": { "type": "string", "minLength": 1, "maxLength": 20 },
+        "unit": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "trade_term": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "pricing_method": { "const": "WEIGHTED_P25_P50_P75" },
+        "candidate_product_ids": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[0-9]+$" }
+        },
+        "p25": { "type": "number", "minimum": 0 },
+        "p50": { "type": "number", "minimum": 0 },
+        "p75": { "type": "number", "minimum": 0 },
+        "approved_value": { "type": "number", "minimum": 0 }
+      }
+    },
+    "minimum_order_quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "type": "string", "minLength": 1, "maxLength": 80 }
+      }
+    },
+    "historical_values_are_quote": { "const": false },
+    "final_write_enabled": { "const": false }
+  }
+}

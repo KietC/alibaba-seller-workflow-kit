@@ -1,0 +1,20 @@
+[
+  {"locale":"en","label":"English","direction":"LTR","maximum":128,"counterBias":0,"title":"Commercial Full SUS304 Pre-Rinse Faucet with Easy-Pull Handle, Dual-Pattern Spray Valve and 12 in Swing Spout"},
+  {"locale":"de","label":"Deutsch","direction":"LTR","maximum":160,"counterBias":1,"title":"Gewerbliche Vorspülarmatur komplett aus SUS304 mit Leichtzuggriff, 2-Strahl-Sprühventil und 12-Zoll-Schwenkauslauf"},
+  {"locale":"fr","label":"Français","direction":"LTR","maximum":192,"counterBias":2,"title":"Robinet professionnel de prérinçage tout SUS304 avec poignée à effort réduit, douchette 2 jets et bec pivotant 12 po"},
+  {"locale":"es","label":"Español","direction":"LTR","maximum":128,"counterBias":1,"title":"Grifo comercial de prelavado SUS304 con mango suave, rociador de 2 modos y caño giratorio de 12 pulg."},
+  {"locale":"it","label":"Italiano","direction":"LTR","maximum":192,"counterBias":0,"title":"Rubinetto professionale di prelavaggio interamente SUS304 con leva leggera, doccetta a 2 getti e bocca girevole da 12 pollici"},
+  {"locale":"pt","label":"Português","direction":"LTR","maximum":160,"counterBias":2,"title":"Torneira comercial de pré-lavagem integral em SUS304 com gatilho leve, esguicho de 2 jatos e bica giratória de 12 pol."},
+  {"locale":"ru","label":"Русский","direction":"LTR","maximum":192,"counterBias":1,"title":"Профессиональный предварительный душ SUS304 с лёгким рычагом, 2-режимным распылителем и поворотным изливом 12 дюймов"},
+  {"locale":"ja","label":"日本語","direction":"LTR","maximum":128,"counterBias":2,"title":"SUS304フルボディ業務用プレリンス水栓、軽い操作レバー・2パターンスプレーバルブ・12インチスイングスパウト付き"},
+  {"locale":"ar","label":"العربية","direction":"RTL","maximum":160,"counterBias":0,"title":"صنبور شطف أولي تجاري مصنوع بالكامل من SUS304 بمقبض سهل السحب وصمام رش ثنائي النمط وفوهة متأرجحة 12 بوصة"},
+  {"locale":"ko","label":"한국어","direction":"LTR","maximum":128,"counterBias":1,"title":"SUS304 전체 사양 상업용 프리린스 수전, 저힘 핸들·2패턴 스프레이 밸브·12인치 회전 스파우트"},
+  {"locale":"tr","label":"Türkçe","direction":"LTR","maximum":160,"counterBias":2,"title":"Tamamı SUS304 ticari ön yıkama bataryası; kolay çekilen kol, çift modlu sprey valfi ve 12 inç döner ağız"},
+  {"locale":"th","label":"ไทย","direction":"LTR","maximum":192,"counterBias":1,"title":"ก๊อกพรีรินซ์เชิงพาณิชย์ SUS304 ทั้งชุด พร้อมด้ามกดผ่อนแรง วาล์วสเปรย์ 2 รูปแบบ และปากหมุน 12 นิ้ว"},
+  {"locale":"vi","label":"Tiếng Việt","direction":"LTR","maximum":128,"counterBias":0,"title":"Vòi phun tráng công nghiệp toàn bộ bằng SUS304, tay bóp nhẹ, van phun 2 chế độ và vòi xoay 12 inch"},
+  {"locale":"nl","label":"Nederlands","direction":"LTR","maximum":160,"counterBias":2,"title":"Professionele voorspoelkraan volledig van SUS304 met lichtbediende hendel, 2-standen sproeiventiel en 12-inch zwenkuitloop"},
+  {"locale":"id","label":"Bahasa Indonesia","direction":"LTR","maximum":128,"counterBias":1,"title":"Keran pra-bilas komersial seluruhnya SUS304 dengan tuas ringan, katup semprot 2 pola, dan cerat putar 12 inci"},
+  {"locale":"he","label":"עברית","direction":"RTL","maximum":160,"counterBias":2,"title":"ברז שטיפה מקדימה מסחרי מלא מ-SUS304 עם ידית קלת משיכה, שסתום ריסוס דו-מצבי ופייה מסתובבת 12 אינץ׳"},
+  {"locale":"hi","label":"हिन्दी","direction":"LTR","maximum":192,"counterBias":1,"title":"पूर्ण SUS304 वाणिज्यिक प्री-रिंस नल, हल्के खिंचाव वाला हैंडल, 2-पैटर्न स्प्रे वाल्व और 12 इंच स्विंग स्पाउट"},
+  {"locale":"zh-CN","label":"简体中文","direction":"LTR","maximum":128,"counterBias":2,"title":"全SUS304商用预冲洗花洒龙头，配省力把手、双模式喷枪和12英寸摇摆出水嘴"}
+]

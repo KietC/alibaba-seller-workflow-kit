@@ -1,0 +1,66 @@
+{
+  "allowed_website_hosts": [
+    "catalog.example.invalid"
+  ],
+  "approved": false,
+  "capture_snapshot": "example-local-freeze",
+  "description": "Unapproved synthetic layout. Replace paths/digests/counts using your own verified local evidence. / 未审核的合成目录示例，请使用自己的核验本地证据填写路径、哈希和数量。",
+  "expected": {
+    "alibaba_catalog_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "alibaba_non_empty_models": 0,
+    "alibaba_products": 0,
+    "alibaba_snapshot_file_count": 0,
+    "alibaba_snapshot_total_bytes": 0,
+    "alibaba_snapshot_tree_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "disposition_overlay_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "exact_intersection": 0,
+    "exact_missing_candidates": 0,
+    "historical_catalog_sku_price_coverage": 0,
+    "historical_lead_time_coverage": 0,
+    "historical_packaging_coverage": 0,
+    "historical_public_price_range_coverage": 0,
+    "historical_reference": 0,
+    "historical_sku_attribute_coverage": 0,
+    "historical_sku_sample_coverage": 0,
+    "historical_structured_ladder_price_coverage": 0,
+    "old_website_archive_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "old_website_archive_size_bytes": 0,
+    "unusable_waste": 0,
+    "website_archive_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "website_archive_size_bytes": 0,
+    "website_assets_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "website_assets_size_bytes": 0,
+    "website_core_images_remote_unmaterialized": 0,
+    "website_dist_file_count": 0,
+    "website_dist_total_bytes": 0,
+    "website_dist_tree_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "website_empty_specs": 0,
+    "website_gallery_materialized": 0,
+    "website_gallery_references": 0,
+    "website_main_image_materialized": 0,
+    "website_main_image_references": 0,
+    "website_non_empty_specs": 0,
+    "website_pages_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "website_products": 0,
+    "website_release_receipt_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "website_specs": 0
+  },
+  "paths": {
+    "alibaba_archive_root": "D:/SellerKit/local/alibaba_archive_root",
+    "disposition_overlay_root": "D:/SellerKit/local/disposition_overlay_root",
+    "old_website_archive": "D:/SellerKit/local/old_website_archive",
+    "project_root": "D:/SellerKit/local/project_root",
+    "website_archive": "D:/SellerKit/local/website_archive",
+    "website_candidate_root": "D:/SellerKit/local/website_candidate_root",
+    "website_replica_root": "D:/SellerKit/local/website_replica_root"
+  },
+  "policy": {
+    "external_write_enabled": false,
+    "final_write_enabled": false
+  },
+  "priority_models": [
+    "MODEL-001"
+  ],
+  "schema_version": "sellerkit.review-config.v1",
+  "website_release_id": "sellerkit-example-snapshot"
+}

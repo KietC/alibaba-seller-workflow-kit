@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sellerkit.local/schemas/alibaba-similar-draft/next-product-checklist-verification-receipt.schema.json",
+  "title": "Next Product Checklist Verification Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "stage", "status", "next_state", "checklist_semantic_sha256",
+    "verified_artifact_count", "verified_artifacts", "errors", "warnings",
+    "browser_or_network_executed", "final_write_enabled", "implementation_ready",
+    "validator_sha256", "checklist_schema_sha256", "validated_at_utc"
+  ],
+  "properties": {
+    "schema_version": {"const": "sellerkit.alibaba.next-product-checklist-verification.v1"},
+    "stage": {"enum": ["pre_write", "pre_save", "post_save"]},
+    "status": {"enum": ["PASS", "BLOCKED"]},
+    "next_state": {"type": "string", "minLength": 1},
+    "checklist_semantic_sha256": {"$ref": "#/$defs/sha256"},
+    "verified_artifact_count": {"type": "integer", "minimum": 0},
+    "verified_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "bytes": {"type": "integer", "minimum": 0},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "errors": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "warnings": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "browser_or_network_executed": {"const": false},
+    "final_write_enabled": {"const": false},
+    "implementation_ready": {"type": "boolean"},
+    "validator_sha256": {"$ref": "#/$defs/sha256"},
+    "checklist_schema_sha256": {"$ref": "#/$defs/sha256"},
+    "validated_at_utc": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
